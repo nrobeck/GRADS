@@ -82,7 +82,6 @@ public class StudentRecord {
 				+ ((degreeSought == null) ? 0 : degreeSought.hashCode());
 		result = prime * result
 				+ ((milestonesSet == null) ? 0 : milestonesSet.hashCode());
-		result = prime * result + ((program == null) ? 0 : department.hashCode());
 		result = prime * result + ((student == null) ? 0 : student.hashCode());
 		result = prime * result
 				+ ((termBegan == null) ? 0 : termBegan.hashCode());
@@ -118,11 +117,6 @@ public class StudentRecord {
 			if (other.milestonesSet != null)
 				return false;
 		} else if (!milestonesSet.equals(other.milestonesSet))
-			return false;
-		if (program == null) {
-			if (other.program != null)
-				return false;
-		} else if (!program.equals(other.program))
 			return false;
 		if (student == null) {
 			if (other.student != null)

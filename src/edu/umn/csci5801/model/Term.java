@@ -1,5 +1,4 @@
 package edu.umn.csci5801.model;
-package edu.umn.csci5801.model;
 
 public class Term {
 	private Semester semester;

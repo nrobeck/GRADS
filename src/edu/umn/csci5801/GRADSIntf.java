@@ -34,6 +34,7 @@ package edu.umn.csci5801;
 
 import java.util.Map;
 import java.util.List;
+import edu.umn.csci5801.model.*;
 
 /**
  * This defines the interface between the driver of the 
