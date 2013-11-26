@@ -5,7 +5,7 @@ import edu.umn.csci5801.model.ProgressSummary;
 import java.lang.String;
 import java.util.ArrayList;
 
-/** copyright stuff */
+/** TODO: copyright */
 
 /**
  *
