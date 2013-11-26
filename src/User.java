@@ -11,7 +11,7 @@ import java.lang.String;
  * Storage class for user information
  * This is used for user validation and specifying departments
  * Information is only allowed to be set on creation
- * This is to prevent mistakes in overriding data;
+ * This is to reduce mistakes in overriding data;
  *
  */
 public class User {
