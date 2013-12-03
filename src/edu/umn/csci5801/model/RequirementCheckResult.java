@@ -32,8 +32,7 @@ public class RequirementCheckResult {
 		this.errorMsgs = errorMsgs;
 	}
 	
-	public RequirementCheckResult(String name, boolean passed,
-								  CheckResultDetails details) {
+	public RequirementCheckResult(String name, boolean passed, CheckResultDetails details) {
 		this.name = name;
 		this.passed = passed;
 		this.details = details;
