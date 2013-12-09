@@ -34,64 +34,95 @@ import edu.umn.csci5801.model.StudentRecord;
  
 public class GRADS implements GRADSIntf{
 
-	public GRADS() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	//private variables
-	private User currentUser;
-	private SummaryBuilder summaryBuilder;
-	private DataManager dbManager;
-	private TranscriptHandler transcriptHandler;
-	
-	public List<String> getStudentIDs(){
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public GRADS(String studentsFileName, String coursesFileName, String 
+usersFileName) {
+        // TODO Auto-generated constructor stub
+        this.coursesFile = coursesFileName;
+        this.studentsFile = studentsFileName;
+        this.usersFile = usersFileName;
+    }
+    
+    //private variables
+    private User currentUser;
+    private SummaryBuilder summaryBuilder;
+    private DataManager dbManager = new DataManager();
+    private TranscriptHandler transcriptHandler;
+    private String studentsFile;
+    private String coursesFile;
+    private String usersFile;
+    
+    public List<String> getStudentIDs(){
+        if(currentUser.getRole() == "GPC") {
+            return dbManager.getStudentIDList(currentUser.getDepartment());
+        }
+        else {
+            //this needs to be changed to throw an error/exception
+            return null;
+        }
+    }
 
-	@Override
-	public void setUser(String userId) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void setUser(String userId) throws Exception {
+        // TODO Auto-generated method stub
+        if(dbManager.getUserByID(userId) != null) {
+            this.currentUser = dbManager.getUserByID(userId);
+        }
+        else {
+            throw new Exception("error: invalid user ID");
+        }
+    }
 
-	@Override
-	public String getUser() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getUser(){
+        //ISSUE: can't throw exception per GRADSIntf, how do we send error?
+        if(currentUser != null) {
+            return currentUser.getID();
+        }
+        else {
+            return null;//TODO needs to throw error here
+        }
+    }
 
-	@Override
-	public StudentRecord getTranscript(String userId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public StudentRecord getTranscript(String userId) throws Exception {
+        if(currentUser.getRole() == "GPC") {
+            if(dbManager.getUserByID(userId) != null) {
+                return transcriptHandler.getTranscript(userId);
+            }
+            else {
+                throw new Exception("error: userId is invalid");
+            }
+        }
+        else {
+            throw new Exception("error: user is not a GPC");
+        }
+    }
 
-	@Override
-	public void updateTranscript(String userId, StudentRecord transcript)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void updateTranscript(String userId, StudentRecord transcript)
+            throws Exception {
+        // TODO Auto-generated method stub
+        
+    }
 
-	@Override
-	public void addNote(String userId, String note) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void addNote(String userId, String note) throws Exception {
+        // TODO Auto-generated method stub
+        
+    }
 
-	@Override
-	public ProgressSummary generateProgressSummary(String userId)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public ProgressSummary generateProgressSummary(String userId)
+            throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public ProgressSummary simulateCourses(String userId,
-			List<CourseTaken> courses) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public ProgressSummary simulateCourses(String userId,
+            List<CourseTaken> courses) throws Exception {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
-	
+    
