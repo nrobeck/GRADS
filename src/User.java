@@ -4,6 +4,8 @@
 
 import java.lang.String;
 
+import edu.umn.csci5801.model.Department;
+
 /**
  * 
  * @author Kyle
@@ -20,9 +22,9 @@ public class User {
 	/** GPC or student only*/
 	private String role;
 	/** the department of the user */
-	private String department;
+	private Department department;
 	
-	public User(String id, String role, String department){
+	public User(String id, String role, Department department){
 		this.id = id;
 		this.role = role;
 		this.department = department;
@@ -36,7 +38,29 @@ public class User {
 		return role;
 	}
 	
-	public String getDepartment(){
+	public Department getDepartment(){
 		return department;
+	}
+	
+	//If IDs are equal Users are equal ASSUMES NO ID DUPLICATES
+	@Override
+	public boolean equals(Object o){
+		if (this == o)
+			return true;
+		if (o == null)
+			return false;
+		User user;
+		if(o.getClass() != this.getClass()){
+			return false;
+		}
+		else{
+			user = (User)o;
+		}
+		if(this.getID() == user.getID()){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 }
