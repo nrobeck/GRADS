@@ -91,7 +91,8 @@ public class SummaryBuilder {
 			
 			// check overall gpa
 			else if(req.get("type").getAsString().equals("overall_gpa")){
-				
+				double min = req.get("min_gpa").getAsDouble();
+				double currentGPA = calculateGPA(courses);
 			}
 			
 			// check in course gpa
@@ -101,6 +102,13 @@ public class SummaryBuilder {
 			
 			// check if certain courses were passed
 			else if(req.get("type").getAsString().equals("courses_passed")){
+				boolean PassFail = false;
+				List<String> c = new ArrayList<String>();
+				if (req.getAsJsonObject("PassFail").getAsBoolean()) {
+					PassFail = true;
+				}
+				
+				
 				
 			}
 			
@@ -126,11 +134,20 @@ public class SummaryBuilder {
 	 * @return the GPA
 	 */
 	private double calculateGPA(List<CourseTaken> courses) {
-		double sum = 0;
+		int credits = 0;
+		int sum = 0;
+		int temp;
 		
-		for(CourseTaken course : courses){
-			sum += course.getGrade().numericValue();
+		for (CourseTaken c: courses){
+			// check if course is not a S/N course
+			if(c.getGrade().ordinal() <= Grade.F.ordinal() ){
+				temp = Integer.parseInt(c.getCourse().getNumCredits());
+				credits += temp;
+				sum += temp * c.getGrade().numericValue();
+			}
 		}
+		
+		return sum/credits;
 		
 		return (sum/courses.size());
 	}
