@@ -81,14 +81,34 @@ public class SummaryBuilder {
 			String name = req.get("name").getAsString();
 			RequirementCheckResult result = new RequirementCheckResult(name, false);
 			
-			if(req.get("type").getAsString().equals("milestone"))
-			{
+			if(req.get("type").getAsString().equals("milestone")){
 				for(MilestoneSet m : milestones){
 					if(m.getMilestone().toString().equals(name)){
 						result.setPassed(true);
 					}
 				}
 			}
+			
+			// check overall gpa
+			else if(req.get("type").getAsString().equals("overall_gpa")){
+				
+			}
+			
+			// check in course gpa
+			else if(req.get("type").getAsString().equals("incourse_gpa")){
+				
+			}
+			
+			// check if certain courses were passed
+			else if(req.get("type").getAsString().equals("courses_passed")){
+				
+			}
+			
+			// check credit type requirements
+			else if(req.get("type").getAsString().equals("credits")){
+				// find any other courses
+			}
+			
 			else {
 				
 			}
