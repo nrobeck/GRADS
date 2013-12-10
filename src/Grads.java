@@ -32,9 +32,9 @@ import edu.umn.csci5801.model.CourseTaken;
 import edu.umn.csci5801.model.ProgressSummary;
 import edu.umn.csci5801.model.StudentRecord;
  
-public class GRADS implements GRADSIntf{
+public class Grads implements GRADSIntf{
 
-    public GRADS(String studentsFileName, String coursesFileName, String 
+    public Grads(String studentsFileName, String coursesFileName, String 
 usersFileName) {
         // TODO Auto-generated constructor stub
         this.coursesFile = coursesFileName;

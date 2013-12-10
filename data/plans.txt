@@ -3,7 +3,7 @@
         "plan": {
             "id":"PHD",
             "requirements":[
-                {"name":"TOTAL_CREDITS", "type":"total_credits", "credits":31},
+                {"name":"TOTAL_CREDITS", "type":"credits", [{"total":31}, {"csci":16}]},
                 {"name":"PRELIM_COMMITTEE_APPOINTED", "type":"milestone"}
                 {"name":"WRITTEN_PE_SUBMITTED", "type":"milestone"}
                 {"name":"WRITTEN_PE_APPROVED", "type":"milestone"}

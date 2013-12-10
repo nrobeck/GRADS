@@ -4,8 +4,11 @@
 import edu.umn.csci5801.model.*;
 
 import java.lang.String;
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.soap.Detail;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -19,8 +22,8 @@ import com.google.gson.JsonObject;
  *
  */
 public class SummaryBuilder {
-	private int dbmanPtr; // TODO: replace with an actual pointer
-	private int transPtr; // TODO: get pointer to transcript handler
+	DataManager dbManager;
+	TranscriptHandler transcriptHandler;
 	
 	/**
 	 * Constructor method for the Summary Builder
@@ -80,8 +83,11 @@ public class SummaryBuilder {
 			JsonObject req = e.getAsJsonObject();
 			String name = req.get("name").getAsString();
 			RequirementCheckResult result = new RequirementCheckResult(name, false);
+			CheckResultDetails details = new CheckResultDetails();
 			
+			// check a milestone
 			if(req.get("type").getAsString().equals("milestone")){
+				// compare all completed milestone to the current one
 				for(MilestoneSet m : milestones){
 					if(m.getMilestone().toString().equals(name)){
 						result.setPassed(true);
@@ -93,6 +99,12 @@ public class SummaryBuilder {
 			else if(req.get("type").getAsString().equals("overall_gpa")){
 				double min = req.get("min_gpa").getAsDouble();
 				double currentGPA = calculateGPA(courses);
+				
+				if (currentGPA >= min){
+					result.setPassed(true);
+				}
+				
+				
 			}
 			
 			// check in course gpa
@@ -115,10 +127,17 @@ public class SummaryBuilder {
 			// check credit type requirements
 			else if(req.get("type").getAsString().equals("credits")){
 				// find any other courses
+				// TODO: fill in
+			}
+			
+			// check Breadth requirements
+			else if(req.get("type").getAsString().equals("breadth")){
+				
 			}
 			
 			else {
-				
+				// TODO: decide what to do, error?
+				result.addErrorMsg("Requirement in plan is unhandled!");
 			}
 			
 			retVal.add(result);
@@ -139,7 +158,7 @@ public class SummaryBuilder {
 		int temp;
 		
 		for (CourseTaken c: courses){
-			// check if course is not a S/N course
+			// check if the course is not a S/N or a sim course
 			if(c.getGrade().ordinal() <= Grade.F.ordinal() ){
 				temp = Integer.parseInt(c.getCourse().getNumCredits());
 				credits += temp;
@@ -148,7 +167,5 @@ public class SummaryBuilder {
 		}
 		
 		return sum/credits;
-		
-		return (sum/courses.size());
 	}
 }
