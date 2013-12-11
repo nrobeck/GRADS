@@ -1,6 +1,11 @@
 package edu.umn.csci5801;
 
+import java.util.List;
+
+import edu.umn.csci5801.model.CourseTaken;
 import edu.umn.csci5801.model.Degree;
+import edu.umn.csci5801.model.Professor;
+import edu.umn.csci5801.model.Semester;
 import edu.umn.csci5801.model.Student;
 import edu.umn.csci5801.model.StudentRecord;
 import edu.umn.csci5801.model.Department;
@@ -64,15 +69,36 @@ public class DataValidator {
      * @return true if valid, false if invalid
      */
     public boolean departmentIsValid() {
+        //set the department
+        Department department = record.getDepartment();
         //check whether the department is valid
-        if((record.getDepartment() == Department.COMPUTER_SCIENCE) ||
-           (record.getDepartment() == Department.MATH)) {
-            return true;
+        for(Department d : Department.values()) {
+            //check each department against the department from record
+            if(d.name().equals(department)) {
+                //return if department is found
+                return true;
+            }
         }
-        else {
-            return false;
-        }
+        //department was not found
+        return false;
+    }
 
+    /**
+     * Check the validity of the department that is input.
+     * @param departmetn the department whose validity is being checked
+     * @return true if valid, false if invalid
+     */
+    public boolean departmentIsValid(Department department) {
+        //check whether the department is valid
+        for(Department d : Department.values()) {
+            //check each department against the department from record
+            if(d.name().equals(department)) {
+                //return if department is found
+                return true;
+            }
+        }
+        //department was not found
+        return false;
     }
 
     /**
@@ -83,9 +109,9 @@ public class DataValidator {
         //set the degree
         Degree degree = record.getDegreeSought();
         //check validity of the degrees fields
-        for (Degree d : Degree.values()) {
+        for(Degree d : Degree.values()) {
             //check each degree against the degree from record
-            if (d.name().equals(degree)) {
+            if(d.name().equals(degree)) {
                 //return if degree is found
                 return true;
             }
@@ -95,35 +121,110 @@ public class DataValidator {
     }
 
     /**
-     *
+     * Check the validity of the term in the record.
      * @return true if valid, false if invalid
      */
     public boolean termIsValid() {
+        //set the result to return
+        boolean valid = false;
         //get the term from the record
         Term term = record.getTermBegan();
-        //check the term against valid terms
 
-        //term not found
-        return false;
+        //check the term values
+        //check the semester
+        for(Semester s : Semester.values()) {
+            if(s.name().equals(term.getSemester())) {
+                valid = true;
+            }
+        }
+        //check the year if the semester was valid
+        if(valid) {
+            //check for valid year (positive 4 digit Integer)
+            if((term.getYear().toString().length() == 4) &&
+               (term.getYear().intValue() > 0)){
+                valid = true;
+            }
+            //invalid year
+            else {
+                valid = false;
+            }
+        }
+
+
+        //return validity of term
+        return valid;
 
     }
 
     /**
-     *
+     * Check the validity of the professors in the record.
      * @return true if valid, false if invalid
      */
     public boolean professorIsValid() {
-        // TODO Auto-generated method stub
+        //get the professors who are advisors
+        List<Professor> profAdvisor = record.getAdvisors();
+        //get the professors who are on the committee
+        List<Professor> profCommittee = record.getCommittee();
+        //set the return boolean
+        boolean valid = true;
+
+        //check the advisors
+        for(Professor p : profAdvisor) {
+            //check if professor is valid
+            if((p.getFirstName() != null) &&
+               (p.getLastName() != null) &&
+               departmentIsValid(p.getDepartment())) {
+                valid = true;
+            }
+            //invalid professor ends loop and method
+            else {
+                return false;
+            }
+        }
+
+        //check the committee
+        for(Professor p : profCommittee) {
+            //check if the professor is valid
+            if((p.getFirstName() != null) &&
+               (p.getLastName() != null) &&
+               departmentIsValid(p.getDepartment())){
+                valid = true;
+            }
+            //invalid professor ends loop and method
+            else {
+                return false;
+            }
+        }
+        //return valid if no false is ever caught in above tests
+        return valid;
 
     }
 
     /**
-     *
+     * Check the validity of the courses in the record
      * @return true if valid, false if invalid
      */
     public boolean courseIsValid() {
-        // TODO Auto-generated method stub
+        //set the courses
+        List<CourseTaken> courses = record.getCoursesTaken();
+        //set the return value
+        boolean valid = true;
 
+        //check each course
+        for(CourseTaken c: courses) {
+            if((c.getCourse() != null) &&
+               (c.getGrade() != null) &&
+               (c.getTerm() != null)) {
+                valid = true;
+            }
+            //invalid course taken ends loop and method
+            else {
+                return false;
+            }
+        }
+
+        //no issues found with courses
+        return valid;
     }
 
 }
