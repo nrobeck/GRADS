@@ -114,7 +114,7 @@ public class DataValidator {
      */
     public boolean professorIsValid() {
         // TODO Auto-generated method stub
-
+    	return false;
     }
 
     /**
@@ -123,7 +123,7 @@ public class DataValidator {
      */
     public boolean courseIsValid() {
         // TODO Auto-generated method stub
-
+    	return false;
     }
 
 }
