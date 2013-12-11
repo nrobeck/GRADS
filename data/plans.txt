@@ -33,7 +33,7 @@
                  },
                 {"name":"type":},
                 {"name":"OVERALL_GPA_MS", "type":"overall_gpa", "min_gpa":3.25},
-                {"name":"IN_PROGRAM_GPA_MS", "type":"program_gpa", "min_pga":3.25},
+                {"name":"IN_PROGRAM_GPA_MS", "type":"program_gpa", "min_gpa":3.25},
                 {"name":"DPF_SUBMITTED", "type":"milestone"}
                 {"name":"DPF_APPROVED", "type":"milestone"}
                 {"name":"THESIS_COMMITTEE_APPOINTED", "type":"milestone"}
@@ -58,7 +58,7 @@
                  },
                 {"name":"type":},
                 {"name":"OVERALL_GPA_MS", "type":"overall_gpa", "min_gpa":3.25},
-                {"name":"IN_PROGRAM_GPA_MS", "type":"program_gpa", "min_pga":3.25},
+                {"name":"IN_PROGRAM_GPA_MS", "type":"program_gpa", "min_gpa":3.25},
                 {"name":"DPF_SUBMITTED", "type":"milestone"}
                 {"name":"DPF_APPROVED", "type":"milestone"}
                 {"name":"PROJECT_COMMITTEE_APPOINTED", "type":"milestone"}
@@ -73,7 +73,7 @@
             "requirements":[
                 {"name":"type":},
                 {"name":"OVERALL_GPA_MS", "type":"overall_gpa", "min_gpa":3.25},
-                {"name":"IN_PROGRAM_GPA_MS", "type":"program_gpa", "min_pga":3.25},
+                {"name":"IN_PROGRAM_GPA_MS", "type":"program_gpa", "min_gpa":3.25},
                 {"name":"DPF_SUBMITTED", "type":"milestone"}
                 {"name":"DPF_APPROVED", "type":"milestone"}
                 {"name":"TRACKING_FORM_SUBMITTED", "type":"milestone"}

@@ -1,0 +1,82 @@
+[
+    {
+        "plan": {
+            "id":"PHD",
+            "requirements":[
+                {"name":"TOTAL_CREDITS", "type":"credits", "number":31 },
+                {"name":"PROGRAM_CREDITS", "type":"credits", "number":16 },
+                {"name":"PRELIM_COMMITTEE_APPOINTED", "type":"milestone"},
+                {"name":"WRITTEN_PE_SUBMITTED", "type":"milestone"},
+                {"name":"WRITTEN_PE_APPROVED", "type":"milestone"},
+                {"name":"OARL_PE_APPROVED", "type":"milestone"},
+                {"name":"DPF_SUBMITTED", "type":"milestone"},
+                {"name":"DPF_APPROVED", "type":"milestone"},
+                {"name":"THESIS_COMMITTEE_APPOINTED", "type":"milestone"},
+                {"name":"PROPOSAL_PASSED", "type":"milestone"},
+                {"name":"GRADUATION_PACKET_REQUESTED", "type":"milestone"},
+                {"name":"THESIS_SUBMITTED", "type":"milestone"},
+                {"name":"THESIS_APPROVED", "type":"milestone"},
+                {"name":"DEFENSE_PASSED", "type":"milestone"}
+            ]
+    },
+    
+    {
+        "plan": {
+            "id":"MS_A",
+            "requirements":[
+                {"name":"BREADTH_REQUIREMENT_PHD",
+                 "type":"breadth",
+                 "min":3.45,
+                 "areas":["Theory and Algorithms":[],
+                          "Architecture, Systems, and Software":[],
+                          "Applications":[]
+                         ]
+                 },
+                {"name":"OVERALL_GPA_MS", "type":"gpa", "min":3.25},
+                {"name":"IN_PROGRAM_GPA_MS", "type":"gpa", "min":3.25},
+                {"name":"DPF_SUBMITTED", "type":"milestone"},
+                {"name":"DPF_APPROVED", "type":"milestone"},
+                {"name":"THESIS_COMMITTEE_APPOINTED", "type":"milestone"},
+                {"name":"GRADUATION_PACKET_REQUESTED", "type":"milestone"},
+                {"name":"THESIS_SUBMITTED", "type":"milestone"},
+                {"name":"THESIS_APPROVED", "type":"milestone"},
+                {"name":"DEFENSE_PASSED", "type":"milestone"}
+            ]
+    },
+    
+    {
+        "plan": {
+            "id":"MS_B",
+            "requirements":[
+                {"name":"BREADTH_REQUIREMENT_PHD"
+                 "type":"breadth"
+                 "min":3.45
+                 "areas":["Theory and Algorithms":[],
+                          "Architecture, Systems, and Software":[],
+                          "Applications":[]
+                         ]
+                 },
+                {"name":"OVERALL_GPA_MS", "type":"gpa", "min":3.25},
+                {"name":"IN_PROGRAM_GPA_MS", "type":"gpa", "min":3.25},
+                {"name":"DPF_SUBMITTED", "type":"milestone"},
+                {"name":"DPF_APPROVED", "type":"milestone"},
+                {"name":"PROJECT_COMMITTEE_APPOINTED", "type":"milestone"},
+                {"name":"GRADUATION_PACKET_REQUESTED", "type":"milestone"},
+                {"name":"DEFENSE_PASSED", "type":"milestone"}
+            ]
+    },
+    
+    {
+        "plan": {
+            "id":"MS_C",
+            "requirements":[
+                {"name":"OVERALL_GPA_MS", "type":"overall_gpa", "min_gpa":3.25},
+                {"name":"IN_PROGRAM_GPA_MS", "type":"program_gpa", "min_gpa":3.25},
+                {"name":"DPF_SUBMITTED", "type":"milestone"},
+                {"name":"DPF_APPROVED", "type":"milestone"},
+                {"name":"TRACKING_FORM_SUBMITTED", "type":"milestone"},
+                {"name":"TRACKING_FORM_APPROVED", "type":"milestone"},
+                {"name":"GRADUATION_PACKET_REQUESTED", "type":"milestone"}
+            ]
+    },
+]

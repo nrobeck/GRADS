@@ -480,10 +480,12 @@ public class DataManager {
 	
 	//This should be moved into testing
 	public static void main(String[] args){
-		String courseFile = "src/resources/courses.txt";
-		String studentsFile = "src/resources/students.txt";
-		String progressFile = "src/resources/progress.txt";
-		String usersFile = "src/resources/users.txt";
+		String courseFile = "data/courses.txt";
+		String studentsFile = "data/students.txt";
+		String progressFile = "data/progress.txt";
+		String usersFile = "data/users.txt";
+		String plansFile = "data/plans.txt";
+		
 		DataManager dataManager = new DataManager(courseFile, studentsFile, progressFile, usersFile);
 		dataManager.init();
 	}
