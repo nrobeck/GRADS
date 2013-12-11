@@ -4,11 +4,15 @@ package edu.umn.csci5801;
 
 import edu.umn.csci5801.model.CheckResultDetails;
 import edu.umn.csci5801.model.CourseTaken;
+import edu.umn.csci5801.model.Degree;
 import edu.umn.csci5801.model.Grade;
+import edu.umn.csci5801.model.Milestone;
 import edu.umn.csci5801.model.MilestoneSet;
 import edu.umn.csci5801.model.ProgressSummary;
 import edu.umn.csci5801.model.RequirementCheckResult;
 import edu.umn.csci5801.model.StudentRecord;
+
+
 
 
 import java.lang.String;
@@ -17,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.soap.Detail;
+
+
 
 
 import com.google.gson.JsonElement;
@@ -68,7 +74,7 @@ public class SummaryBuilder {
         List<CourseTaken> courses = record.getCoursesTaken();
 
         //check the requirements and set results
-        summary.setRequirementCheckResults(checkPlanRequirements(plan, courses, record.getMilestonesSet()));
+        summary.setRequirementCheckResults(checkPlanRequirements(plan, courses, record.getMilestonesSet(), record.getDegreeSought()));
 
         return summary;
     }
@@ -80,7 +86,7 @@ public class SummaryBuilder {
      * @param milestones - a list of milestones of the student
      * @return a list of Requirement Check Results based on the plan/student progress
      */
-    private List<RequirementCheckResult> checkPlanRequirements(JsonObject plan, List<CourseTaken> courses, List<MilestoneSet> milestones) {
+    private List<RequirementCheckResult> checkPlanRequirements(JsonObject plan, List<CourseTaken> courses, List<MilestoneSet> milestones, Degree degree) {
         //create the needed elements
         JsonElement reqs;
         List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>() {
@@ -96,12 +102,68 @@ public class SummaryBuilder {
         //get the requirements for the plan
         reqs = plan.get("requirements");
 
+        
+        // determine overall and in-course GPAs
+        double minGPA;
+        
+        if(degree == Degree.PHD) {
+        	minGPA = 3.45;
+        }
+        else {
+        	minGPA = 3.25;
+        }
+        
+        // determine which milestones have been passed
+        Milestone[] planMilestones;
+        
+        // determine which degree
+        switch (degree){
+        case PHD: 
+        	planMilestones = new Milestone[]{		Milestone.PRELIM_COMMITTEE_APPOINTED, Milestone.WRITTEN_PE_SUBMITTED, Milestone.WRITTEN_PE_APPROVED, Milestone.ORAL_PE_PASSED, 
+        											Milestone.DPF_SUBMITTED, Milestone.DPF_APPROVED, Milestone.THESIS_COMMITTEE_APPOINTED, Milestone.PROPOSAL_PASSED, Milestone.GRADUATION_PACKET_REQUESTED, 
+        											Milestone.THESIS_SUBMITTED, Milestone.THESIS_APPROVED, Milestone.DEFENSE_PASSED};
+        	break;
+        case MS_A:
+        	planMilestones = new Milestone[]{		Milestone.DPF_SUBMITTED, Milestone.DPF_APPROVED, Milestone.THESIS_COMMITTEE_APPOINTED, 
+													Milestone.GRADUATION_PACKET_REQUESTED, Milestone.THESIS_SUBMITTED, Milestone.THESIS_APPROVED, Milestone.DEFENSE_PASSED};
+        	break;
+        case MS_B:
+        	planMilestones = new Milestone[]{		Milestone.DPF_SUBMITTED, Milestone.DPF_APPROVED, Milestone.PROJECT_COMMITTEE_APPOINTED, 
+													Milestone.GRADUATION_PACKET_REQUESTED, Milestone.DEFENSE_PASSED};
+        	break;
+        case MS_C:
+        	planMilestones = new Milestone[]{		Milestone.DPF_SUBMITTED, Milestone.DPF_APPROVED, Milestone.TRACKING_FORM_APPROVED, Milestone.TRACKING_FORM_SUBMITTED, 
+													Milestone.GRADUATION_PACKET_REQUESTED, Milestone.THESIS_SUBMITTED};
+        	break;
+        default: planMilestones = new Milestone[0];
+        }
+           
+        // run through each milestone and check if the student have completed it
+        for (Milestone s: planMilestones){
+        	RequirementCheckResult result = new RequirementCheckResult(s.name(), false);
+            CheckResultDetails details = new CheckResultDetails();
+
+            // check if a student has passed this milestone
+        	for (MilestoneSet m: milestones){
+        		if(s.equals(m.getMilestone())){
+        			result.setPassed(true);
+        		}
+        	}
+        	
+        	// add result to the result list
+        	retVal.add(result);
+        }
+        
+        return retVal;
+        
+        /*
         //collect the requirements as strings
         for( JsonElement e : reqs.getAsJsonArray()){
             JsonObject req = e.getAsJsonObject();
             String name = req.get("name").getAsString();
             RequirementCheckResult result = new RequirementCheckResult(name, false);
             CheckResultDetails details = new CheckResultDetails();
+
 
             // check a milestone
             if(req.get("type").getAsString().equals("milestone")){
@@ -159,9 +221,10 @@ public class SummaryBuilder {
             }
 
             retVal.add(result);
-        }
+        }        
+         */
+     // Check milestones
 
-        return null;
     }
 
     /**
@@ -191,7 +254,7 @@ public class SummaryBuilder {
         //divide sum of gpa totals by number fo credits taken to get gpa and then return it
         return sum/credits;
     }
-
+    
     /**
      * Return the progress summary based solely upon a student's transcript and no simulated courses.
      * Calls createStudentSummary with null for simulated courses
@@ -205,4 +268,5 @@ public class SummaryBuilder {
         //return the progress summary
         return progress;
     }
+    
 }
