@@ -52,7 +52,7 @@ public class SummaryBuilder {
         ProgressSummary summary = new ProgressSummary();
         //get the student record from transcriptHandler
         StudentRecord record = new StudentRecord();
-        record = transcriptHandler.getStudentRecord(studentID);
+        record = transcriptHandler.getTranscript(studentID);
         JsonObject plan = new JsonObject();
 
         //set data for the summary
@@ -86,7 +86,7 @@ public class SummaryBuilder {
         List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>() {
         };
 
-        /* TODO?
+        /* TODO ?
         if (plan.get("requirements") == null || !plan.get("requirements").getClass().equals()){
             // throw a error, no requirements
             return null;
