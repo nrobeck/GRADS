@@ -22,9 +22,11 @@ package edu.umn.csci5801;
 //TODO create the NOTICE file listed above in the copyright info
 
 /**
- * 
+ * The GRADS class is the top level of the GRADS system. It interacts 
+ * with the user interface, checks user permissions, and accesses
+ * appropriate submodules for tasks.
  * @author Group22
- * about GRADS
+ * 
  */
 
 import java.util.List;

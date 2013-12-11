@@ -25,22 +25,25 @@ import edu.umn.csci5801.model.RequirementCheckResult;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-/**
- * 
- */
 
 /**
+ * The DataManager class is used to retrieve and store
+ * information contained in the databases
  * @author Mark Holmes
- *
+ * 
  */
 public class DataManager {
+    //PRIVATE VARIABLES
+    //instance of gson for json conversion
 	private Gson gson;
 	
+	//arraylists for storing information 
 	private ArrayList<Course> courses;
 	private ArrayList<StudentRecord> studentRecords;
 	private ArrayList<ProgressSummary> progressSummaries;
 	private ArrayList<User> users;
 	
+	//string storage of database file names
 	private String coursesFileName;
 	private String studentRecordFileName;
 	private String progressSummaryFileName;
@@ -48,7 +51,13 @@ public class DataManager {
 	
 	private boolean init;
 	
+	//END PRIVATE VARIABLES
+	
+	/**
+	 * Constructor of the data manager with no inputs.
+	 */
 	public DataManager(){
+	    //initialize local variables
 		this.gson = new Gson();
 		this.coursesFileName = null;
 		this.studentRecordFileName = null;
@@ -57,8 +66,16 @@ public class DataManager {
 		this.init = false;
 	}
 	
+	/**
+	 * Constructor of the data manager with 4 database inputs.
+	 * @param coursesFileName string representation of the relative path to the courses data 
+	 * @param studentRecordFileName string representation of the relative path to the students data
+	 * @param progressSummaryFileName string representation of the relative path to the progress summary data
+	 * @param userFileName string representation of the relative path to the user data
+	 */
 	public DataManager(String coursesFileName, String studentRecordFileName, String progressSummaryFileName, String userFileName){
-		this.gson = new Gson();
+		//initialize local variables
+	    this.gson = new Gson();
 		this.coursesFileName = coursesFileName;
 		this.studentRecordFileName = studentRecordFileName;
 		this.progressSummaryFileName = progressSummaryFileName;
@@ -67,124 +84,194 @@ public class DataManager {
 	}
 	
 	//Loads courses, records, summaries, users, from files
+	/**
+	 * Init loads database information from the data files into local arraylists
+	 */
 	public void init(){
+	    //check for null courses
 		if(coursesFileName == null){
 			courses = null;
 		}
 		else{
+		    //load the courses from the database
 			courses = getCourses();
 		}
+		//check for null student records
 		if(studentRecordFileName == null){
 			studentRecords = null;
 		}
 		else{
+		    //load the student records from the database
 			studentRecords = getStudentRecords();
 		}
+		//check for null progress summaries
 		if(progressSummaryFileName == null){
 			progressSummaries = null;
 		}
+		//load the progress summaries from the database
 		else{
 			progressSummaries = getProgressSummaries();
 		}
+		//check for null users
 		if(userFileName == null){
 			users = null;
 		}
+		//load the users information from the database
 		else{
 			users = getUsers();
 		}
+		//set init to say the data has been initialized
 		this.init = true;
 	}
 	
-	//Initializes if not already
+	/**
+	 * Initializes the data manager if it has not been already
+	 */
 	public void checkInit(){
+	    //check if data manager has not been initialized
 		if(!init){
+		    //initialize data manager
 			this.init();
 		}
 	}
 	
 	//To print a course
+	/**
+	 * Prints the course data out to the screen.
+	 * @param course the course object for which you want the data to be printed
+	 */
 	public void printCourse(Course course){
+	    //print course name
 		System.out.println("Course: " + course.getName());
+		//print course id
 		System.out.println("\tID: " + course.getId());
+		//print course credits
 		System.out.println("\tCredits: " + course.getNumCredits());
+		//print area of course
 		System.out.println("\tArea: " + course.getCourseArea());
 	}
 	
+	/**
+	 * Print when the when the course was taken and what grade was received in addition to course data from printCourse.
+	 * @param courseTaken the course for which the data is being requested
+	 */
 	public void printCourseTaken(CourseTaken courseTaken){
+	    //get the course object from the courseTaken object, and print the information for it
 		this.printCourse(courseTaken.getCourse());
+		//print when the course was taken
 		System.out.println("\t\tTerm: " + courseTaken.getTerm().getSemester() + " " + courseTaken.getTerm().getYear());
+		//print what grade the student recieved in the course
 		System.out.println("\t\tGrade: " + courseTaken.getGrade());
 	}
 	
 	//To print a student record
+	/**
+	 * Print the given student record out to the screen.
+	 * @param studentRecord the student record to be printed
+	 */
 	public void printStudentRecord(StudentRecord studentRecord){
+	    //print the name of the student
 		System.out.println("Student Name: " + studentRecord.getStudent().getFirstName() + " " + studentRecord.getStudent().getLastName());
+		//print the department the student belongs to
 		System.out.println("\tDepartment: " + studentRecord.getDepartment());
+		//print the degree the student is seeking
 		System.out.println("\tDegree: " + studentRecord.getDegreeSought());
-		//System.out.println("\tProgram: " + studentRecord.getProgram());
+		//TODO System.out.println("\tProgram: " + studentRecord.getProgram());
+		
 		//Term Began
+		//check if the student has started yet
 		if(studentRecord.getTermBegan() != null){
+		    //print the term the student began at
 			System.out.println("\tTerm Began: " + studentRecord.getTermBegan().getSemester() + " " + studentRecord.getTermBegan().getYear());
 		}
 		else{
+		    //print that student has not started
 			System.out.println("\tNo Term Began");
 		}
+		
 		//Advisors
+		//check that the students advisors are set
 		if(studentRecord.getAdvisors() != null){
+		    //print the students advisors
 			System.out.println("\tAdvisors: ");
+			//loop through the advisors, printing each
 			for(Professor advisor : studentRecord.getAdvisors()){
 				System.out.println("\t\t" + advisor.getLastName() + ", ");
 			}
 		}
 		else{
+		    //print that there are no advisors for this student
 			System.out.println("\tNo Advisors");
 		}
+		
 		//Committee
+		//check that the student committee is set
 		if(studentRecord.getCommittee() != null){
+		    //print the committee
 			System.out.println("\tCommittee: ");
+			//loop through committee members, printing each
 			for(Professor member : studentRecord.getCommittee()){
 				System.out.println("\t\t" + member.getLastName());
 			}
 		}
 		else{
+		    //print that there are no committee members
 			System.out.println("\tNo Committee");
 		}
+		
 		//Courses Taken
+		//check that the student has taken courses
 		if(studentRecord.getCoursesTaken() != null){
+		    //print the courses taken
 			System.out.println("\tCourses Taken: ");
+			//loop through the course the student has taken, printing each
 			for(CourseTaken courseTaken : studentRecord.getCoursesTaken()){
 				this.printCourseTaken(courseTaken);
 			}
 		}
 		else{
+		    //print that no courses have been taken
 			System.out.println("\tNo Courses Taken");
 		}
-		//Set Milestones
+		
+		//Print Milestones
+		//check that milestones have been set
 		if(studentRecord.getMilestonesSet() != null){
+		    //print milestones
 			System.out.println("\tMilestones Set: ");
+			//loop through milestones, printing each
 			for(MilestoneSet milestoneSet : studentRecord.getMilestonesSet()){
 				System.out.println("\t\t" + milestoneSet.getMilestone() + " " + milestoneSet.getTerm().getYear() + " " + milestoneSet.getTerm().getSemester());
 			}
 		}
 		else{
+		    //print that there are no milestones
 			System.out.println("\tNo Milestones Set");
 		}
+		
 		//Notes
+		//check if there are notes to print
 		if(studentRecord.getNotes() != null){
+		    //print the notes
 			System.out.println("\tNotes:");
+			//loop through notes, printing each
 			for(String note : studentRecord.getNotes()){
 				System.out.println("Note: " + note);
 			}
 		}
 		else{
+		    //print that there are no notes
 			System.out.println("\t No Notes");
 		}
 	}
 
+	
 	public void printRequirementCheckResult(RequirementCheckResult requirementCheckResult){
+	    //print requirement name and whether it was passed or not
 		System.out.println("Requirement Result: ");
 		System.out.println("\tName: " + requirementCheckResult.getName());
 		System.out.println("\tPassed?: " + requirementCheckResult.isPassed());
+		
 		//Error Messages
 		if(requirementCheckResult.getErrorMsgs() != null){
 			System.out.println("\tError Messages: ");
