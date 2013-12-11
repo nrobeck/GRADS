@@ -1,3 +1,4 @@
+package edu.umn.csci5801;
 // User.java
 //
 /** TODO: copyright */

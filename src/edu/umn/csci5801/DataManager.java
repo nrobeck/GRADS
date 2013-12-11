@@ -1,3 +1,5 @@
+package edu.umn.csci5801;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;

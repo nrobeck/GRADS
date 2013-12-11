@@ -1,3 +1,5 @@
+package edu.umn.csci5801;
+
 import com.google.gson.JsonObject;
 
 import edu.umn.csci5801.model.StudentRecord;

@@ -1,3 +1,4 @@
+package edu.umn.csci5801;
 
 // GRADS.java
 /**
@@ -25,8 +26,9 @@
  * @author Group22
  * about GRADS
  */
+
 import java.util.List;
-import edu.umn.csci5801.GRADSIntf;
+
 import edu.umn.csci5801.model.CourseTaken;
 import edu.umn.csci5801.model.ProgressSummary;
 import edu.umn.csci5801.model.StudentRecord;

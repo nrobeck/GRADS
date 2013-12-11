@@ -1,3 +1,4 @@
+package edu.umn.csci5801;
 // SummaryBuilder.java
 //
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.soap.Detail;
+
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
