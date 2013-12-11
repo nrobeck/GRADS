@@ -1,11 +1,13 @@
 package schema;
 
+import edu.umn.csci5801.model.Department;
+
 public class UserSchema{
 	IdNameSchema user;
 	String role;
-	String department;
+	Department department;
 	public UserSchema(){}
-	public UserSchema(IdNameSchema idNameSchema, String role, String department){
+	public UserSchema(IdNameSchema idNameSchema, String role, Department department){
 		this.user = idNameSchema;
 		this.role = role;
 		this.department = department;
@@ -18,7 +20,7 @@ public class UserSchema{
 		return this.role;
 	}
 	
-	public String getDepartment(){
+	public Department getDepartment(){
 		return this.department;
 	}
 }

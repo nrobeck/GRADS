@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import org.apache.commons.io.FileUtils;
 
@@ -11,6 +12,8 @@ import schema.UserSchema;
 import edu.umn.csci5801.model.CheckResultDetails;
 import edu.umn.csci5801.model.Course;
 import edu.umn.csci5801.model.CourseTaken;
+import edu.umn.csci5801.model.Degree;
+import edu.umn.csci5801.model.Department;
 import edu.umn.csci5801.model.MilestoneSet;
 import edu.umn.csci5801.model.Professor;
 import edu.umn.csci5801.model.ProgressSummary;
@@ -31,9 +34,72 @@ import com.google.gson.reflect.TypeToken;
 public class DataManager {
 	private Gson gson;
 	
+	private ArrayList<Course> courses;
+	private ArrayList<StudentRecord> studentRecords;
+	private ArrayList<ProgressSummary> progressSummaries;
+	private ArrayList<User> users;
+	
+	private String coursesFileName;
+	private String studentRecordFileName;
+	private String progressSummaryFileName;
+	private String userFileName;
+	
+	private boolean init;
+	
 	public DataManager(){
 		this.gson = new Gson();
+		this.coursesFileName = null;
+		this.studentRecordFileName = null;
+		this.progressSummaryFileName = null;
+		this.userFileName = null;
+		this.init = false;
 	}
+	
+	public DataManager(String coursesFileName, String studentRecordFileName, String progressSummaryFileName, String userFileName){
+		this.gson = new Gson();
+		this.coursesFileName = coursesFileName;
+		this.studentRecordFileName = studentRecordFileName;
+		this.progressSummaryFileName = progressSummaryFileName;
+		this.userFileName = userFileName;
+		this.init = false;
+	}
+	
+	//Loads courses, records, summaries, users, from files
+	public void init(){
+		if(coursesFileName == null){
+			courses = null;
+		}
+		else{
+			courses = getCourses();
+		}
+		if(studentRecordFileName == null){
+			studentRecords = null;
+		}
+		else{
+			studentRecords = getStudentRecords();
+		}
+		if(progressSummaryFileName == null){
+			progressSummaries = null;
+		}
+		else{
+			progressSummaries = getProgressSummaries();
+		}
+		if(userFileName == null){
+			users = null;
+		}
+		else{
+			users = getUsers();
+		}
+		this.init = true;
+	}
+	
+	//Initializes if not already
+	public void checkInit(){
+		if(!init){
+			this.init();
+		}
+	}
+	
 	//To print a course
 	public void printCourse(Course course){
 		System.out.println("Course: " + course.getName());
@@ -215,13 +281,14 @@ public class DataManager {
 		System.out.println("\tDepartment: " + user.getDepartment());
 	}
 	
-	//Gets all of the courses
-	public ArrayList<Course> getCourses(String courseFileName){
+	//Getters from JSON--------------------------
+	//Gets courses from JSON
+	public ArrayList<Course> getCourses(){
 		Type courseCollectionType = new TypeToken<ArrayList<Course>>(){}.getType();	//https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
 		ArrayList<Course> courses;
 		
 		//Course file > JSON > Course Object Array
-		File courseFile = new File(courseFileName);
+		File courseFile = new File(coursesFileName);
 		String courseJson = null;
 		
 		try{
@@ -239,10 +306,9 @@ public class DataManager {
 		return courses;
 	}
 	
-	
 	//Needs blank constructors for all sub-classes for this to work
-	//Gets all of the student records
-	public ArrayList<StudentRecord> getStudentRecords(String studentRecordFileName){
+	//Gets student records from JSON
+	public ArrayList<StudentRecord> getStudentRecords(){
 		Type studentRecordCollectionType = new TypeToken<ArrayList<StudentRecord>>(){}.getType();	//https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
 		ArrayList<StudentRecord> studentRecords;
 		
@@ -262,10 +328,12 @@ public class DataManager {
 		for(StudentRecord studentRecord : studentRecords){
 			this.printStudentRecord(studentRecord);
 		}
+		this.studentRecords = studentRecords;
 		return studentRecords;
 	}
 	
-	public ArrayList<ProgressSummary> getProgressSummaries(String progressSummaryFileName){
+	//Gets Progress Summaries from JSON
+	public ArrayList<ProgressSummary> getProgressSummaries(){
 		Type progressSummaryCollectionType = new TypeToken<ArrayList<ProgressSummary>>(){}.getType();	//https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
 		ArrayList<ProgressSummary> progressSummaries;
 		
@@ -285,10 +353,11 @@ public class DataManager {
 		for(ProgressSummary progressSummary : progressSummaries){
 			this.printProgressSummary(progressSummary);
 		}
+		this.progressSummaries = progressSummaries;
 		return progressSummaries;
 	}
-	
-	public ArrayList<User> getUsers(String userFileName){
+	//Gets Users from JSON
+	public ArrayList<User> getUsers(){
 		Type userSchemaCollectionType = new TypeToken<ArrayList<UserSchema>>(){}.getType();	//https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
 		ArrayList<UserSchema> userSchemas;
 		ArrayList<User> users = new ArrayList<User>();
@@ -307,21 +376,116 @@ public class DataManager {
 		userSchemas = this.gson.fromJson(userJson, userSchemaCollectionType);
 		
 		for(UserSchema userSchema : userSchemas){
-			User user = new User(userSchema.getID().getID(), userSchema.getDepartment(), userSchema.getRole());
+			User user = new User(userSchema.getID().getID(), userSchema.getRole(), userSchema.getDepartment());
 			users.add(user);
 			printUser(user);
 		}
+		this.users = users;
 		return users;
 		
 	}
 
-	public static void main(String[] args){
-		DataManager dataManager = new DataManager();
+	//Interface Methods--------------------------
+	//Return null if invalid
+	public User getUserByID(String userId){
+		checkInit();
+		User searchUser = new User(userId, null, null);
+		int userIndex = this.users.indexOf(searchUser);
+		if(userIndex == -1){
+			return null;
+		}
+		else{
+			return this.users.get(userIndex);
+		}
+	}
+	
+	//Get all IDs of Students in department
+	public ArrayList<String> getStudentIDList(Department department){
+		checkInit();
+		ArrayList<String> studentIds = new ArrayList<String>();
 		
-		//ArrayList<Course> courses = dataManager.getCourses("src/resources/courses.txt");
-		//ArrayList<StudentRecord> studentRecords = dataManager.getStudentRecords("src/resources/students.txt");
-		//ArrayList<ProgressSummary> progressSummaries = dataManager.getProgressSummaries("src/resources/progress.txt");
-		//ArrayList<User> users = dataManager.getUsers("src/resources/users.txt");
+		for(StudentRecord student : this.studentRecords){
+			if(student.getDepartment() == department){
+				studentIds.add(student.getStudent().getId());
+			}
+			//QUESTION: Can any GPC see student's without a department? I think yes.
+			else if(student.getDepartment() == null){
+				studentIds.add(student.getStudent().getId());
+			}
+		}
+		
+		return studentIds;
+	}
+
+	//Gets student record based on ID returns null if none can be found
+	public StudentRecord getStudentData(String studentId){
+		ListIterator<StudentRecord> i = this.studentRecords.listIterator();
+		StudentRecord studentRecord = null;
+		while(i.hasNext()){
+			studentRecord = i.next();
+			if(studentRecord.getStudent().getId() == studentId){
+				return studentRecord;
+			}
+		}
+		return null;
+	}
+	
+	
+	//What is a plan???
+	public void getPlan(Degree degree){
+		
+	}
+	
+	//Writes transcript model to file
+	public boolean writeTranscript(){
+		String newTranscriptJson = this.gson.toJson(this.studentRecords);
+		File studentRecordFile = new File(this.studentRecordFileName);
+		try{
+			FileUtils.writeStringToFile(studentRecordFile, newTranscriptJson, false);
+			return true;
+		}
+		catch(IOException e){
+			System.err.println(e);
+			return false;
+		}
+	}
+	
+	public boolean storeTranscript(String studentId, StudentRecord newRecord){
+		ListIterator<StudentRecord> i = this.studentRecords.listIterator();
+		StudentRecord studentRecord = null;
+		int index = -1;
+		while(i.hasNext()){
+			studentRecord = i.next();
+			if(studentRecord.getStudent().getId() == studentId){
+				index = i.nextIndex() - 1;
+				break;	//This record is the one we want to change
+			}
+		}
+		if(index >= 0){
+			this.studentRecords.set(index, newRecord);	//Set the model
+			if(writeTranscript()){	//Write Out
+				System.out.println("Write Success!");
+				return true;
+			}
+			else{
+				System.err.println("Write Failed!");
+				this.studentRecords.set(index, studentRecord);	//Reset model
+				return false;
+			}
+		}
+		else{
+			return false;
+		}
+	}
+	
+	//This should be moved into testing
+	public static void main(String[] args){
+		String courseFile = "src/resources/courses.txt";
+		String studentsFile = "src/resources/students.txt";
+		String progressFile = "src/resources/progress.txt";
+		String usersFile = "src/resources/users.txt";
+		DataManager dataManager = new DataManager(courseFile, studentsFile, progressFile, usersFile);
+		dataManager.init();
 	}
 	
 }
