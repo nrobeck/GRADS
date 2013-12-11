@@ -20,8 +20,7 @@
  */
 //TODO need to make own exceptions for this class (and all other classes)
 //TODO create the NOTICE file listed above in the copyright info
-//TODO comment code in line (assignment appendix part 7)
-//TODO javadocs comments
+//TODO javadocs comments for returns and throws
 
 /**
  * 
@@ -55,7 +54,7 @@ usersFileName) {
     private String coursesFile;
     private String usersFile;
     private SummaryBuilder summaryBuilder = new SummaryBuilder();
-    private DataManager dbManager = new DataManager();
+    private DataManager dbManager = new DataManager(coursesFile, studentsFile, null, usersFile);
     private TranscriptHandler transcriptHandler = new TranscriptHandler(dbManager);
     private boolean GPC;
     
@@ -64,20 +63,22 @@ usersFileName) {
      * @see edu.umn.csci5801.GRADSIntf#getStudentIDs()
      */
     @Override
-    public List<String> getStudentIDs(){
+    public List<String> getStudentIDs() throws Exception{
         //check if the user is a GPC
         if(GPC) {
             //get the student id list for the GPCs department
             return dbManager.getStudentIDList(currentUser.getDepartment());
         }
+        //go here if user is not a GPC
         else {
-            //TODO this needs to be changed to throw an error/exception
-            return null;
+            //throw user not GPC exception
+            throw new Exception("error: GPC only operation");
         }
     }
 
     /**
      * Defines the current user of the GRADS system.
+     * @param userId the X500 of the user of the system
      * @see edu.umn.csci5801.GRADSIntf#setUser(java.lang.String)
      */
     @Override
@@ -102,20 +103,13 @@ usersFileName) {
      */
     @Override
     public String getUser(){
-        //check if currentUser is set
-        if(currentUser != null) {
-            //return the X500 of the current user
-            return currentUser.getID();
-        }
-        //if currentUser is not set, go here
-        else {
-            //TODO throw an error
-            return null;
-        }
+        //return the X500 of the current user
+        return currentUser.getID();
     }
 
     /**
-     * Returns the transcript of the student whose X500 is passed to it. 
+     * Returns the transcript of the student whose X500 is passed to it.
+     * @param userId the X500 of the student whose transcript is to be retrieved
      * @see edu.umn.csci5801.GRADSIntf#getTranscript(java.lang.String)
      */
     @Override
@@ -138,100 +132,141 @@ usersFileName) {
         }
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Sends modifications to the students transcript for update in the database.
+     * @param userId the X500 of the student the transcript belongs to
+     * @param transcript the (modified) student record that will be written to the database
      * @see edu.umn.csci5801.GRADSIntf#updateTranscript(java.lang.String, edu.umn.csci5801.model.StudentRecord)
      */
     @Override
-    public void updateTranscript(String userId, StudentRecord transcript)
-            throws Exception {
+    public void updateTranscript(String userId, StudentRecord transcript) throws Exception {
+        //check if the current user is a GPC
         if(GPC) {
+            //check if the X500 is valid
             if(dbManager.getStudentData(userId) != null) {
+                //push the transcript changes
                 transcriptHandler.updateTranscript(userId, transcript);
             }
+            //run if invalid X500
             else {
+                //throw invalid X500 exception
                 throw new Exception("error: user is not valid");
             }
         }
+        //run if current user is not GPC
         else {
+            //throw user not a GPC exception
             throw new Exception("error: only GPCs may modify transcripts");
         }
         
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Adds a note to the transcript of the user with the input X500.
+     * @param userId the X500 of the student whose transcript is to have the note appended
+     * @param note the note to be appended to the student transcript
      * @see edu.umn.csci5801.GRADSIntf#addNote(java.lang.String, java.lang.String)
      */
     @Override
     public void addNote(String userId, String note) throws Exception {
+        //check if the current user is a GPC
         if(GPC) {
+            //check to make sure X500 is valid
             if(dbManager.getUserByID(userId) != null) {
+                //add the note to the transcript
                 transcriptHandler.addNote(userId, note);
             }
+            //go here if X500 invalid
             else {
+                //throw exception that X500 is invalid
                 throw new Exception("error: invalid userId");
             }
         }
+        //go here if user is not GPC
         else {
+            //throw user not a GPC exception
             throw new Exception("error: must be a GPC to add a note");
         }
         
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Returns a progress summary for the student with the input X500
+     * @param userId the identifier of the student
      * @see edu.umn.csci5801.GRADSIntf#generateProgressSummary(java.lang.String)
      */
     @Override
-    public ProgressSummary generateProgressSummary(String userId)
-            throws Exception {
+    public ProgressSummary generateProgressSummary(String userId) throws Exception {
+        //check if user is GPC
         if(GPC) {
+            //test to ensure valid X500
             if(dbManager.getUserByID(userId) != null) {
+                //return student progress summary
                 return summaryBuilder.getStudentSummary(userId);
             }
+            //go here if X500 invalid
             else {
+                //throw invalid X500 exception
                 throw new Exception("error: invalid userID");
             }
         }
+        //go here if user is not GPC
         else {
+            //check if user is attempting to generate their own summary
             if(currentUser.getID() == userId) {
+                //return progress summary if user is calling own summary
                 return summaryBuilder.getStudentSummary(userId);
             }
+            //go here if user is not calling own summary
             else {
+                //throw permission not allowed exception
                 throw new Exception("error: only GPCs or the student to whom the record belongs can view the student summary");
             }
         }
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Return a progress summary assuming the input student has taken the input classes as well as classes they have actually taken.
+     * @param userId the identifier of the student
+     * @param courses the hypothetical courses to be added to the summary
      * @see edu.umn.csci5801.GRADSIntf#simulateCourses(java.lang.String, java.util.List)
      */
     @Override
-    public ProgressSummary simulateCourses(String userId,
-            List<CourseTaken> courses) throws Exception {
+    public ProgressSummary simulateCourses(String userId, List<CourseTaken> courses) throws Exception {
+        //check if user is a GPC
         if(GPC) {
+            //check if X500 is valid
             if(dbManager.getUserByID(userId) != null) {
+                //return a student summary with additional input courses
                 return summaryBuilder.createStudentSummary(userId, courses);
             }
+            //go here if X500 is invalid
             else {
+                //throw invalid X500 exception
                 throw new Exception("error: invalid userId");
             }
         }
+        //go here if user is not a GPC
         else {
+            //check if user is generating summary of themself
             if(currentUser.getID() == userId) {
+                //check if x500 is valid
                 if(dbManager.getUserByID(userId) != null) {
+                    //return student summary with additional input courses
                     return summaryBuilder.createStudentSummary(userId, courses);
                 }
+                //go here if x500 invalid
                 else {
+                    //throw invalid X500 exception
                     throw new Exception("error: invalid userId");
                 }
             }
+            //go here if user is not GPC or testing for self
             else {
+                //throw operation not allowed exception
                 throw new Exception("error: only a GPC or the student to whom this ID belongs may view the progress summary");
             }
         }
     }
 }
-    
+//end GRADS.java
