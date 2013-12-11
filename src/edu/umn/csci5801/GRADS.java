@@ -22,11 +22,11 @@ package edu.umn.csci5801;
 //TODO create the NOTICE file listed above in the copyright info
 
 /**
- * The GRADS class is the top level of the GRADS system. It interacts 
+ * The GRADS class is the top level of the GRADS system. It interacts
  * with the user interface, checks user permissions, and accesses
  * appropriate submodules for tasks.
  * @author Group22
- * 
+ *
  */
 
 import java.util.List;
@@ -37,7 +37,7 @@ import edu.umn.csci5801.model.StudentRecord;
 import exceptions.InvalidX500Exception;
 import exceptions.UserNotAllowedException;
 import exceptions.UserNotGPCException;
- 
+
 public class GRADS implements GRADSIntf{
 
     /**
@@ -46,13 +46,13 @@ public class GRADS implements GRADSIntf{
      * @param coursesFileName filename of the courses database
      * @param usersFileName filename of the users database
      */
-    public GRADS(String studentsFileName, String coursesFileName, String 
+    public GRADS(String studentsFileName, String coursesFileName, String
 usersFileName) {
         this.coursesFile = coursesFileName;
         this.studentsFile = studentsFileName;
         this.usersFile = usersFileName;
     }
-    
+
     //private variables for the GRADS class
     private User currentUser;
     private String studentsFile;
@@ -62,7 +62,7 @@ usersFileName) {
     private DataManager dbManager = new DataManager(coursesFile, studentsFile, null, usersFile);
     private TranscriptHandler transcriptHandler = new TranscriptHandler(dbManager);
     private boolean GPC;
-    
+
     /**
      * Returns a list of the student IDs for the GPCs department.
      * @throws UserNotGPCException thrown if the current user is not a GPC
@@ -95,7 +95,7 @@ usersFileName) {
         if(dbManager.getUserByID(userId) != null) {
             //set the current user
             currentUser = dbManager.getUserByID(userId);
-            //set the boolean result of whether or not the currentUser is a GPC 
+            //set the boolean result of whether or not the currentUser is a GPC
             GPC = (currentUser.getRole() == "GPC");
         }
         //if the userId is not in the system, go here
@@ -106,7 +106,7 @@ usersFileName) {
     }
 
     /**
-     * Returns who is defined as the current user of the GRADS system 
+     * Returns who is defined as the current user of the GRADS system
      * @see edu.umn.csci5801.GRADSIntf#getUser()
      * @return X500 of the current user
      */
@@ -172,7 +172,7 @@ usersFileName) {
             //throw user not a GPC exception
             throw new UserNotGPCException(currentUser.getID());
         }
-        
+
     }
 
     /**
@@ -203,7 +203,7 @@ usersFileName) {
             //throw user not a GPC exception
             throw new UserNotGPCException(currentUser.getID());
         }
-        
+
     }
 
     /**
