@@ -89,29 +89,44 @@ public class SummaryBuilder {
     private List<RequirementCheckResult> checkPlanRequirements(JsonObject plan, List<CourseTaken> courses, List<MilestoneSet> milestones, Degree degree) {
         //create the needed elements
         JsonElement reqs;
-        List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>() {
-        };
-
-        /* TODO ?
-        if (plan.get("requirements") == null || !plan.get("requirements").getClass().equals()){
-            // throw a error, no requirements
-            return null;
-        }
-        */
-
-        //get the requirements for the plan
-        reqs = plan.get("requirements");
-
+        List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>() {};
+        RequirementCheckResult result;
+        
         
         // determine overall and in-course GPAs
         double minGPA;
         
         if(degree == Degree.PHD) {
         	minGPA = 3.45;
+        	result = new RequirementCheckResult("OVERALL_GPA_PHD");
         }
         else {
         	minGPA = 3.25;
+        	result = new RequirementCheckResult("OVERALL_GPA_MS");
         }
+        
+        // determine overall GPA
+        double gpa = 0;
+        double sum = 0;
+        double credits = 0;
+        for (CourseTaken c: courses){
+        	// only check A-F courses
+        	if(c.getGrade().ordinal() <= Grade.F.ordinal()){
+        		sum += c.getGrade().numericValue();
+        		credits += Integer.parseInt(c.getCourse().getNumCredits());
+        	}
+        }
+        
+        // compare GPA with minimum
+        gpa = sum/credits;
+        if (gpa < minGPA){
+        	result.setPassed(false);
+        	result.addErrorMsg("Overall GPA is bellow the minimum");;
+        }
+        
+        // add to result list
+        retVal.add(result);
+        
         
         // determine which milestones have been passed
         Milestone[] planMilestones;
@@ -140,7 +155,7 @@ public class SummaryBuilder {
            
         // run through each milestone and check if the student have completed it
         for (Milestone s: planMilestones){
-        	RequirementCheckResult result = new RequirementCheckResult(s.name(), false);
+        	result = new RequirementCheckResult(s.name(), false);
             CheckResultDetails details = new CheckResultDetails();
 
             // check if a student has passed this milestone
@@ -155,75 +170,6 @@ public class SummaryBuilder {
         }
         
         return retVal;
-        
-        /*
-        //collect the requirements as strings
-        for( JsonElement e : reqs.getAsJsonArray()){
-            JsonObject req = e.getAsJsonObject();
-            String name = req.get("name").getAsString();
-            RequirementCheckResult result = new RequirementCheckResult(name, false);
-            CheckResultDetails details = new CheckResultDetails();
-
-
-            // check a milestone
-            if(req.get("type").getAsString().equals("milestone")){
-                // compare all completed milestone to the current one
-                for(MilestoneSet m : milestones){
-                    if(m.getMilestone().toString().equals(name)){
-                        result.setPassed(true);
-                    }
-                }
-            }
-
-            // check overall gpa
-            else if(req.get("type").getAsString().equals("overall_gpa")){
-                double min = req.get("min_gpa").getAsDouble();
-                double currentGPA = calculateGPA(courses);
-
-                if (currentGPA >= min){
-                    result.setPassed(true);
-                }
-
-
-            }
-
-            // check in course gpa
-            else if(req.get("type").getAsString().equals("incourse_gpa")){
-
-            }
-
-            // check if certain courses were passed
-            else if(req.get("type").getAsString().equals("courses_passed")){
-                boolean PassFail = false;
-                List<String> c = new ArrayList<String>();
-                if (req.getAsJsonObject("PassFail").getAsBoolean()) {
-                    PassFail = true;
-                }
-
-
-
-            }
-
-            // check credit type requirements
-            else if(req.get("type").getAsString().equals("credits")){
-                // find any other courses
-                // TODO: fill in
-            }
-
-            // check Breadth requirements
-            else if(req.get("type").getAsString().equals("breadth")){
-                //TODO
-            }
-
-            else {
-                // TODO: decide what to do, error?
-                result.addErrorMsg("Requirement in plan is unhandled!");
-            }
-
-            retVal.add(result);
-        }        
-         */
-     // Check milestones
 
     }
 
@@ -251,8 +197,29 @@ public class SummaryBuilder {
             }
         }
 
-        //divide sum of gpa totals by number fo credits taken to get gpa and then return it
+        //divide sum of gpa totals by number for credits taken to get gpa and then return it
         return sum/credits;
+    }
+    
+    /**
+     * Determines if a course was passed
+     * @param course - the course that a student has taken
+     * @param passFail - tells if S grades are allowable
+     * @return
+     */
+    private boolean passedCourse(CourseTaken course, boolean passFail){
+    	// check if C or greater
+    	if (course.getGrade().numericValue() >= Grade.C.numericValue()){
+    		return true;
+    	}
+    	
+    	// check if course was passed and passFail is OK
+    	if (passFail){
+    		return (course.getGrade() == Grade.S);
+    	}
+    	
+    	// course was not passed
+    	return false;
     }
     
     /**
