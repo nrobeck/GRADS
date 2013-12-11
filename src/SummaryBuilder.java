@@ -38,7 +38,7 @@ public class SummaryBuilder {
 	 * @param simCourses A list of courses to simulate
 	 * @return A completed summary of a student's progress towards his/her graduate degree
 	 */
-	public ProgressSummary createStudentSummary(String studentID, List<Course> simCourses) {
+	public ProgressSummary createStudentSummary(String studentID, List<CourseTaken> simCourses) {
 		ProgressSummary summary = new ProgressSummary();
 		StudentRecord record = new StudentRecord();	// TODO get this from transcript handler
 		JsonObject plan = new JsonObject();
@@ -168,4 +168,9 @@ public class SummaryBuilder {
 		
 		return sum/credits;
 	}
+
+    public ProgressSummary getStudentSummary(String userId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

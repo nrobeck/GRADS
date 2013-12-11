@@ -39,4 +39,9 @@ public class TranscriptHandler {
 		
 		return null;
 	}
+
+    public StudentRecord getTranscript(String userId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
