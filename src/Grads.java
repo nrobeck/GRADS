@@ -146,7 +146,7 @@ usersFileName) {
     public void updateTranscript(String userId, StudentRecord transcript)
             throws Exception {
         if(GPC) {
-            if(dbManager.getStudentRecords(userId) != null) {
+            if(dbManager.getStudentData(userId) != null) {
                 transcriptHandler.updateTranscript(userId, transcript);
             }
             else {
