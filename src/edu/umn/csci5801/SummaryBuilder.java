@@ -14,12 +14,6 @@ import edu.umn.csci5801.model.ProgressSummary;
 import edu.umn.csci5801.model.RequirementCheckResult;
 import edu.umn.csci5801.model.StudentRecord;
 
-
-
-
-
-
-
 import java.lang.String;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
@@ -28,20 +22,13 @@ import java.util.List;
 
 import javax.xml.soap.Detail;
 
-
-
-
-
-
-
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /** TODO: copyright */
 
 /**
  *
- * Module of GRADS used to create student summary.
+ * Module of GRADS used to create and simulate student summaries.
  * @author Kyle
  *
  */
@@ -52,8 +39,9 @@ public class SummaryBuilder {
     /**
      * Constructor method for the Summary Builder
      */
-    public SummaryBuilder() {
-
+    public SummaryBuilder(DataManager d, TranscriptHandler t) {
+    	this.dbManager = d;
+    	this.transcriptHandler = t;
     }
 
     /**
@@ -160,7 +148,17 @@ public class SummaryBuilder {
         
         /*----------------------------------------------------------------------------*/
         
-        // determine credit requirements
+        // credit requirements
+        
+        // Total credits: PHD, MS B, and C
+        
+        
+        
+        // out of department: PHD
+        
+        // Total credits: MS A
+        
+        // Course Credits: 
         
         /*----------------------------------------------------------------------------*/
         
@@ -264,12 +262,56 @@ public class SummaryBuilder {
             retVal.add(result);
     	}
     
-        // phd level course
-        
-        //
-        
-        
-        /*----------------------------------------------------------------------------*/
+        // phd level courses MS A and B
+    	if(degree != Degree.PHD){
+            result = new RequirementCheckResult("PHD_LEVEL_COURSES");
+            tempCourseList = new ArrayList<CourseTaken>();
+            details = new CheckResultDetails();
+            
+            for (CourseTaken c: courses){
+            	if (c.getCourse().getId().contains("csci8")){
+            		if (passedCourse(c, false)){
+            			tempCourseList.add(c);
+            			result.setPassed(true);
+            		}
+            	}
+            }
+            // set the error message
+            if(!result.isPassed()){
+            	result.addErrorMsg("A phd level course, csci 8000+, has not been taken/passed");
+            }
+            
+            details.setCourses(tempCourseList);
+            result.setDetails(details);
+            retVal.add(result);
+    	}
+    	
+    	// phd level courses MS C
+    	if(degree != Degree.PHD){
+            result = new RequirementCheckResult("PHD_LEVEL_COURSES_PLANC");
+            tempCourseList = new ArrayList<CourseTaken>();
+            details = new CheckResultDetails();
+            
+            for (CourseTaken c: courses){
+            	if (c.getCourse().getId().contains("csci8")){
+            		if (passedCourse(c, false)){
+            			tempCourseList.add(c);
+            		}
+            	}
+            }
+            
+            // check if at least 2 phd courses have been completed
+            if(tempCourseList.size() >= 2){
+            	result.setPassed(true);
+            }
+            else{
+            	result.addErrorMsg("At least two phd level courses, csci 8000+, has not been taken/passed");
+            }
+            
+            details.setCourses(tempCourseList);
+            result.setDetails(details);
+            retVal.add(result);
+    	}
         
         /*----------------------------------------------------------------------------*/
         
@@ -377,9 +419,7 @@ public class SummaryBuilder {
         	// add result to the result list
         	retVal.add(result);
         }
-        
         return retVal;
-
     }
 
     /**
@@ -437,7 +477,8 @@ public class SummaryBuilder {
     }
     
     private boolean isInCourse(Course course, String department){
-    	if (course.getId().contains(department)){	// check that the course Id contains the department string
+    	// check that the course Id contains the department string
+    	if (department.equals("other") || course.getId().contains(department)){
     		int level = Integer.parseInt(course.getId().substring(department.length()-1, department.length()));
     		if (level >= 5){	// check that the level is 5000+
     			return true;
