@@ -125,7 +125,7 @@ public class DataManager {
      */
     public void init(){
         //check for null courses
-        if(coursesFileName == null){
+        if(coursesFileName.equals(null)){
             courses = null;
         }
         else{
@@ -133,7 +133,7 @@ public class DataManager {
             courses = getCourses();
         }
         //check for null student records
-        if(studentRecordFileName == null){
+        if(studentRecordFileName.equals(null)){
             studentRecords = null;
         }
         else{
@@ -141,7 +141,7 @@ public class DataManager {
             studentRecords = getStudentRecords();
         }
         //check for null progress summaries
-        if(progressSummaryFileName == null){
+        if(progressSummaryFileName.equals(null)){
             progressSummaries = null;
         }
         //load the progress summaries from the database
@@ -149,7 +149,7 @@ public class DataManager {
             progressSummaries = getProgressSummaries();
         }
         //check for null users
-        if(userFileName == null){
+        if(userFileName.equals(null)){
             users = null;
         }
         //load the users information from the database
@@ -157,7 +157,7 @@ public class DataManager {
             users = getUsers();
         }
         //check for null plans
-        if(planFileName == null){
+        if(planFileName.equals(null)){
         	plans = null;
         }
         else{
@@ -800,7 +800,7 @@ public class DataManager {
         while(i.hasNext()){
             studentRecord = i.next();
             //check if record id is desired student id
-            if(studentRecord.getStudent().getId() == studentId){
+            if(studentRecord.getStudent().getId().equals(studentId)){
                 index = i.nextIndex() - 1;
               //This record is the one we want to change
                 break;
