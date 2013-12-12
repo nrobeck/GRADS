@@ -28,9 +28,9 @@
                 {"name":"BREADTH_REQUIREMENT_PHD",
                  "type":"breadth",
                  "min":3.45,
-                 "areas":["Theory and Algorithms":[],
-                          "Architecture, Systems, and Software":[],
-                          "Applications":[]
+                 "areas":[{"area":"THEORY_ALGORITHMS","courses":[]},
+                          {"area":"ARCHITECTURE_SYSTEMS_SOFTWARE","courses":["csci5103","csci5105"]},
+                          {"area":"APPLICATIONS","courses":[]}
                          ]
                  },
                 {"name":"OVERALL_GPA_MS", "type":"gpa", "min":3.25},
@@ -50,12 +50,12 @@
         "plan": {
             "id":"MS_B",
             "requirements":[
-                {"name":"BREADTH_REQUIREMENT_PHD"
-                 "type":"breadth"
-                 "min":3.45
-                 "areas":["Theory and Algorithms":[],
-                          "Architecture, Systems, and Software":[],
-                          "Applications":[]
+                {"name":"BREADTH_REQUIREMENT_PHD",
+                 "type":"breadth",
+                 "min":3.45,
+                 "areas":[{"area":"THEORY_ALGORITHMS","courses":[]},
+                          {"area":"ARCHITECTURE_SYSTEMS_SOFTWARE","courses":[]},
+                          {"area":"APPLICATIONS","courses":[]}
                          ]
                  },
                 {"name":"OVERALL_GPA_MS", "type":"gpa", "min":3.25},
@@ -73,8 +73,8 @@
         "plan": {
             "id":"MS_C",
             "requirements":[
-                {"name":"OVERALL_GPA_MS", "type":"overall_gpa", "min_gpa":3.25},
-                {"name":"IN_PROGRAM_GPA_MS", "type":"program_gpa", "min_gpa":3.25},
+                {"name":"OVERALL_GPA_MS", "type":"gpa", "min":3.25},
+                {"name":"IN_PROGRAM_GPA_MS", "type":"gpa", "min":3.25},
                 {"name":"DPF_SUBMITTED", "type":"milestone"},
                 {"name":"DPF_APPROVED", "type":"milestone"},
                 {"name":"TRACKING_FORM_SUBMITTED", "type":"milestone"},
@@ -82,5 +82,5 @@
                 {"name":"GRADUATION_PACKET_REQUESTED", "type":"milestone"}
             ]
 		}
-    },
+    }
 ]

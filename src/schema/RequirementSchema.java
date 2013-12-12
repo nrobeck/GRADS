@@ -1,7 +1,7 @@
 package schema;
 
-public class RequirementSchema {
-	private String name;
+public abstract class RequirementSchema {
+	protected Object name;	//Can be string or milestone
 	RequirementSchema(){
 		this.name = null;
 	}
