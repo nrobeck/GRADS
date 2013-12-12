@@ -9,6 +9,8 @@ import java.util.ListIterator;
 import org.apache.commons.io.FileUtils;
 
 import schema.IdNameSchema;
+import schema.RequirementSchema;
+import schema.RequirementSchemaDeserializer;
 import schema.UserSchema;
 
 import edu.umn.csci5801.model.CheckResultDetails;
@@ -23,6 +25,7 @@ import edu.umn.csci5801.model.StudentRecord;
 import edu.umn.csci5801.model.RequirementCheckResult;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 
@@ -60,7 +63,10 @@ public class DataManager {
      */
     public DataManager(){
         //initialize local variables
-        this.gson = new Gson();
+    	GsonBuilder gsonBuilder = new GsonBuilder();
+    	gsonBuilder.registerTypeAdapter(RequirementSchema.class, new RequirementSchemaDeserializer());
+    	this.gson = gsonBuilder.create();
+    	
         this.coursesFileName = null;
         this.studentRecordFileName = null;
         this.progressSummaryFileName = null;
@@ -78,7 +84,10 @@ public class DataManager {
      */
     public DataManager(String coursesFileName, String studentRecordFileName, String progressSummaryFileName, String userFileName){
         //initialize local variables
-        this.gson = new Gson();
+    	GsonBuilder gsonBuilder = new GsonBuilder();
+    	gsonBuilder.registerTypeAdapter(RequirementSchema.class, new RequirementSchemaDeserializer());
+    	this.gson = gsonBuilder.create();
+    	
         this.coursesFileName = coursesFileName;
         this.studentRecordFileName = studentRecordFileName;
         this.progressSummaryFileName = progressSummaryFileName;
@@ -97,7 +106,10 @@ public class DataManager {
      */
     public DataManager(String coursesFileName, String studentRecordFileName, String progressSummaryFileName, String userFileName, String planFileName){
         //initialize local variables
-        this.gson = new Gson();
+    	GsonBuilder gsonBuilder = new GsonBuilder();
+    	gsonBuilder.registerTypeAdapter(RequirementSchema.class, new RequirementSchemaDeserializer());
+    	this.gson = gsonBuilder.create();
+    	
         this.coursesFileName = coursesFileName;
         this.studentRecordFileName = studentRecordFileName;
         this.progressSummaryFileName = progressSummaryFileName;
@@ -449,6 +461,19 @@ public class DataManager {
         System.out.println("\tDepartment: " + user.getDepartment());
     }
 
+    public void printPlan(Plan plan){
+    	System.out.println("Plan Id: " + plan.getID());
+    	
+    	if(plan.getRequirements() != null){
+    		for(RequirementSchema requirement : plan.getRequirements()){
+    			System.out.println(requirement.toString());
+    		}
+    	}
+    	else{
+    		System.out.println("No plan requirements");
+    	}
+    }
+    
     //Getters from JSON--------------------------
 
     /**
@@ -590,7 +615,32 @@ public class DataManager {
 
     //TODO Implement
     public ArrayList<Plan> getPlans() {
-		return null;
+        //set the type for the plans
+        Type planCollectionType = new TypeToken<ArrayList<Plan>>(){}.getType();	//https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
+        ArrayList<ProgressSummary> progressSummaries;
+
+        //Plan file > JSON > Plan Object Array
+        File planFile = new File(planFileName);
+        String planJson = null;
+
+        try{
+            //read in the JSON
+            planJson = FileUtils.readFileToString(planFile);
+        }
+        catch(IOException e){
+            System.err.println(e);
+        }
+
+        //convert the JSON into objects
+        plans = this.gson.fromJson(planJson, planCollectionType);
+
+        //print the progress summaries
+        for(Plan plan : plans){
+            this.printPlan(plan);
+        }
+        this.plans = plans;
+        //return the array of progress summaries
+        return plans;
 	}
     
     //Interface Methods--------------------------
@@ -712,15 +762,15 @@ public class DataManager {
             //check if record id is desired student id
             if(studentRecord.getStudent().getId() == studentId){
                 index = i.nextIndex() - 1;
-                //This record is the one we want to change
+              //This record is the one we want to change
                 break;
             }
         }
-        //write the record out to the storage file
+        //If the student is there, overwrite
         if(index >= 0){
             //Set the model
             this.studentRecords.set(index, newRecord);
-            //write out
+            //write the record out to the storage file
             if(writeTranscript()){
                 //print that write was successful
                 System.out.println("Write Success!");
@@ -734,9 +784,23 @@ public class DataManager {
                 return false;
             }
         }
+        //Otherwise add a new record
         else{
-            //return false as record was not found
-            return false;
+        	//Set the model
+            this.studentRecords.add(newRecord);
+            //write the record out to the storage file
+            if(writeTranscript()){
+                //print that write was successful
+                System.out.println("Write Success!");
+                return true;
+            }
+            else{
+                //print failure message
+                System.err.println("Write Failed!");
+                //reset the model
+                this.studentRecords.remove(newRecord);
+                return false;
+            }
         }
     }
 

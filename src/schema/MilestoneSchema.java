@@ -2,8 +2,7 @@ package schema;
 
 import edu.umn.csci5801.model.Milestone;
 
-public class MilestoneSchema {
-	private Milestone name;
+public class MilestoneSchema extends RequirementSchema{
 	MilestoneSchema(){
 		this.name = null;
 	}
