@@ -1,5 +1,7 @@
 package edu.umn.csci5801;
 
+import java.util.List;
+
 import com.google.gson.JsonObject;
 
 import edu.umn.csci5801.model.StudentRecord;
@@ -44,11 +46,22 @@ public class TranscriptHandler {
     public void addNote(String studentID, String note){
         //retrieve the student transcript
         StudentRecord transcript = dbManager.getStudentData(studentID);
-        //convert the transcript to JSON
-        JsonObject record = recordToJson(transcript);
-        //TODO: add note to JSON of record
+        
+        if(note != null){
+            // add the note
+            List<String> notes = transcript.getNotes();
+            
+            notes.add(note);
+            
+            transcript.setNotes(notes);
+            
+            //convert the transcript to JSON
+            JsonObject record = recordToJson(transcript);
+            //TODO: add note to JSON of record
 
-        //TODO: convert JSON back to student record
+            //TODO: convert JSON back to student record
+        }
+
 
         //store the modified transcript
         dbManager.storeTranscript(studentID, transcript);
@@ -114,4 +127,5 @@ public class TranscriptHandler {
         //return the record
         return record;
     }
+
 }

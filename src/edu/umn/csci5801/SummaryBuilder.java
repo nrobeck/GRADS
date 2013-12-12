@@ -3,6 +3,8 @@ package edu.umn.csci5801;
 //
 
 import edu.umn.csci5801.model.CheckResultDetails;
+import edu.umn.csci5801.model.Course;
+import edu.umn.csci5801.model.CourseArea;
 import edu.umn.csci5801.model.CourseTaken;
 import edu.umn.csci5801.model.Degree;
 import edu.umn.csci5801.model.Grade;
@@ -15,12 +17,19 @@ import edu.umn.csci5801.model.StudentRecord;
 
 
 
+
+
+
 import java.lang.String;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.soap.Detail;
+
+
+
 
 
 
@@ -72,7 +81,7 @@ public class SummaryBuilder {
 
         //get the courses the student has taken from their record
         List<CourseTaken> courses = record.getCoursesTaken();
-
+        
         //check the requirements and set results
         summary.setRequirementCheckResults(checkPlanRequirements(plan, courses, record.getMilestonesSet(), record.getDegreeSought()));
 
@@ -88,12 +97,13 @@ public class SummaryBuilder {
      */
     private List<RequirementCheckResult> checkPlanRequirements(JsonObject plan, List<CourseTaken> courses, List<MilestoneSet> milestones, Degree degree) {
         //create the needed elements
-        JsonElement reqs;
         List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>() {};
         RequirementCheckResult result;
+        CheckResultDetails details;
+        // TODO: determine if I should break these out into individual methods
+        // probably should
         
-        
-        // determine overall and in-course GPAs
+        // check overall and in-course GPAs requirements
         double minGPA;
         
         if(degree == Degree.PHD) {
@@ -107,31 +117,133 @@ public class SummaryBuilder {
         
         // determine overall GPA
         double gpa = 0;
-        double sum = 0;
+        double totalSum = 0;
+        double incourseSum = 0;
         double credits = 0;
         for (CourseTaken c: courses){
         	// only check A-F courses
         	if(c.getGrade().ordinal() <= Grade.F.ordinal()){
-        		sum += c.getGrade().numericValue();
+        		totalSum += c.getGrade().numericValue();
         		credits += Integer.parseInt(c.getCourse().getNumCredits());
+        		if(isInCourse(c.getCourse(), "csci")){
+        			incourseSum += c.getGrade().numericValue();
+        		}
         	}
         }
         
         // compare GPA with minimum
-        gpa = sum/credits;
+        gpa = totalSum/credits;
         if (gpa < minGPA){
         	result.setPassed(false);
-        	result.addErrorMsg("Overall GPA is bellow the minimum");;
+        	result.addErrorMsg("Overall GPA is bellow the minimum");
+        }
+        
+        // create a new result for in course gpa
+        if(degree == Degree.PHD) {
+        	result = new RequirementCheckResult("INCOURSE_GPA_PHD");
+        }
+        else {
+        	result = new RequirementCheckResult("IN_PROGRAM_GPA_MS");
+        }
+        
+        // compare GPA with minimum
+        gpa = incourseSum/credits;
+        if (gpa < minGPA){
+        	result.setPassed(false);
+        	result.addErrorMsg("In course  GPA is bellow the minimum");
         }
         
         // add to result list
         retVal.add(result);
         
+        /*----------------------------------------------------------------------------*/
         
-        // determine which milestones have been passed
+        // determine credit requirements
+        
+        /*----------------------------------------------------------------------------*/
+        
+        // course specific requirements
+        
+        /*----------------------------------------------------------------------------*/
+        
+        /*----------------------------------------------------------------------------*/
+        
+        // Check For Breadth Courses
+        int breadthCourseTotal;
+        if(degree == Degree.PHD) {
+        	breadthCourseTotal = 5;
+        }
+        else {
+        	breadthCourseTotal = 3;
+        }
+        
+        /*
+        String[] temp = new String[]{"csci5302", "csci5304", "csci5421", "csci55421", "csci5525"};
+        temp = new String[]{"csci5103", "csci5104", "csci5105", "csci5106", "csci5161",
+				"csci5204", "csci5211", "csci5221", "csci5231", "csci5451",
+				"csci5461", "csci5708", "csci5801", "csci5802"};
+        temp = new String[]{"csci5115", "csci5125", "csci5271", "csci5471", "csci5481",
+				"csci5511", "csci5512", "csci5521", "csci5523", "csci5551",
+				"csci5561", "csci5607", "csci5608", "csci5"};
+				*/
+        
+        // lists of all courses, sorted by area
+        List<CourseTaken> appCoursesTaken = new ArrayList<CourseTaken>();
+        List<CourseTaken> archCoursesTaken = new ArrayList<CourseTaken>();
+        List<CourseTaken> theoryCoursesTaken = new ArrayList<CourseTaken>();
+        
+        List<String> appCourseList = new ArrayList<String>();
+        List<String> archCourseList = new ArrayList<String>();
+        List<String> theoryCourseList = new ArrayList<String>();
+        
+        List<Course> courseList = dbManager.getCourses();
+        
+        // get lists of all courses that statisfy breadth requirements
+        for(Course c: courseList){
+        	switch(c.getCourseArea()){
+        	case APPLICATIONS:
+        		appCourseList.add(c.getId());
+        		break;
+        	case ARCHITECTURE_SYSTEMS_SOFTWARE:
+        		archCourseList.add(c.getId());
+        		break;
+        	case THEORY_ALGORITHMS:
+        		theoryCourseList.add(c.getId());
+        		break;
+    		default:
+        	}
+        }
+        
+        // check each course to see if they fall into an Area
+        for(CourseTaken c: courses){
+        	// only add courses that have been passed
+        	if(passedCourse(c, false)){
+        		// add to appropriate area list
+        		if(appCourseList.contains(c.getCourse().getId())){
+        			appCoursesTaken.add(c);
+        		}
+        		else if (archCourseList.contains(c.getCourse().getId())){
+        			archCoursesTaken.add(c);
+        		}
+        		else if (theoryCourseList.contains(c.getCourse().getId())){
+        			theoryCoursesTaken.add(c);
+        		}
+        	}
+        }
+        
+        
+        // Check that two addition courses have been taken
+        if(degree == Degree.PHD){
+        	
+        }
+        
+        
+        /*------------------------------------------------------------------------------*/
+        
+        // Determine which milestones have been passed
         Milestone[] planMilestones;
         
-        // determine which degree
+        // determine which degree milestones to use
         switch (degree){
         case PHD: 
         	planMilestones = new Milestone[]{		Milestone.PRELIM_COMMITTEE_APPOINTED, Milestone.WRITTEN_PE_SUBMITTED, Milestone.WRITTEN_PE_APPROVED, Milestone.ORAL_PE_PASSED, 
@@ -156,7 +268,7 @@ public class SummaryBuilder {
         // run through each milestone and check if the student have completed it
         for (Milestone s: planMilestones){
         	result = new RequirementCheckResult(s.name(), false);
-            CheckResultDetails details = new CheckResultDetails();
+            details = new CheckResultDetails();
 
             // check if a student has passed this milestone
         	for (MilestoneSet m: milestones){
@@ -205,11 +317,15 @@ public class SummaryBuilder {
      * Determines if a course was passed
      * @param course - the course that a student has taken
      * @param passFail - tells if S grades are allowable
-     * @return
+     * @return true if the course was passed, false if not
      */
     private boolean passedCourse(CourseTaken course, boolean passFail){
     	// check if C or greater
     	if (course.getGrade().numericValue() >= Grade.C.numericValue()){
+    		return true;
+    	}
+    	
+    	if (course.getGrade() == Grade._){
     		return true;
     	}
     	
@@ -218,9 +334,22 @@ public class SummaryBuilder {
     		return (course.getGrade() == Grade.S);
     	}
     	
+    	
     	// course was not passed
     	return false;
     }
+    
+    private boolean isInCourse(Course course, String department){
+    	if (course.getId().contains(department)){	// check that the course Id contains the department string
+    		int level = Integer.parseInt(course.getId().substring(department.length()-1, department.length()));
+    		if (level >= 5){	// check that the level is 5000+
+    			return true;
+    		}
+    	}
+    	
+    	return false;
+    }
+
     
     /**
      * Return the progress summary based solely upon a student's transcript and no simulated courses.

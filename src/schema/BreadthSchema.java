@@ -1,5 +1,6 @@
 package schema;
 
+import java.awt.geom.Area;
 import java.util.ArrayList;
 
 public class BreadthSchema extends GpaSchema{
