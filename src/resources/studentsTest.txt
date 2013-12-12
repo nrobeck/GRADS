@@ -436,6 +436,225 @@
 
     ]
 
+  },
+  
+  {
+
+    "student": {
+
+      "id": "bestx001",
+
+      "firstName": "Payet",
+
+      "lastName": "Best"
+
+    },
+    
+    "department": "COMPUTER_SCIENCE",
+
+    "degreeSought": "MS_A",
+
+    "advisors": [
+
+      {
+
+        "department": "COMPUTER_SCIENCE",
+
+        "firstName": "Mats",
+
+        "lastName": "Heimdahl"
+
+      }
+
+    ],
+    
+    "coursesTaken": [
+
+      {
+
+        "course": {
+
+	        "name": "Operating Systems",
+	        "id": "csci5103",
+	        "numCredits": "3",
+	        "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
+
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "A"
+
+      },
+      {
+
+        "course": {
+            "name": "System Modeling and Performance Evaluation",
+            "id": "csci5104",
+            "numCredits": "3",
+            "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "A"
+
+      },
+      {
+      "course": {
+            "name": "Introduction to Distributed Systems",
+            "id": "csci5105",
+            "numCredits": "3",
+            "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "A"
+
+      },
+      {
+      "course": {
+            "name": "User Interface Design, Implementation, and Evaluation",
+            "id": "csci5115",
+            "numCredits": "3",
+            "courseArea": "APPLICATIONS"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "A"
+
+      },
+      {
+      "course": {
+            "name": "Computational Aspects of Matrix Theory",
+            "id": "csci5304",
+            "numCredits": "3",
+            "courseArea": "THEORY_ALGORITHMS"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "A"
+
+      },
+      
+      {
+      "course": {
+            "name": "Computer Science Colloquium",
+            "id": "csci8970",
+            "numCredits": "1"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "S"
+      },
+            {
+      "course": {
+            "name": "Computational Aspects of Matrix Theory",
+            "id": "csci5304",
+            "numCredits": "3",
+            "courseArea": "THEORY_ALGORITHMS"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "A"
+
+      },
+      
+      {
+      "course": {
+            "name": "Computer Science Colloquium",
+            "id": "csci8970",
+            "numCredits": "1"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "S"
+      },
+      
+      {
+      "course": {
+            "name": "Thesis Credit: Masters",
+            "id": "csci8777",
+            "numCredits": "10"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "S"
+      },
+      
+      {
+      "course": {
+            "name": "Introduction to Research in Computer Science I",
+            "id": "csci8001",
+            "numCredits": "1"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "A"
+      },
+      
+      {
+      "course": {
+            "name": "Introduction to Research in Computer Science II",
+            "id": "csci8002",
+            "numCredits": "2"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+
+        "grade": "A"
+      }
+
+      ],
+      
+
+    "notes": [
+
+    "note1", "note2", "note3"
+
+    ]
+
   }
 
 ]

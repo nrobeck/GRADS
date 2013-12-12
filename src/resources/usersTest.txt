@@ -53,5 +53,15 @@
         },
         "role": "STUDENT",
         "department": "COMPUTER_SCIENCE"
+    },
+    
+    {
+        "user": {
+            "id": "bestx001",
+            "firstName": "Payet",
+            "lastName": "Best"
+        },
+        "role": "STUDENT",
+        "department": "COMPUTER_SCIENCE"
     }
 ]

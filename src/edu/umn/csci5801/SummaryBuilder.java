@@ -53,8 +53,14 @@ public class SummaryBuilder {
         ProgressSummary summary = new ProgressSummary();
         //get the student record from transcriptHandler
         StudentRecord record = transcriptHandler.getTranscript(studentID);
-        JsonObject plan = new JsonObject();
-
+        
+        boolean simulate;
+        if(simCourses == null){
+        	simulate = false;
+        }
+        else{
+        	simulate = true;
+        }
         //set data for the summary
         summary.setStudent(record.getStudent());
         summary.setDepartment(record.getDepartment());
@@ -68,7 +74,7 @@ public class SummaryBuilder {
         List<CourseTaken> courses = record.getCoursesTaken();
         
         //check the requirements and set results
-        summary.setRequirementCheckResults(checkPlanRequirements(plan, courses, record.getMilestonesSet(), record.getDegreeSought()));
+        summary.setRequirementCheckResults(checkPlanRequirements(record.getDegreeSought(), courses, record.getMilestonesSet(), simulate));
 
         return summary;
     }
@@ -80,7 +86,7 @@ public class SummaryBuilder {
      * @param milestones - a list of milestones of the student
      * @return a list of Requirement Check Results based on the plan/student progress
      */
-    private List<RequirementCheckResult> checkPlanRequirements(JsonObject plan, List<CourseTaken> courses, List<MilestoneSet> milestones, Degree degree) {
+    private List<RequirementCheckResult> checkPlanRequirements(Degree degree, List<CourseTaken> courses, List<MilestoneSet> milestones, boolean simulate) {
         //create the needed elements
         List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>();
 
@@ -88,34 +94,37 @@ public class SummaryBuilder {
         // probably should
         
         // Check For Breadth Courses
-        retVal.add(checkBreadthRequirements(courses, degree));
+        retVal.add(checkBreadthRequirements(courses, degree, simulate));
+        
+        // Thesis_phd credits
+        if(degree == Degree.PHD || degree == Degree.MS_A){
+        	retVal.add(checkThesisRequirements(courses, degree, simulate));
+        }
+
+        // Colloqium passed
+        retVal.add(checkColloquium(courses, degree, simulate));
+        
+        // phd level courses MS plans
+        if(degree != Degree.PHD){
+        	retVal.add(checkPHDLevelCsciCourses(courses, degree, simulate));
+        }
+        
+    	// PHD research intro courses
+    	if (degree == Degree.PHD){
+    		retVal.add(checkResearchIntro(courses, degree, simulate));
+    	}
+        
+        // credit requirements
+        retVal.addAll(checkCreditRequirements(courses, degree, simulate));
+        
+        // MS B project
+    	if(degree == Degree.MS_B){
+            retVal.add(checkPlanBProject(courses, degree, simulate));
+    	}
         
         // check overall and in-course GPAs requirements
         retVal.addAll(checkGPARequirementCheckResults(courses, degree));
         
-        // credit requirements
-        retVal.addAll(checkCreditRequirements(courses, degree));
-        
-        // Thesis_phd credits
-        if(degree == Degree.PHD || degree == Degree.MS_A);
-        
-        // colloqium
-        retVal.add(checkColloquium(courses, degree));
-        
-    	// PHD research intro courses
-    	if (degree == Degree.PHD){
-    		retVal.add(checkResearchIntro(courses, degree));
-    	}
-        
-        // MS B project
-    	if(degree == Degree.MS_B){
-            retVal.add(checkPlanBProject(courses, degree));
-    	}
-    	
-        // phd level courses MS plans
-        if(degree != Degree.PHD){
-        	retVal.add(checkPHDLevelCsciCourses(courses, degree));
-        }
         
         // Check and add Milestones
         retVal.addAll(checkMilestones(milestones, degree));
@@ -123,14 +132,14 @@ public class SummaryBuilder {
         return retVal;
     }
     
-    private RequirementCheckResult checkColloquium(List<CourseTaken> courses, Degree degree) {
+    private RequirementCheckResult checkColloquium(List<CourseTaken> courses, Degree degree, boolean simulate) {
     	RequirementCheckResult result = new RequirementCheckResult("COLLOQUIUM", false);
         CheckResultDetails details = new CheckResultDetails();
         List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
         
         for (CourseTaken c: courses){
         	if (c.getCourse().getId().equals("csci8970")){
-        		if (passedCourse(c, true)){
+        		if (passedCourse(c, true, simulate)){
         			tempCourseList.add(c);
         			result.setPassed(true);
         		}
@@ -153,7 +162,7 @@ public class SummaryBuilder {
      * @param degree
      * @return a RequirementCheckResult
      */
-    private RequirementCheckResult checkPlanBProject(List<CourseTaken> courses, Degree degree){
+    private RequirementCheckResult checkPlanBProject(List<CourseTaken> courses, Degree degree, boolean simulate){
     	RequirementCheckResult result = new RequirementCheckResult("INTRO_TO_RESEARCH");
         CheckResultDetails details = new CheckResultDetails();
         List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
@@ -166,7 +175,7 @@ public class SummaryBuilder {
         // look through all courses for csci8760
         for (CourseTaken c: courses){
         	if (c.getCourse().getId().equals("csci8760")){
-        		if (passedCourse(c, true)){
+        		if (passedCourse(c, true, simulate)){
         			tempCourseList.add(c);
         			result.setPassed(true);
         		}
@@ -190,7 +199,7 @@ public class SummaryBuilder {
      * @param degree
      * @return
      */
-    private RequirementCheckResult checkResearchIntro(List<CourseTaken> courses, Degree degree){
+    private RequirementCheckResult checkResearchIntro(List<CourseTaken> courses, Degree degree, boolean simulate){
     	RequirementCheckResult result = new RequirementCheckResult("INTRO_TO_RESEARCH");
         CheckResultDetails details = new CheckResultDetails();
         List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
@@ -204,7 +213,7 @@ public class SummaryBuilder {
     	
     	// look through all courses for csci8001 and csci 8002
         for (CourseTaken c: courses){
-    		if (passedCourse(c, true)){
+    		if (passedCourse(c, true, simulate)){
     			if(c.getCourse().getId().equals("csci8001")) {
     				passed8001 = true;
     				tempCourseList.add(c);
@@ -247,7 +256,7 @@ public class SummaryBuilder {
     	//create the needed elements
         List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>();
         RequirementCheckResult result;
-        CheckResultDetails details;
+        CheckResultDetails details = new CheckResultDetails();
         List<CourseTaken> tempCourseList;
         
         // check overall and in-course GPAs requirements
@@ -263,17 +272,16 @@ public class SummaryBuilder {
         	result = new RequirementCheckResult("OVERALL_GPA_MS");
         }
         
-        // determine overall GPA
-        Float gpa = (float) 0;
-        double totalSum = 0;
-        double incourseSum = 0;
-        double credits = 0;
-        tempCourseList = new ArrayList<CourseTaken>();
 
+        tempCourseList = new ArrayList<CourseTaken>();
+        List<CourseTaken> afCourses = new ArrayList<CourseTaken>();
+        List<CourseTaken> csciCourseList = new ArrayList<CourseTaken>();
+        
         // copy the course list
         for (CourseTaken c: courses){
         	tempCourseList.add(c);
         }
+        
         // trim it
         tempCourseList = removeDuplicateCourses(tempCourseList);
         
@@ -281,54 +289,50 @@ public class SummaryBuilder {
         for (CourseTaken c: tempCourseList){
         	// only check A-F courses
         	if(c.getGrade().ordinal() <= Grade.F.ordinal()){
-        		totalSum += c.getGrade().numericValue();
-        		credits += Integer.parseInt(c.getCourse().getNumCredits());
+        		afCourses.add(c);
+        		// add to csci list if taken at grad level
         		if(isGraduteLevel(c.getCourse(), "csci")){
-        			incourseSum += c.getGrade().numericValue();
+        			csciCourseList.add(c);
         		}
         	}
         }
         
         // compare GPA with minimum
      // compare GPA with minimum
-        if (credits == 0){
-        	gpa = (float) 0;
-        }
-        else {
-        	gpa = (float) (totalSum/credits);
-        }
+        float gpa = calculateGPA(afCourses);
         if (gpa < minGPA){
         	result.setPassed(false);
         	result.addErrorMsg("Overall GPA is bellow the minimum");
         }
         
+        // package up results and add it
+        details.setGPA(gpa);
+        result.setDetails(details);
         retVal.add(result);
         
         
-        // create a new result for in course gpa
+        // create a new result and details for in course gpa
         if(degree == Degree.PHD) {
         	result = new RequirementCheckResult("INCOURSE_GPA_PHD");
         }
         else {
         	result = new RequirementCheckResult("IN_PROGRAM_GPA_MS");
         }
+        details = new CheckResultDetails();
         
         // compare GPA with minimum
-        if (credits == 0){
-        	gpa = (float) 0;
-        }
-        else {
-        	gpa = (float) (incourseSum/credits);
-        }
+        gpa = calculateGPA(csciCourseList);
         
         if (gpa >= minGPA){
         }
         else {
         	result.setPassed(false);
-        	result.addErrorMsg("In course  GPA is bellow the minimum");
+        	result.addErrorMsg("In course GPA is bellow the minimum");
         }
         
-        // add to result list
+        // package up results and add it
+        details.setGPA(gpa);
+        result.setDetails(details);
         retVal.add(result);
         
         return retVal;
@@ -341,7 +345,7 @@ public class SummaryBuilder {
      * @return
      */
     
-    private List<RequirementCheckResult> checkCreditRequirements(List<CourseTaken> courses, Degree degree){
+    private List<RequirementCheckResult> checkCreditRequirements(List<CourseTaken> courses, Degree degree, boolean simulate){
     	List<RequirementCheckResult>retVal = new ArrayList<RequirementCheckResult>();
     	RequirementCheckResult result = new RequirementCheckResult("TOTAL_CREDITS");
         CheckResultDetails details = new CheckResultDetails();
@@ -355,7 +359,7 @@ public class SummaryBuilder {
         	// avoid thesis courses if on PHD plan
         	if (!(degree == Degree.PHD) && (c.getCourse().getId().equals("csci8888") || c.getCourse().getId().equals("csci8777"))){
         		// make sure that the course was passed
-        		if (passedCourse(c, false)) {
+        		if (passedCourse(c, false, simulate)) {
         			// run tests on csci courses
         			if(c.getCourse().getId().contains("csci")){
         				// add it only if at graduate level
@@ -402,7 +406,7 @@ public class SummaryBuilder {
         
         // out of department: PHD
         if(degree == Degree.PHD){
-            result = new RequirementCheckResult("TOTAL_CREDITS");
+            result = new RequirementCheckResult("OUT_OF_DEPARTMENT");
             tempCourseList = new ArrayList<CourseTaken>();
             details = new CheckResultDetails();
         	double tempCredits = 0;
@@ -412,7 +416,7 @@ public class SummaryBuilder {
 	        	// find non csci courses
 	        	if (!(c.getCourse().getId().contains("csci"))){
 	        		// course must be passed C or better
-	        		if (passedCourse(c, false)) {
+	        		if (passedCourse(c, false, simulate)) {
         				// must be gradute level
         				if(isGraduteLevel(c.getCourse(), "other")){
         					tempCourseList.add(c);
@@ -454,7 +458,7 @@ public class SummaryBuilder {
             	// avoid thesis courses
             	if (!(c.getCourse().getId().equals("csci8888") || c.getCourse().getId().equals("csci8777"))){
             		// make sure that the course was passed
-            		if (passedCourse(c, false)) {
+            		if (passedCourse(c, false, simulate)) {
         				// check if course is a csci 5000+ course
         				if(isGraduteLevel(c.getCourse(), "csci")){
         					
@@ -501,7 +505,7 @@ public class SummaryBuilder {
      * @param degree - the degree of the student
      * @return
      */
-    private RequirementCheckResult checkThesisRequirements(List<CourseTaken> courses, Degree degree){
+    private RequirementCheckResult checkThesisRequirements(List<CourseTaken> courses, Degree degree, boolean simulate){
     	RequirementCheckResult result;
     	List<CourseTaken>tempCourseList = new ArrayList<CourseTaken>();
         CheckResultDetails details = new CheckResultDetails();
@@ -515,9 +519,9 @@ public class SummaryBuilder {
 	        // look for the required course
 	        for (CourseTaken c: courses){
 	        	if (c.getCourse().getId().equals("csci8888")){
-	        		if (passedCourse(c, true)){
+	        		if (passedCourse(c, true, simulate)){
 	        			tempCourseList.add(c);
-	        			tempSum += Integer.getInteger(c.getCourse().getNumCredits());	// add number of credits to total
+	        			tempSum += Integer.parseInt(c.getCourse().getNumCredits());	// add number of credits to total
 	        		}
 	        	}
 	        }
@@ -545,9 +549,13 @@ public class SummaryBuilder {
 	        // look for the required course
 	        for (CourseTaken c: courses){
 	        	if (c.getCourse().getId().equals("csci8777")){
-	        		if (passedCourse(c, true)){
-	        			tempCourseList.add(c);
-	        			tempSum += Integer.getInteger(c.getCourse().getNumCredits());	// add number of credits to total
+	        		if (passedCourse(c, true, simulate)){
+	        			//if there are credits to check
+	        			Integer temp = Integer.parseInt(c.getCourse().getNumCredits());
+	        			if(temp != null){
+		        			tempCourseList.add(c);
+		        			tempSum += temp;	// add number of credits to total
+	        			}
 	        		}
 	        	}
 	        }
@@ -575,7 +583,7 @@ public class SummaryBuilder {
      * @param degree
      * @return
      */
-    private RequirementCheckResult checkPHDLevelCsciCourses(List<CourseTaken> courses, Degree degree){
+    private RequirementCheckResult checkPHDLevelCsciCourses(List<CourseTaken> courses, Degree degree, boolean simulate){
     	RequirementCheckResult result;
     	List<CourseTaken>tempCourseList = new ArrayList<CourseTaken>();
         CheckResultDetails details = new CheckResultDetails();
@@ -596,7 +604,7 @@ public class SummaryBuilder {
     	// find all PHD level courses
         for (CourseTaken c: courses){
         	if (c.getCourse().getId().contains("csci8")){
-        		if (passedCourse(c, false)){
+        		if (passedCourse(c, false, simulate)){
         			tempCourseList.add(c);
         		}
         	}
@@ -605,10 +613,10 @@ public class SummaryBuilder {
         tempCourseList = removeDuplicateCourses(tempCourseList);
         
         // check if the student has taken enough PHD courses
-        if (degree == Degree.MS_C){
-        	if(tempCourseList.size() >= 2){
+        if (degree == Degree.MS_C) {
+        	if(tempCourseList.size() >= 2) {
             }
-            else{
+            else {
             	result.setPassed(false);
             	result.addErrorMsg("At least two phd level courses, csci 8000+, has not been taken/passed");
             }
@@ -635,7 +643,7 @@ public class SummaryBuilder {
      * @param degree
      * @return
      */
-    private RequirementCheckResult checkBreadthRequirements(List<CourseTaken> courses, Degree degree){
+    private RequirementCheckResult checkBreadthRequirements(List<CourseTaken> courses, Degree degree, boolean simulate){
     	RequirementCheckResult result;
     	CheckResultDetails details= new CheckResultDetails();;
     	List<CourseTaken>tempCourseList = new ArrayList<CourseTaken>();
@@ -686,7 +694,7 @@ public class SummaryBuilder {
         // check each course to see if they fall into an Area
         for(CourseTaken c: courses){
         	// only add courses that have been passed
-        	if(passedCourse(c, false)){
+        	if(passedCourse(c, false, simulate)){
         		// add to the appropriate area list
         		if(appCourseList.contains(c.getCourse().getId())){
         			appCoursesTaken.add(c);
@@ -811,6 +819,12 @@ public class SummaryBuilder {
         		}
         	}
         	
+        	if(result.isPassed()){
+        		
+        	}
+        	else {
+        		result.addErrorMsg("The milestone has not been completed.");
+        	}
         	// add result to the result list
         	retVal.add(result);
         }
@@ -856,13 +870,13 @@ public class SummaryBuilder {
      * @param passFail - tells if S grades are allowable
      * @return true if the course was passed, false if not
      */
-    private boolean passedCourse(CourseTaken course, boolean passFail){
+    private boolean passedCourse(CourseTaken course, boolean passFail, boolean simulate){
     	// check if C or greater
     	if (course.getGrade().numericValue() >= Grade.C.numericValue()){
     		return true;
     	}
     	
-    	if (course.getGrade() == Grade._){
+    	if ((simulate) && (course.getGrade() == Grade._)){
     		return true;
     	}
     	
@@ -933,6 +947,7 @@ public class SummaryBuilder {
     	List<CourseTaken> listC = new ArrayList<CourseTaken>();
     	List<CourseTaken> listX = new ArrayList<CourseTaken>();
     	
+    	// sort into grade categories
     	for(CourseTaken c: courses){
     		switch(c.getGrade()){
     		case A:
