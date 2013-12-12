@@ -808,6 +808,10 @@ public class DataManager {
      * @return true if successful, false if unsuccessful
      */
     public boolean storeTranscript(String studentId, StudentRecord newRecord) {
+    	checkInit();
+    	if(this.studentRecords == null){
+    		return false;
+    	}
         // create the list iterator
         ListIterator<StudentRecord> i = this.studentRecords.listIterator();
         // create student record for storage
