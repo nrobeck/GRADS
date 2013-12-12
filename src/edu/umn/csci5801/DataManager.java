@@ -1,5 +1,7 @@
 package edu.umn.csci5801;
 
+//TODO FileNotFound Exceptions
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -35,7 +37,7 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 public class DataManager {
-	public static final boolean DEBUG = false;
+	public boolean debug;
     // PRIVATE VARIABLES
     // instance of gson for json conversion
     private Gson gson;
@@ -62,13 +64,42 @@ public class DataManager {
     public DataManager() {
         // initialize local variables
         GsonBuilder gsonBuilder = new GsonBuilder();
-        this.gson = gsonBuilder.create();
+        this.gson = gsonBuilder.setPrettyPrinting().create();
 
         this.coursesFileName = null;
         this.studentRecordFileName = null;
         this.progressSummaryFileName = null;
         this.userFileName = null;
         this.init = false;
+        this.debug = false;
+    }
+    
+    /**
+     * 
+     * @param debug
+     * @return the current Debug value
+     */
+    public boolean setDebug(boolean debug){
+    	this.debug = debug;
+    	return this.debug;
+    }
+    
+    /**
+     * 
+     * @return  the current student record file name
+     */
+    public String getStudentRecordFileName(){
+    	return this.studentRecordFileName;
+    }
+    
+    /**
+     * 
+     * @param studentRecordFileName
+     * @return the current student record file name
+     */
+    public String setStudentRecordFileName(String studentRecordFileName){
+    	this.studentRecordFileName = studentRecordFileName;
+    	return this.studentRecordFileName;
     }
 
     /**
@@ -457,6 +488,9 @@ public class DataManager {
      * @return an arraylist of course objects
      */
     public ArrayList<Course> getCourses() {
+    	if(coursesFileName == null){
+        	return null;
+        }
         // set the course collection type
         Type courseCollectionType = new TypeToken<ArrayList<Course>>() {
         }.getType(); // https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
@@ -484,7 +518,7 @@ public class DataManager {
         }
 
         // print the courses
-        if(this.DEBUG){
+        if(this.debug){
 	        for (Course course : courses) {
 	            this.printCourse(course);
 	        }
@@ -502,6 +536,9 @@ public class DataManager {
      * @return an arraylist of the student records
      */
     public ArrayList<StudentRecord> getStudentRecords() {
+    	if(studentRecordFileName == null){
+        	return null;
+        }
         // set the type of the record
         Type studentRecordCollectionType = new TypeToken<ArrayList<StudentRecord>>() {
         }.getType(); // https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
@@ -526,7 +563,7 @@ public class DataManager {
             e.printStackTrace();
             return null;
         }
-        if(this.DEBUG){
+        if(this.debug){
 	        // print the student records
 	        for (StudentRecord studentRecord : studentRecords) {
 	            this.printStudentRecord(studentRecord);
@@ -543,6 +580,9 @@ public class DataManager {
      * @return an arraylist of the progress summaries
      */
     public ArrayList<ProgressSummary> getProgressSummaries() {
+    	if(progressSummaryFileName == null){
+        	return null;
+        }
         // set the type for the progress summaries
         Type progressSummaryCollectionType = new TypeToken<ArrayList<ProgressSummary>>() {
         }.getType(); // https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
@@ -568,7 +608,7 @@ public class DataManager {
             e.printStackTrace();
             return null;
         }
-        if(this.DEBUG){
+        if(this.debug){
 	        // print the progress summaries
 	        for (ProgressSummary progressSummary : progressSummaries) {
 	            this.printProgressSummary(progressSummary);
@@ -585,6 +625,9 @@ public class DataManager {
      * @return an arraylist of the users
      */
     public ArrayList<User> getUsers() {
+    	if(userFileName == null){
+        	return null;
+        }
         // set the type for the users
         Type userSchemaCollectionType = new TypeToken<ArrayList<UserSchema>>() {
         }.getType(); // https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
@@ -616,7 +659,7 @@ public class DataManager {
             User user = new User(userSchema.getID().getID(),
                     userSchema.getRole(), userSchema.getDepartment());
             users.add(user);
-            if(this.DEBUG){
+            if(this.debug){
             	printUser(user);
             }
         }
@@ -637,6 +680,10 @@ public class DataManager {
     public User getUserByID(String userId) {
         // initialize data if necessary
         checkInit();
+        //If there are null users
+        if(this.users == null){
+        	return null;
+        }
         // create user to run comparisons with
         User searchUser = new User(userId, null, null);
         // find the index of the user who meets the search criteria
@@ -655,11 +702,15 @@ public class DataManager {
      *
      * @param department
      *            department from which all student ids are to be collected
-     * @return an arraylist of the student ids as strings
+     * @return an arraylist of the student ids as strings, empty list if none are found
      */
     public ArrayList<String> getStudentIDList(Department department) {
         // initialize if not already
         checkInit();
+    	//If there are no students
+    	if(this.studentRecords == null){
+    		return new ArrayList<String>();
+    	}
         // create the arraylist
         ArrayList<String> studentIds = new ArrayList<String>();
 
@@ -686,6 +737,10 @@ public class DataManager {
      * @return the student record, null if none found
      */
     public StudentRecord getStudentData(String studentId) {
+    	checkInit();
+    	if(this.studentRecords == null){
+    		return null;
+    	}
         // initialize list iterator
         ListIterator<StudentRecord> i = this.studentRecords.listIterator();
         // create student record for storage
@@ -710,6 +765,16 @@ public class DataManager {
         return null;
     }
 
+    /**
+     * Get courses data, checking if the object is initialized
+     * 
+     * @return the list of courses or null if none are found
+     */
+    public ArrayList<Course> getCoursesData(){
+    	checkInit();
+    	return this.courses;
+    }
+    
     /**
      * Write out the now modified transcript to the storage file.
      *
