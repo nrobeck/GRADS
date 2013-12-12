@@ -40,8 +40,30 @@ public class Plan {
     public ArrayList<RequirementSchema> getRequirements(){
         return this.requirements;
     }
-
-    public boolean equals(Plan plan){
+    /**
+     * Compares the input object to the current plan for equality.
+     * If the IDs are the same the object and user are considered equal.
+     * ASSUME NO ID DUPLICATES
+     * @param o the object that the plan is to be compared to
+     */
+    @Override
+    public boolean equals(Object o){
+        //check if the object is actually the user
+        if (this == o)
+            return true;
+        //check if the object is null...cannot be equal
+        if (o == null)
+            return false;
+        //declare user object
+        Plan plan;
+        //check if object is in fact a user object
+        if(o.getClass() != this.getClass()){
+            return false;
+        }
+        else{
+            //cast the object as a user
+            plan = (Plan) o;
+        }
         if(this.getID() == plan.getID()){
             return true;
         }
