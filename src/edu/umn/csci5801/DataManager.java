@@ -781,10 +781,16 @@ public class DataManager {
         while (i.hasNext()) {
             // move to next record
             studentRecord = i.next();
-            // check if record is one requested
-            if (studentRecord.getStudent().getId().equals(studentId)) {
-                // return the requested record
-                return studentRecord;
+            try{
+	            String studentRecordId = studentRecord.getStudent().getId();
+	            // check if record is one requested
+	            if (studentRecordId.equals(studentId)) {
+	                // return the requested record
+	                return studentRecord;
+	            }
+            }
+            catch(NullPointerException e){
+            	return null;
             }
         }
         // return null if no record is found
@@ -842,11 +848,18 @@ public class DataManager {
         // loop through the student records until desired record is found
         while (i.hasNext()) {
             studentRecord = i.next();
-            // check if record id is desired student id
-            if (studentRecord.getStudent().getId().equals(studentId)) {
-                index = i.nextIndex() - 1;
-                // This record is the one we want to change
-                break;
+            try{
+	            String studentRecordId = studentRecord.getStudent().getId();
+	            // check if record id is desired student id
+	            if (studentRecordId.equals(studentId)) {
+	                index = i.nextIndex() - 1;
+	                // This record is the one we want to change
+	                break;
+	            }
+            }
+            //If null do nothing
+            catch(NullPointerException e){
+            	continue;
             }
         }
         // If the student is there, overwrite

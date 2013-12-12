@@ -776,9 +776,9 @@ public class SummaryBuilder {
 
     /**
      * Creates a list of RequirmentCheckResults based on what milestones have been completed
-     * @param milestones
-     * @param degree
-     * @return
+     * @param milestones the milestones that a student has completed
+     * @param degree the degree of the student
+     * @return a degree-specific list of milestone results
      */
     private List<RequirementCheckResult> checkMilestones(List<MilestoneSet> milestones, Degree degree){
         List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>();
@@ -837,7 +837,7 @@ public class SummaryBuilder {
     /**
      * Calculate the GPA of a list of courses taken.
      * @param courses - the list of courses to derive a GPA from
-     * @return the GPA
+     * @return the GPA calculated from the list
      */
     private float calculateGPA(List<CourseTaken> courses) {
         //initialize parameters
@@ -941,8 +941,8 @@ public class SummaryBuilder {
 
     /**
      * Sorts a list of CourseTakens by grade (A, B, C, x/other)
-     * @param courses
-     * @return
+     * @param a list of courses taken
+     * @return the list in sorted order
      */
     private List<CourseTaken> sortByGrade(List<CourseTaken> courses){
         List<CourseTaken> listA = new ArrayList<CourseTaken>();
