@@ -40,4 +40,13 @@ public class Plan {
 	public ArrayList<RequirementSchema> getRequirements(){
 		return this.requirements;
 	}
+	
+	public boolean equals(Plan plan){
+		if(this.getID() == plan.getID()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }

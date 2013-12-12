@@ -26,6 +26,7 @@ import edu.umn.csci5801.model.RequirementCheckResult;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 
@@ -218,7 +219,6 @@ public class DataManager {
         System.out.println("\tDepartment: " + studentRecord.getDepartment());
         //print the degree the student is seeking
         System.out.println("\tDegree: " + studentRecord.getDegreeSought());
-        //TODO System.out.println("\tProgram: " + studentRecord.getProgram());
 
         //Term Began
         //check if the student has started yet
@@ -493,11 +493,20 @@ public class DataManager {
             courseJson = FileUtils.readFileToString(courseFile);
         }
         catch(IOException e){
-            System.err.println(e);
+        	System.err.println("Error parsing course JSON file");
+        	e.printStackTrace();
+            return null;
         }
 
         //convert the json into course objects
-        courses = this.gson.fromJson(courseJson, courseCollectionType);
+        try{
+        	courses = this.gson.fromJson(courseJson, courseCollectionType);
+        }
+        catch(JsonParseException e){
+        	System.err.println("Error parsing course JSON!");
+        	e.printStackTrace();
+        	return null;
+        }
 
         //print the courses
         for(Course course : courses){
@@ -530,9 +539,15 @@ public class DataManager {
         catch(IOException e){
             System.err.println(e);
         }
-
-        //convert the JSON into object array
-        studentRecords = this.gson.fromJson(studentRecordJson, studentRecordCollectionType);
+        try{
+        	//convert the JSON into object array
+            studentRecords = this.gson.fromJson(studentRecordJson, studentRecordCollectionType);
+        }
+        catch(JsonParseException e){
+        	System.err.println("Error parsing course JSON!");
+        	e.printStackTrace();
+        	return null;
+        }
 
         //print the student records
         for(StudentRecord studentRecord : studentRecords){
@@ -563,9 +578,15 @@ public class DataManager {
         catch(IOException e){
             System.err.println(e);
         }
-
-        //convert the JSON into objects
-        progressSummaries = this.gson.fromJson(progressSummaryJson, progressSummaryCollectionType);
+        try{
+        	//convert the JSON into objects
+            progressSummaries = this.gson.fromJson(progressSummaryJson, progressSummaryCollectionType);
+        }
+        catch(JsonParseException e){
+        	System.err.println("Error parsing course JSON!");
+        	e.printStackTrace();
+        	return null;
+        }
 
         //print the progress summaries
         for(ProgressSummary progressSummary : progressSummaries){
@@ -597,9 +618,15 @@ public class DataManager {
         catch(IOException e){
             System.err.println(e);
         }
-
-        //convert the JSON to users array
-        userSchemas = this.gson.fromJson(userJson, userSchemaCollectionType);
+        try{
+        	//convert the JSON to users array
+            userSchemas = this.gson.fromJson(userJson, userSchemaCollectionType);
+        }
+        catch(JsonParseException e){
+        	System.err.println("Error parsing course JSON!");
+        	e.printStackTrace();
+        	return null;
+        }
 
         //print the users
         for(UserSchema userSchema : userSchemas){
@@ -630,9 +657,15 @@ public class DataManager {
         catch(IOException e){
             System.err.println(e);
         }
-
-        //convert the JSON into objects
-        plans = this.gson.fromJson(planJson, planCollectionType);
+        try{
+        	//convert the JSON into objects
+            plans = this.gson.fromJson(planJson, planCollectionType);
+        }
+        catch(JsonParseException e){
+        	System.err.println("Error parsing course JSON!");
+        	e.printStackTrace();
+        	return null;
+        }
 
         //print the progress summaries
         for(Plan plan : plans){
@@ -719,8 +752,15 @@ public class DataManager {
 
 
     //TODO What is a plan???
-    public void getPlan(Degree degree){
-
+    public Plan getPlan(Degree degree){
+    	Plan p = new Plan(degree);
+    	int index = plans.indexOf(p);
+    	if(index < 0){
+    		return null;
+    	}
+    	else{
+    		return plans.get(plans.indexOf(index));
+    	}
     }
 
     /**
@@ -803,6 +843,5 @@ public class DataManager {
             }
         }
     }
-
 
 }
