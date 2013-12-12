@@ -96,22 +96,21 @@ public class SummaryBuilder {
         // credit requirements
         retVal.addAll(checkCreditRequirements(courses, degree));
         
-    	// PHD research intro courses
-    	if (degree == Degree.PHD){
-    		retVal.add(checkResearchIntro(courses, degree));
-    	}
         // Thesis_phd credits
         if(degree == Degree.PHD || degree == Degree.MS_A);
         
         // colloqium
         retVal.add(checkColloquium(courses, degree));
         
+    	// PHD research intro courses
+    	if (degree == Degree.PHD){
+    		retVal.add(checkResearchIntro(courses, degree));
+    	}
+        
         // MS B project
     	if(degree == Degree.MS_B){
             retVal.add(checkPlanBProject(courses, degree));
     	}
-
-
     	
         // phd level courses MS plans
         if(degree != Degree.PHD){
@@ -730,17 +729,32 @@ public class SummaryBuilder {
         }
         // Check that two addition courses have been taken
         if(degree == Degree.PHD) {
-        	// TODO: fill this in
+        	// combine the rest of the courses into one list
+        	appCoursesTaken.addAll(archCoursesTaken);
+        	appCoursesTaken.addAll(theoryCoursesTaken);
+        	// sort the list
+        	appCoursesTaken = sortByGrade(appCoursesTaken);
+        	// check if two more courses have been taken
+        	if(appCoursesTaken.size() >= 2){
+        		// add the two best courses to the list
+        		tempCourseList.add(appCoursesTaken.remove(0));
+        		tempCourseList.add(appCoursesTaken.remove(0));
+        	}
+        	else {
+        		// the possible one course that could have been taken
+        		tempCourseList.addAll(appCoursesTaken);
+        		result.setPassed(false);
+        		result.addErrorMsg("Less than five breadth courses have been taken");
+        	}
         }
 
         // check the GPA
     	gpa = calculateGPA(tempCourseList);
     	if(gpa >= minGPA){
-    		
     	}
     	else {
     		result.setPassed(false);
-    		result.addErrorMsg("Breadth GPA is below the require minimum: " + minGPA);
+    		result.addErrorMsg("Breadth GPA is below the required minimum: " + minGPA);
     	}
         
         // TODO: make sure GPA is done right
