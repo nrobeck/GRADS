@@ -1,5 +1,7 @@
 package testing;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.After;
 import org.junit.Test;
@@ -21,16 +23,22 @@ import edu.umn.csci5801.model.Department;
 import edu.umn.csci5801.model.StudentRecord;
 import exceptions.InvalidX500Exception;
 
-//tests for requirement 1
+
+/**
+ * Tests for requirement 1 from the requirements document
+ * @author Nathan
+ *
+ */
 public class InformationRetrievalTests {
     //variables for testing
     GRADS testGrads = new GRADS("resources/studentsTest.txt", "resources/courses.txt", "resources/usersTest.txt");
     StudentRecord testRecord = new StudentRecord();
+    DataManager dbManager = new DataManager( "resources/courses.txt", "resources/studentsTest.txt", "resources/progress.txt", "resources/usersTest.txt");
 
 
     /**
      * Test successful retrieval of student transcript.
-     * Test 1.1
+     * @see x Requirements Documnet Test 1.1
      */
     public void retrieveAStudentTranscriptTest() {
         try {
@@ -50,7 +58,7 @@ public class InformationRetrievalTests {
 
     /**
      * Test retrieval of record that does not exist.
-     * Test 1.2
+     * @see x Requirements Document Test 1.2
      */
     public void retrieveNonExistentRecordTest() {
         String message = "";
@@ -69,5 +77,62 @@ public class InformationRetrievalTests {
 
     }
 
+    /**
+     * Test successful retrieval of list of graduate students
+     * @see x Tequirements Document Test 1.3
+     */
+    public void retrieveGradStudentsTest() {
+        List<String> s = null;
+        try {
+            testGrads.setUser("tolas9999");
+        } catch (Exception e) {
+            System.out.println(((InvalidX500Exception) e).errorMessage());
+        }
+        try {
+            s = testGrads.getStudentIDs();
+        } catch (Exception e) {
+            System.out.println(((InvalidX500Exception) e).errorMessage());
+        }
+        Assert.assertTrue(s.equals(dbManager.getStudentIDList(dbManager.getUserByID("tolas9999").getDepartment())));
+    }
 
+    /**
+     * Test successful retrieval of degree requirements
+     * @see x Requirements Document Test 1.4
+     */
+    public void retrieveRequirementsTest() {
+
+    }
+
+    /**
+     * Test successful retrieval of courses for degree
+     * @see x Requirements Document Test 1.5
+     */
+    public void retriveCoursesTest() {
+
+    }
+
+    /**
+     * Test successful retrieval of notes for student record
+     * @see x Requirements Document Test 1.6
+     */
+    public void retrieveNotesTest() {
+
+    }
+
+    /**
+     * Test successful retrieval of milestones
+     * @see x Requirements Document Test 1.7
+     */
+    public void retrieveMilestonesTest() {
+
+    }
+
+    /**
+     * Test data not available messages
+     * @see x Requirements Document Test 1.8
+     */
+    public void dataNotAvailableTest() {
+
+    }
 }
