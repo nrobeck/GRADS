@@ -94,7 +94,7 @@ public class DataManager {
         GsonBuilder gsonBuilder = new GsonBuilder();
         // gsonBuilder.registerTypeAdapter(RequirementSchema.class, new
         // RequirementSchemaDeserializer());
-        this.gson = gsonBuilder.create();
+        this.gson = gsonBuilder.setPrettyPrinting().create();
 
         this.coursesFileName = coursesFileName;
         this.studentRecordFileName = studentRecordFileName;
