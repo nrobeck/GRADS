@@ -414,7 +414,7 @@
     
     "department": "COMPUTER_SCIENCE",
 
-    "degreeSought": "MS_A",
+    "degreeSought": "PHD",
 
     "advisors": [
 

@@ -83,11 +83,173 @@ public class SummaryBuilder {
     private List<RequirementCheckResult> checkPlanRequirements(JsonObject plan, List<CourseTaken> courses, List<MilestoneSet> milestones, Degree degree) {
         //create the needed elements
         List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>();
+
+        // TODO: determine if I should break these out into individual methods
+        // probably should
+        
+        // Check For Breadth Courses
+        retVal.add(checkBreadthRequirements(courses, degree));
+        
+        // check overall and in-course GPAs requirements
+        retVal.addAll(checkGPARequirementCheckResults(courses, degree));
+        
+        // credit requirements
+        retVal.addAll(checkCreditRequirements(courses, degree));
+        
+    	// PHD research intro courses
+    	if (degree == Degree.PHD){
+    		retVal.add(checkResearchIntro(courses, degree));
+    	}
+        // Thesis_phd credits
+        if(degree == Degree.PHD || degree == Degree.MS_A);
+        
+        // colloqium
+        retVal.add(checkColloquium(courses, degree));
+        
+        // MS B project
+    	if(degree == Degree.MS_B){
+            retVal.add(checkPlanBProject(courses, degree));
+    	}
+
+
+    	
+        // phd level courses MS plans
+        if(degree != Degree.PHD){
+        	retVal.add(checkPHDLevelCsciCourses(courses, degree));
+        }
+        
+        // Check and add Milestones
+        retVal.addAll(checkMilestones(milestones, degree));
+        
+        return retVal;
+    }
+    
+    private RequirementCheckResult checkColloquium(List<CourseTaken> courses, Degree degree) {
+    	RequirementCheckResult result = new RequirementCheckResult("COLLOQUIUM", false);
+        CheckResultDetails details = new CheckResultDetails();
+        List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
+        
+        for (CourseTaken c: courses){
+        	if (c.getCourse().getId().equals("csci8970")){
+        		if (passedCourse(c, true)){
+        			tempCourseList.add(c);
+        			result.setPassed(true);
+        		}
+        	}
+        }
+        
+        // add an error message
+        if(!result.isPassed()){
+        	result.addErrorMsg("Course csci8970, Computer Science Colloquium, was not taken/passed.");
+        }
+        
+        details.setCourses(tempCourseList);
+        result.setDetails(details);
+        
+        return result;
+    }
+    /**
+     * Checks if a student has passed the plan B project
+     * @param courses
+     * @param degree
+     * @return a RequirementCheckResult
+     */
+    private RequirementCheckResult checkPlanBProject(List<CourseTaken> courses, Degree degree){
+    	RequirementCheckResult result = new RequirementCheckResult("INTRO_TO_RESEARCH");
+        CheckResultDetails details = new CheckResultDetails();
+        List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
+        
+        // leave if not MS_B
+        if(degree != Degree.MS_B){
+        	return null;
+        }
+        
+        // look through all courses for csci8760
+        for (CourseTaken c: courses){
+        	if (c.getCourse().getId().equals("csci8760")){
+        		if (passedCourse(c, true)){
+        			tempCourseList.add(c);
+        			result.setPassed(true);
+        		}
+        	}
+        }
+        
+        // set the error message
+        if(!result.isPassed()){
+        	result.addErrorMsg("Course csci8760, Plan B Project, has not taken/passed.");
+        }
+
+        // add it all up and return
+        details.setCourses(tempCourseList);
+        result.setDetails(details);
+        return result;
+    }
+    
+    /**
+     * check that a PHD student has taken csci8001 and csci8002
+     * @param courses
+     * @param degree
+     * @return
+     */
+    private RequirementCheckResult checkResearchIntro(List<CourseTaken> courses, Degree degree){
+    	RequirementCheckResult result = new RequirementCheckResult("INTRO_TO_RESEARCH");
+        CheckResultDetails details = new CheckResultDetails();
+        List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
+    	
+        boolean passed8001 = false;
+        boolean passed8002 = false;
+        
+    	if (degree != Degree.PHD){
+    		return null;
+    	}
+    	
+    	// look through all courses for csci8001 and csci 8002
+        for (CourseTaken c: courses){
+    		if (passedCourse(c, true)){
+    			if(c.getCourse().getId().equals("csci8001")) {
+    				passed8001 = true;
+    				tempCourseList.add(c);
+    			}
+    			else if (c.getCourse().getId().equals("csci8002")){
+    				passed8002 = true;
+    				tempCourseList.add(c);
+    			}
+    		}
+        }
+        
+        // check that both courses are passed
+        if (passed8001) {
+        }
+        else {
+        	result.setPassed(false);
+        	result.addErrorMsg("Course csci8001 has not taken/passed.");
+        }
+        if (passed8002) {
+        }
+        else {
+        	result.setPassed(false);
+        	result.addErrorMsg("Course csci8002 has not taken/passed.");
+        }
+
+        
+        details.setCourses(tempCourseList);
+        result.setDetails(details);
+    	
+    	return result;
+    }
+    
+    /**
+     * 
+     * @param courses
+     * @param degree
+     * @return
+     */
+    private List<RequirementCheckResult> checkGPARequirementCheckResults(List<CourseTaken> courses, Degree degree){
+    	//create the needed elements
+        List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>();
         RequirementCheckResult result;
         CheckResultDetails details;
         List<CourseTaken> tempCourseList;
-        // TODO: determine if I should break these out into individual methods
-        // probably should
         
         // check overall and in-course GPAs requirements
         double minGPA;
@@ -129,11 +291,20 @@ public class SummaryBuilder {
         }
         
         // compare GPA with minimum
-        gpa = (float) (totalSum/credits);
+     // compare GPA with minimum
+        if (credits == 0){
+        	gpa = (float) 0;
+        }
+        else {
+        	gpa = (float) (totalSum/credits);
+        }
         if (gpa < minGPA){
         	result.setPassed(false);
         	result.addErrorMsg("Overall GPA is bellow the minimum");
         }
+        
+        retVal.add(result);
+        
         
         // create a new result for in course gpa
         if(degree == Degree.PHD) {
@@ -144,8 +315,16 @@ public class SummaryBuilder {
         }
         
         // compare GPA with minimum
-        gpa = (float) (incourseSum/credits);
-        if (gpa < minGPA){
+        if (credits == 0){
+        	gpa = (float) 0;
+        }
+        else {
+        	gpa = (float) (incourseSum/credits);
+        }
+        
+        if (gpa >= minGPA){
+        }
+        else {
         	result.setPassed(false);
         	result.addErrorMsg("In course  GPA is bellow the minimum");
         }
@@ -153,15 +332,22 @@ public class SummaryBuilder {
         // add to result list
         retVal.add(result);
         
-        /*============================================================================*/
-        /*----------------------------------------------------------------------------*/
+        return retVal;
+    }
+    
+    /**
+     * Checks requirements related to credits
+     * @param courses
+     * @param degree
+     * @return
+     */
+    
+    private List<RequirementCheckResult> checkCreditRequirements(List<CourseTaken> courses, Degree degree){
+    	List<RequirementCheckResult>retVal = new ArrayList<RequirementCheckResult>();
+    	RequirementCheckResult result = new RequirementCheckResult("TOTAL_CREDITS");
+        CheckResultDetails details = new CheckResultDetails();
         
-        // credit requirements
-        
-        // Total credits
-        result = new RequirementCheckResult("TOTAL_CREDITS");
-        tempCourseList = new ArrayList<CourseTaken>();
-        details = new CheckResultDetails();
+        List<CourseTaken>tempCourseList = new ArrayList<CourseTaken>();
         double csciCredits = 0;
         double totalCredits = 0;
         
@@ -216,7 +402,6 @@ public class SummaryBuilder {
         /*----------------------------------------------------------------------------*/
         
         // out of department: PHD
-      
         if(degree == Degree.PHD){
             result = new RequirementCheckResult("TOTAL_CREDITS");
             tempCourseList = new ArrayList<CourseTaken>();
@@ -288,8 +473,7 @@ public class SummaryBuilder {
         		}
         	}
             
-            
-            // check that we have enough credits
+            // check that the student have enough credits
             if(courseCredits >= 22){
             }
             else {
@@ -309,182 +493,166 @@ public class SummaryBuilder {
             retVal.add(result);
         }
         
-        /*----------------------------------------------------------------------------*/
+        return retVal;
+    }
+    
+    /**
+     * Check that a PHD or MSA student has taken enough thesis credits
+     * @param courses
+     * @param degree - the degree of the student
+     * @return
+     */
+    private RequirementCheckResult checkThesisRequirements(List<CourseTaken> courses, Degree degree){
+    	RequirementCheckResult result;
+    	List<CourseTaken>tempCourseList = new ArrayList<CourseTaken>();
+        CheckResultDetails details = new CheckResultDetails();
         
-        // check for various specific requirements
-        
-        // colloqium
-        result = new RequirementCheckResult("COLLOQUIUM", false);
-        tempCourseList = new ArrayList<CourseTaken>();
-        details = new CheckResultDetails();
-        
-        for (CourseTaken c: courses){
-        	if (c.getCourse().getId().equals("csci8970")){
-        		if (passedCourse(c, true)){
-        			tempCourseList.add(c);
-        			result.setPassed(true);
-        		}
-        	}
+        if (degree == Degree.PHD){
+	        result = new RequirementCheckResult("THESIS_PHD");
+	        tempCourseList = new ArrayList<CourseTaken>();
+	        details = new CheckResultDetails();
+	        int tempSum = 0;
+	        
+	        // look for the required course
+	        for (CourseTaken c: courses){
+	        	if (c.getCourse().getId().equals("csci8888")){
+	        		if (passedCourse(c, true)){
+	        			tempCourseList.add(c);
+	        			tempSum += Integer.getInteger(c.getCourse().getNumCredits());	// add number of credits to total
+	        		}
+	        	}
+	        }
+	        
+	        // check if enough thesis credits have been taken
+	        if(tempSum >= 24){
+	        }
+	        else {
+	        	result.setPassed(false);
+	        	result.addErrorMsg("Less than 24 credits have been taken from csci8888, Thesis Credits: Doctorial.");
+	        }
+	        
+	        details.setCourses(tempCourseList);
+	        result.setDetails(details);
+	        return result;
         }
-        if(!result.isPassed()){
-        	result.addErrorMsg("Course csci8970, Computer Science Colloquium, was not taken/passed.");
-        }
-        
-        details.setCourses(tempCourseList);
-        result.setDetails(details);
-        retVal.add(result);
-        
-        /*----------------------------------------------------------------------------*/
-        
-        // Thesis_phd credits
-        result = new RequirementCheckResult("THESIS_PHD");
-        tempCourseList = new ArrayList<CourseTaken>();
-        details = new CheckResultDetails();
-        int tempSum = 0;
-        
-        // look for the required course
-        for (CourseTaken c: courses){
-        	if (c.getCourse().getId().equals("csci8888")){
-        		if (passedCourse(c, true)){
-        			tempCourseList.add(c);
-        			tempSum += Integer.getInteger(c.getCourse().getNumCredits());	// add number of credits to total
-        		}
-        	}
-        }
-        
-        // check if enough thesis credits have been taken
-        if(tempSum >= 24){
-        }
-        else {
-        	result.setPassed(false);
-        	result.addErrorMsg("Less than 24 credits have been taken from csci8888, Thesis Credits: Doctorial.");
-        }
-        
-        details.setCourses(tempCourseList);
-        result.setDetails(details);
-        retVal.add(result);
         
         // Thesis_MS_A credits
-        result = new RequirementCheckResult("THESIS_MS", false);
-        tempCourseList = new ArrayList<CourseTaken>();
-        details = new CheckResultDetails();
-        tempSum = 0;
+        else if (degree == Degree.MS_A) {
+	        result = new RequirementCheckResult("THESIS_MS");
+	        tempCourseList = new ArrayList<CourseTaken>();
+	        details = new CheckResultDetails();
+	        int tempSum = 0;
+	        
+	        // look for the required course
+	        for (CourseTaken c: courses){
+	        	if (c.getCourse().getId().equals("csci8777")){
+	        		if (passedCourse(c, true)){
+	        			tempCourseList.add(c);
+	        			tempSum += Integer.getInteger(c.getCourse().getNumCredits());	// add number of credits to total
+	        		}
+	        	}
+	        }
+	        
+	        // check if enough thesis credits have been taken
+	        if(tempSum >= 10){
+	        }
+	        else {
+	        	result.setPassed(false);
+	        	result.addErrorMsg("Less than 10 credits have been taken from csci8888, Thesis Credits: Masters.");
+	        }
+	        
+	        details.setCourses(tempCourseList);
+	        result.setDetails(details);
+	        return result;
+        }
+        else {
+        	return null;
+        }
+    }
+    
+    /**
+     * Check that MS students have passed PHD courses
+     * @param courses
+     * @param degree
+     * @return
+     */
+    private RequirementCheckResult checkPHDLevelCsciCourses(List<CourseTaken> courses, Degree degree){
+    	RequirementCheckResult result;
+    	List<CourseTaken>tempCourseList = new ArrayList<CourseTaken>();
+        CheckResultDetails details = new CheckResultDetails();
         
-        // look for the required course
+        
+    	// PHD student don't need this requirement
+        // Set appropriate result name
+    	if(degree == Degree.PHD){
+    		return null;
+    	}
+    	else if(degree == Degree.MS_C){
+    		result = new RequirementCheckResult("PHD_LEVEL_COURSES_PLANC");
+    	}
+    	else {
+    		result = new RequirementCheckResult("PHD_LEVEL_COURSES");
+    	}
+    	
+    	// find all PHD level courses
         for (CourseTaken c: courses){
-        	if (c.getCourse().getId().equals("csci8777")){
-        		if (passedCourse(c, true)){
+        	if (c.getCourse().getId().contains("csci8")){
+        		if (passedCourse(c, false)){
         			tempCourseList.add(c);
-        			tempSum += Integer.getInteger(c.getCourse().getNumCredits());	// add number of credits to total
         		}
         	}
         }
         
-        // check if enough thesis credits have been taken
-        if(tempSum >= 10){
-        	result.setPassed(true);
-        }
-        else {
-        	result.addErrorMsg("Less than 10 credits have been taken from csci8888, Thesis Credits: Masters.");
-        }
+        tempCourseList = removeDuplicateCourses(tempCourseList);
         
-        /*----------------------------------------------------------------------------*/
-        
-        // MS B project
-        
-    	if(degree == Degree.MS_B){
-            result = new RequirementCheckResult("PLAN_B_PROJECT");
-            tempCourseList = new ArrayList<CourseTaken>();
-            details = new CheckResultDetails();
-            
-            for (CourseTaken c: courses){
-            	if (c.getCourse().getId().equals("csci8760")){
-            		if (passedCourse(c, true)){
-            			tempCourseList.add(c);
-            			result.setPassed(true);
-            		}
-            	}
-            }
-            // set the error message
-            if(!result.isPassed()){
-            	result.addErrorMsg("Course csci8760, Plan B Project, has not taken/passed.");
-            }
-            
-            details.setCourses(tempCourseList);
-            result.setDetails(details);
-            retVal.add(result);
-    	}
-    
-    	/*----------------------------------------------------------------------------*/
-    	
-        // phd level courses MS A and B
-    	if(degree == Degree.MS_A || degree == Degree.MS_B){
-            result = new RequirementCheckResult("PHD_LEVEL_COURSES");
-            tempCourseList = new ArrayList<CourseTaken>();
-            details = new CheckResultDetails();
-            
-            for (CourseTaken c: courses){
-            	if (c.getCourse().getId().contains("csci8")){
-            		if (passedCourse(c, false)){
-            			tempCourseList.add(c);
-            			result.setPassed(true);
-            		}
-            	}
-            }
-            // set the error message
-            if(!result.isPassed()){
-            	result.addErrorMsg("A phd level course, csci 8000+, has not been taken/passed");
-            }
-            
-            details.setCourses(tempCourseList);
-            result.setDetails(details);
-            retVal.add(result);
-    	}
-    	
-    	/*----------------------------------------------------------------------------*/
-    	
-    	// phd level courses MS C
-    	if(degree == Degree.MS_C){
-            result = new RequirementCheckResult("PHD_LEVEL_COURSES_PLANC");
-            tempCourseList = new ArrayList<CourseTaken>();
-            details = new CheckResultDetails();
-            
-            for (CourseTaken c: courses){
-            	if (c.getCourse().getId().contains("csci8")){
-            		if (passedCourse(c, false)){
-            			tempCourseList.add(c);
-            		}
-            	}
-            }
-            
-            // check if at least 2 phd courses have been completed
-            if(tempCourseList.size() >= 2){
-            	result.setPassed(true);
+        // check if the student has taken enough PHD courses
+        if (degree == Degree.MS_C){
+        	if(tempCourseList.size() >= 2){
             }
             else{
+            	result.setPassed(false);
             	result.addErrorMsg("At least two phd level courses, csci 8000+, has not been taken/passed");
             }
-            
-            details.setCourses(tempCourseList);
-            result.setDetails(details);
-            retVal.add(result);
-    	}
+        }
+        else {
+        	if(tempCourseList.size() >= 1) {
+        	}
+        	else {
+        		result.setPassed(false);
+        		result.addErrorMsg("A phd level course, csci 8000+, has not been taken/passed");
+        	}
+        	
+        }
+
         
-        /*----------------------------------------------------------------------------*/
-        
-        // Check For Breadth Courses
-        tempCourseList = new ArrayList<CourseTaken>();
-        details = new CheckResultDetails();
+        details.setCourses(tempCourseList);
+        result.setDetails(details);
+        return result;
+    }
+    
+    /**
+     * check the breadth requirement
+     * @param courses
+     * @param degree
+     * @return
+     */
+    private RequirementCheckResult checkBreadthRequirements(List<CourseTaken> courses, Degree degree){
+    	RequirementCheckResult result;
+    	CheckResultDetails details= new CheckResultDetails();;
+    	List<CourseTaken>tempCourseList = new ArrayList<CourseTaken>();
         int breadthCourseTotal;
+        float minGPA, gpa;
         
         // determine which version to use
         if(degree == Degree.PHD) {
         	result = new RequirementCheckResult("BREADTH_REQUIREMENT_PHD");
         	breadthCourseTotal = 5;
+        	minGPA = (float) 3.45;
         }
         else {
         	result = new RequirementCheckResult("BREADTH_REQUIREMENT_MS");
         	breadthCourseTotal = 3;
+        	minGPA = (float) 3.25;
         }
         
         // lists of all courses, sorted by area
@@ -538,6 +706,7 @@ public class SummaryBuilder {
         archCoursesTaken = sortByGrade(removeDuplicateCourses(archCoursesTaken));
         theoryCoursesTaken = sortByGrade(removeDuplicateCourses(theoryCoursesTaken));
         
+        // check that each area has at least course
         if(appCoursesTaken.isEmpty()){
         	result.addErrorMsg("An Application course has not been completed witha C- or better");
         	result.setPassed(false);
@@ -577,10 +746,20 @@ public class SummaryBuilder {
         // TODO: make sure GPA is done right
         details.setGPA(gpa);
         result.setDetails(details);
-        retVal.add(result);
-        
-        /*------------------------------------------------------------------------------*/
-        
+    	return result;
+    }
+    
+    /**
+     * Creates a list of RequirmentCheckResults based on what milestones have been completed
+     * @param milestones
+     * @param degree
+     * @return
+     */
+    private List<RequirementCheckResult> checkMilestones(List<MilestoneSet> milestones, Degree degree){
+    	List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>();
+    	RequirementCheckResult result;
+    	CheckResultDetails details;
+    	
         // Determine which milestones have been passed
         Milestone[] planMilestones;
         
