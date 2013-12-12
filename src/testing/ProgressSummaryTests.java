@@ -104,4 +104,5 @@ public class ProgressSummaryTests {
 		
 		return null;
 	}
+
 }

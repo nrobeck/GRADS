@@ -4,70 +4,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequirementCheckResult {
-	private String name;
-	private boolean passed;
-	private List<String> errorMsgs = null;
-	private CheckResultDetails details;
-	
-	public void addErrorMsg(String errorMsg) {
-		if (errorMsgs == null) errorMsgs = new ArrayList<String>();
-		errorMsgs.add(errorMsg);
-		setPassed(false);
-	}
+    private String name;
+    private boolean passed;
+    private List<String> errorMsgs = null;
+    private CheckResultDetails details;
 
-	public RequirementCheckResult(String name) {
-		this.name = name;
-		this.passed = true;
-	}
+    public void addErrorMsg(String errorMsg) {
+        if (errorMsgs == null) errorMsgs = new ArrayList<String>();
+        errorMsgs.add(errorMsg);
+        setPassed(false);
+    }
 
-	public RequirementCheckResult(String name, boolean passed) {
-		this.name = name;
-		this.passed = passed;
-	}
+    public RequirementCheckResult(String name) {
+        this.name = name;
+        this.passed = true;
+    }
 
-	public RequirementCheckResult(String name, boolean passed,
-			List<String> errorMsgs) {
-		this.name = name;
-		this.passed = passed;
-		this.errorMsgs = errorMsgs;
-	}
-	
-	public RequirementCheckResult(String name, boolean passed, CheckResultDetails details) {
-		this.name = name;
-		this.passed = passed;
-		this.details = details;
-	}
+    public RequirementCheckResult(String name, boolean passed) {
+        this.name = name;
+        this.passed = passed;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public RequirementCheckResult(String name, boolean passed,
+            List<String> errorMsgs) {
+        this.name = name;
+        this.passed = passed;
+        this.errorMsgs = errorMsgs;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public RequirementCheckResult(String name, boolean passed, CheckResultDetails details) {
+        this.name = name;
+        this.passed = passed;
+        this.details = details;
+    }
 
-	public boolean isPassed() {
-		return passed;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setPassed(boolean passed) {
-		this.passed = passed;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<String> getErrorMsgs() {
-		return errorMsgs;
-	}
+    public boolean isPassed() {
+        return passed;
+    }
 
-	public void setErrorMsgs(List<String> errorMsgs) {
-		this.errorMsgs = errorMsgs;
-	}
+    public void setPassed(boolean passed) {
+        this.passed = passed;
+    }
 
-	public CheckResultDetails getDetails() {
-		return details;
-	}
-	
-	public void setDetails(CheckResultDetails details){
-		this.details=details;
-	}
-	
+    public List<String> getErrorMsgs() {
+        return errorMsgs;
+    }
+
+    public void setErrorMsgs(List<String> errorMsgs) {
+        this.errorMsgs = errorMsgs;
+    }
+
+    public CheckResultDetails getDetails() {
+        return details;
+    }
+
+    public void setDetails(CheckResultDetails details){
+        this.details=details;
+    }
+
 }

@@ -23,7 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
     MilestonesTests.class,
     PersistentDataTests.class,
     ProgressSummaryTests.class,
-    TimestampsTests.class    
+    TimestampsTests.class
 })
 public class RequirementsTestSuite {
 

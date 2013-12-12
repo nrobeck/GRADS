@@ -6,7 +6,7 @@ package exceptions;
  *
  */
 public class InvalidX500Exception extends Exception{
-    
+
     //stores the ID causing the exception
     private String invalidID;
 
@@ -15,12 +15,12 @@ public class InvalidX500Exception extends Exception{
      * @param invalidId the X500 causing the exception
      */
     public InvalidX500Exception(String invalidId) {
-        //continue where super left off at time of exception throwing 
+        //continue where super left off at time of exception throwing
         super();
         //store the X500 causing the exception
         invalidID = invalidId;
     }
-        
+
     /**
      * Returns a error message explaining the cause of the exception.
      * @return message An error message explaining the exception.

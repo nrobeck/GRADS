@@ -26,7 +26,7 @@
         "role": "STUDENT",
         "department": "COMPUTER_SCIENCE"
     },
-    
+
     {
         "user": {
             "id": "student001",
@@ -36,6 +36,10 @@
         "role": "STUDENT",
         "department": "COMPUTER_SCIENCE"
     },
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8f56d75306261ee76162b04fc647bb50f8da6a30
     {
         "user": {
             "id": "studentMSA000",

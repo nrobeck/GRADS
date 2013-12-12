@@ -12,9 +12,9 @@ import edu.umn.csci5801.model.StudentRecord;
 
 /**
  * The module of GRADS used to get and store transcripts.
- * 
+ *
  * @author Nathan
- * 
+ *
  */
 public class TranscriptHandler {
 	// private data manager and validator
@@ -73,80 +73,77 @@ public class TranscriptHandler {
 		dbManager.storeTranscript(studentID, transcript);
 	}
 
+    /**
+     * Checks the validity of all the values of the input record.
+     *
+     * @param record
+     *            student record to validate
+     * @return true if valid, false if invalid
+     */
+    private boolean validateTranscript(StudentRecord transcript) {
+        // send the transcript to the validator
+        dataValidator.setTranscript(transcript);
+        // create boolean to return
+        boolean valid = false;
 
-	/**
-	 * Checks the validity of all the values of the input record.
-	 * 
-	 * @param record
-	 *            student record to validate
-	 * @return true if valid, false if invalid
-	 */
-	private boolean validateTranscript(StudentRecord transcript) {
-		// send the transcript to the validator
-		dataValidator.setTranscript(transcript);
-		// create boolean to return
-		boolean valid = false;
+        // check each field result from data validator
+        // check if student is valid
+        if (dataValidator.studentIsValid()) {
+            // check if department is valid
+            if (dataValidator.departmentIsValid()) {
+                // check if degree is valid
+                if (dataValidator.degreeIsValid()) {
+                    // check if term is valid
+                    if (dataValidator.termIsValid()) {
+                        // check if professor is valid
+                        if (dataValidator.professorsAreValid()) {
+                            // check if course is valid
+                            if (dataValidator.coursesAreValid()) {
+                                // if all nested ifs are true, record is
+                                // valid->set valid to true
+                                valid = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-		// check each field result from data validator
-		// check if student is valid
-		if (dataValidator.studentIsValid()) {
-			// check if department is valid
-			if (dataValidator.departmentIsValid()) {
-				// check if degree is valid
-				if (dataValidator.degreeIsValid()) {
-					// check if term is valid
-					if (dataValidator.termIsValid()) {
-						// check if professor is valid
-						if (dataValidator.professorsAreValid()) {
-							// check if course is valid
-							if (dataValidator.coursesAreValid()) {
-								// if all nested ifs are true, record is
-								// valid->set valid to true
-								valid = true;
-							}
-						}
-					}
-				}
-			}
-		}
+        return valid;
+    }
 
-		return valid;
-	}
+    /**
+     * Retrieve the student record for the student whose id is given.
+     *
+     * @param userId
+     *            id of the student whose record needs retrieval
+     * @return the record of the student
+     */
+    public StudentRecord getTranscript(String userId) {
+        // create the student record
+        StudentRecord record = dbManager.getStudentData(userId);
+        if (record == null) {
+            return null;
+        }
+        // make sure that all values are not null
+        if (record.getAdvisors() == null) {
+            record.setAdvisors(new ArrayList<Professor>());
+        }
 
-	/**
-	 * Retrieve the student record for the student whose id is given.
-	 * 
-	 * @param userId
-	 *            id of the student whose record needs retrieval
-	 * @return the record of the student
-	 */
-	public StudentRecord getTranscript(String userId) {
-		// create the student record
-		StudentRecord record = dbManager.getStudentData(userId);
-		if (record == null) {
-			return null;
-		}
-		// make sure that all list varibales are not null
-		if (record.getAdvisors() == null) {
-			record.setAdvisors(new ArrayList<Professor>());
-		}
+        // TODO: make sure all other things are not null
 
-		if (record.getCommittee() == null) {
-			record.setAdvisors(new ArrayList<Professor>());
-		}
+        // make sure the courses Taken list is not null
+        if (record.getCoursesTaken() == null) {
+            record.setCoursesTaken(new ArrayList<CourseTaken>());
+        }
 
-		// make sure the courses Taken list is not null
-		if (record.getCoursesTaken() == null) {
-			record.setCoursesTaken(new ArrayList<CourseTaken>());
-		}
+        // make sure the milestone sets list is not null
+        if (record.getMilestonesSet() == null) {
+            record.setMilestonesSet(new ArrayList<MilestoneSet>());
+        }
 
-		// make sure the milestone sets list is not null
-		if (record.getMilestonesSet() == null) {
-			record.setMilestonesSet(new ArrayList<MilestoneSet>());
-		}
-
-		// return the record
-		return record;
-	}
+        // return the record
+        return record;
+    }
 
 }
