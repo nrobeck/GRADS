@@ -100,7 +100,7 @@ public class GRADS implements GRADSIntf{
             //set the current user
             currentUser = dbManager.getUserByID(userId);
             //set the boolean result of whether or not the currentUser is a GPC
-            GPC = (currentUser.getRole() == "GPC");
+            GPC = (currentUser.getRole() == "GRADUATE_PROGRAM_COORDINATOR");
         }
         //if the userId is not in the system, go here
         else {
