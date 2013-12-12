@@ -1,17 +1,18 @@
 package testing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import edu.umn.csci5801.DataManager;
 import org.junit.Test;
 
 public class DataManagerTests {
-	
+
 	private String courseFile = "data/courses.txt";
 	private String studentsFile = "data/students.txt";
 	private String progressFile = "data/progress.txt";
 	private String usersFile = "data/users.txt";
 	private String plansFile = "data/plans1.txt";
-	
+
 	public DataManagerTests(){
 		super();
 		this.courseFile = "data/courses.txt";
@@ -20,7 +21,7 @@ public class DataManagerTests {
 		this.usersFile = "data/users.txt";
 		this.plansFile = "data/plans1.txt";
 	}
-	
+
 	public DataManager createDefaultManager(){
 		return new DataManager(courseFile, studentsFile, progressFile, usersFile, plansFile);
 	}
