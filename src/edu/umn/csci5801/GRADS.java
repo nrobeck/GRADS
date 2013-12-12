@@ -58,9 +58,9 @@ usersFileName) {
     private String studentsFile;
     private String coursesFile;
     private String usersFile;
-    private SummaryBuilder summaryBuilder = new SummaryBuilder();
     private DataManager dbManager = new DataManager(coursesFile, studentsFile, null, usersFile);
     private TranscriptHandler transcriptHandler = new TranscriptHandler(dbManager);
+    private SummaryBuilder summaryBuilder = new SummaryBuilder(dbManager, transcriptHandler);
     private boolean GPC;
 
     /**

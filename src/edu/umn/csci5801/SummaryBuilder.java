@@ -110,12 +110,22 @@ public class SummaryBuilder {
         double totalSum = 0;
         double incourseSum = 0;
         double credits = 0;
+        tempCourseList = new ArrayList<CourseTaken>();
+
+        // copy the course list
         for (CourseTaken c: courses){
+        	tempCourseList.add(c);
+        }
+        // trim it
+        tempCourseList = removeDuplicateCourses(tempCourseList);
+        
+        // look through all courses
+        for (CourseTaken c: tempCourseList){
         	// only check A-F courses
         	if(c.getGrade().ordinal() <= Grade.F.ordinal()){
         		totalSum += c.getGrade().numericValue();
         		credits += Integer.parseInt(c.getCourse().getNumCredits());
-        		if(isInCourse(c.getCourse(), "csci")){
+        		if(isGraduteLevel(c.getCourse(), "csci")){
         			incourseSum += c.getGrade().numericValue();
         		}
         	}
@@ -146,19 +156,160 @@ public class SummaryBuilder {
         // add to result list
         retVal.add(result);
         
+        /*============================================================================*/
         /*----------------------------------------------------------------------------*/
         
         // credit requirements
         
-        // Total credits: PHD, MS B, and C
+        result = new RequirementCheckResult("TOTAL_CREDITS", false);
+        tempCourseList = new ArrayList<CourseTaken>();
+        details = new CheckResultDetails();
+        double csciCredits = 0;
+        double totalCredits = 0;
         
+        // Total credits:
+
+        // check each taken course
+        for (CourseTaken c: courses){
+        	// avoid thesis courses
+        	if (!(c.getCourse().getId().equals("csci8888") || c.getCourse().getId().equals("csci8777"))){
+        		// make sure that the course was passed
+        		if (passedCourse(c, false)) {
+        			// run tests on csci courses
+        			if(c.getCourse().getId().contains("csci")){
+        				// add it only if at graduate level
+        				if(isGraduteLevel(c.getCourse(), "csci")){
+        					tempCourseList.add(c);
+        					csciCredits += Integer.parseInt(c.getCourse().getNumCredits());
+        					totalCredits += Integer.parseInt(c.getCourse().getNumCredits());
+        				}
+        			}
+        			// Any C or higher non-csci course counts for total credits
+        			else {
+        				tempCourseList.add(c);
+        				totalCredits += Integer.parseInt(c.getCourse().getNumCredits());
+        			}
+        		}
+        	}
+        }
         
+        // check that we have enough credits
+        if(totalCredits >= 31){
+        	
+        }
+        else {
+        	result.setPassed(false);
+        	result.addErrorMsg("Not enough credits.  Need 31.");
+        }
+        // MS A does not need to check csci credits here
+        if(degree == Degree.MS_A) {
+        	// do nothing
+        }
+        else if (csciCredits >= 16){
+        	
+        }
+        else {
+        	result.setPassed(false);
+        	result.addErrorMsg("Not enough csci 5000+ credits.  Need 16.");
+        }
+        
+        details.setCourses(tempCourseList);
+        result.setDetails(details);
+        
+        retVal.add(result);
+        /*----------------------------------------------------------------------------*/
         
         // out of department: PHD
+      
+        if(degree == Degree.PHD){
+        	double tempCredits = 0;
+        	
+	        // check each taken course
+	        for (CourseTaken c: courses){
+	        	// find non csci courses
+	        	if (!(c.getCourse().getId().contains("csci"))){
+	        		// course must be passed C or better
+	        		if (passedCourse(c, false)) {
+        				// must be gradute level
+        				if(isGraduteLevel(c.getCourse(), "other")){
+        					tempCourseList.add(c);
+        					tempCredits += Integer.parseInt(c.getCourse().getNumCredits());
+        				}
+	        		}
+	        	}
+	        }
+	        
+	        // check that we have enough credits
+	        if(tempCredits >= 6){
+	        	
+	        }
+	        else {
+	        	result.setPassed(false);
+	        	result.addErrorMsg("Not enough out of department credits.  Need 6.");
+	        }
+	        
+	        details.setCourses(tempCourseList);
+	        result.setDetails(details);
+	        
+	        retVal.add(result);
+        }
         
-        // Total credits: MS A
+
+        /*----------------------------------------------------------------------------*/
         
-        // Course Credits: 
+        // Course Credits: BS A 
+        // TODO: Learn what course credits means
+        if(degree == Degree.MS_A) {
+        	result = new RequirementCheckResult("COURSE_CREDITS", false);
+            tempCourseList = new ArrayList<CourseTaken>();
+            details = new CheckResultDetails();
+            csciCredits = 0;
+            double courseCredits = 0;
+            
+        	// check each taken course
+            for (CourseTaken c: courses){
+            	// avoid thesis courses
+            	if (!(c.getCourse().getId().equals("csci8888") || c.getCourse().getId().equals("csci8777"))){
+            		// make sure that the course was passed
+            		if (passedCourse(c, false)) {
+            			// run tests on csci courses
+            			if(c.getCourse().getId().contains("csci")){
+            				// add it only if at graduate level
+            				if(isGraduteLevel(c.getCourse(), "csci")){
+            					tempCourseList.add(c);
+            					csciCredits += Integer.parseInt(c.getCourse().getNumCredits());
+            					courseCredits += Integer.parseInt(c.getCourse().getNumCredits());
+            				}
+            			}
+            			// Any C or higher non-csci course counts for total credits
+            			else {
+            				tempCourseList.add(c);
+            				courseCredits += Integer.parseInt(c.getCourse().getNumCredits());
+            			}
+            		}
+            	}
+            }
+            
+            // check that we have enough credits
+            if(courseCredits >= 22){
+            	
+            }
+            else {
+            	result.setPassed(false);
+            	result.addErrorMsg("Not enough course credits.  Need 22.");
+            }
+            if (csciCredits >= 16){
+            }
+            else {
+            	result.setPassed(false);
+            	result.addErrorMsg("Not enough csci 5000+ credits.  Need 16.");
+            }
+            
+            details.setCourses(tempCourseList);
+            result.setDetails(details);
+            
+            retVal.add(result);
+        }
         
         /*----------------------------------------------------------------------------*/
         
@@ -476,7 +627,7 @@ public class SummaryBuilder {
     	return false;
     }
     
-    private boolean isInCourse(Course course, String department){
+    private boolean isGraduteLevel(Course course, String department){
     	// check that the course Id contains the department string
     	if (department.equals("other") || course.getId().contains(department)){
     		int level = Integer.parseInt(course.getId().substring(department.length()-1, department.length()));
@@ -486,6 +637,40 @@ public class SummaryBuilder {
     	}
     	
     	return false;
+    }
+    
+    /**
+     * Utility function that removes duplicate courses from a lists
+     * @param coursesTaken - list of courses
+     * @return a trimmed version of coursesTaken
+     */
+    private List<CourseTaken> removeDuplicateCourses(List<CourseTaken> coursesTaken){
+    	List<CourseTaken> retVal = new ArrayList<CourseTaken>();
+    	
+    	for(CourseTaken c: coursesTaken){
+    		boolean addOK = true;
+    		for(CourseTaken d: retVal){
+    			// if two course that are not exactly the same are found
+    			if(c.equals(d)){
+    				addOK = false;
+    			}
+    			else if((c.getCourse().getId().equals(d.getCourse().getId()))){
+    				if(c.getGrade().numericValue() >= d.getGrade().numericValue()){
+    					retVal.remove(d);	// remove the old best grade
+    				}
+    				else {
+    					addOK = false;		// There already exists a better grade course
+    				}
+    			}
+    		}
+    		
+    		// add the course if it is OK
+    		if(addOK){
+    			retVal.add(c);
+    		}
+    	}
+    	
+    	return retVal;
     }
 
     
