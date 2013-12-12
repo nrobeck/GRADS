@@ -534,8 +534,17 @@ public class SummaryBuilder {
             for (CourseTaken c: courses){
                 if (c.getCourse().getId().equals("csci8888")){
                     if (passedCourse(c, true, simulate)){
-                        tempCourseList.add(c);
-                        tempSum += Integer.parseInt(c.getCourse().getNumCredits());	// add number of credits to total
+                    	// credits was properly written to database
+                    	try {
+                        	Integer temp = Integer.parseInt(c.getCourse().getNumCredits());
+                        	if (temp != null){
+    	                        tempCourseList.add(c);
+    	                        tempSum += temp;	// add number of credits to total
+                        	}
+                    	} catch(Exception e) {
+                    		// keep going
+                    	}
+
                     }
                 }
             }
@@ -830,7 +839,7 @@ public class SummaryBuilder {
 
             // check if a student has passed this milestone
             for (MilestoneSet m: milestones){
-                if(s.equals(m.getMilestone())){
+                if((m != null) && m.getMilestone().equals(s)){
                     result.setPassed(true);
                 }
             }
@@ -887,6 +896,10 @@ public class SummaryBuilder {
      * @return true if the course was passed, false if not
      */
     private boolean passedCourse(CourseTaken course, boolean passFail, boolean simulate){
+    	if(course == null){
+    		return false;
+    	}
+    	
         // check if C or greater
         if (course.getGrade().numericValue() >= Grade.C.numericValue()){
             return true;

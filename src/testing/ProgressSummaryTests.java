@@ -27,14 +27,14 @@ public class ProgressSummaryTests {
 		GRADS grads = new GRADS("src/resources/studentsTest001.txt", "src/resources/courses.txt", "src/resources/usersTest.txt");
 		
 		try {
-			grads.setUser("student001");
+			grads.setUser("studentPHD");
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		ProgressSummary summary = new ProgressSummary();
 		try {
-			summary = grads.generateProgressSummary("student001");
+			summary = grads.generateProgressSummary("studentPHD");
 			
 			// check that all requirements check results were created
 			String[] reqList = new String[]{"BREADTH_REQUIREMENT_PHD", "THESIS_PHD", "COLLOQUIUM", "OUT_OF_DEPARTMENT", "INTRO_TO_RESEARCH", "TOTAL_CREDITS", "OVERALL_GPA_PHD", "IN_PROGRAM_GPA_PHD",
@@ -46,8 +46,8 @@ public class ProgressSummaryTests {
 			}
 			
 			// check for MS A requirements
-			grads.setUser("studentMSA000");
-			summary = grads.generateProgressSummary("studentMSA000");
+			grads.setUser("studentMSA");
+			summary = grads.generateProgressSummary("studentMSA");
 			
 			// check that all requirements check results were created
 			reqList = new String[]{"BREADTH_REQUIREMENT_MS", "THESIS_MS", "COLLOQUIUM", "PHD_LEVEL_COURSES", "TOTAL_CREDITS", "COURSE_CREDITS", "OVERALL_GPA_MS", "IN_PROGRAM_GPA_MS",
@@ -59,8 +59,8 @@ public class ProgressSummaryTests {
 			}
 			
 			// check for MS B requirements
-			grads.setUser("studentMSB000");
-			summary = grads.generateProgressSummary("studentMSB000");
+			grads.setUser("studentMSB");
+			summary = grads.generateProgressSummary("studentMSB");
 			
 			// check that all requirements check results were created
 			reqList = new String[]{"BREADTH_REQUIREMENT_MS", "PLAN_B_PROJECT", "COLLOQUIUM", "PHD_LEVEL_COURSES", "TOTAL_CREDITS", "OVERALL_GPA_MS", "IN_PROGRAM_GPA_MS",
@@ -71,8 +71,8 @@ public class ProgressSummaryTests {
 			}
 	
 			// check for MS C requirements
-			grads.setUser("studentMSC000");
-			summary = grads.generateProgressSummary("studentMSC000");
+			grads.setUser("studentMSC");
+			summary = grads.generateProgressSummary("studentMSC");
 			
 			// check that all requirements check results were created
 			reqList = new String[]{"BREADTH_REQUIREMENT_MS", "COLLOQUIUM", "PHD_LEVEL_COURSES_PLANC", "TOTAL_CREDITS", "OVERALL_GPA_MS", "IN_PROGRAM_GPA_MS",
@@ -81,6 +81,58 @@ public class ProgressSummaryTests {
 				Assert.assertNotNull("MS_C Summary requires requirement: " + s, getRequirement(summary, s));
 				Assert.assertFalse("Requirement, " + s + ", Should not be passed", getRequirement(summary, s).isPassed());
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void checkCompletedSummaries(){
+		GRADS grads = new GRADS("src/resources/studentsTest111.txt", "src/resources/courses.txt", "src/resources/usersTest.txt");
+		
+		try {
+			grads.setUser("studentPHD");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		ProgressSummary summary = new ProgressSummary();
+		try {
+			summary = grads.generateProgressSummary("studentPHD");
+			
+			// check that all requirements check results were passed
+			for (RequirementCheckResult r: summary.getRequirementCheckResults()){
+				Assert.assertTrue("Requirement, " + r.getName() + ", Should be passed", r.isPassed());
+			}
+			
+			// check for MS A requirements
+			grads.setUser("studentMSA");
+			summary = grads.generateProgressSummary("studentMSA");
+			
+			// check that all requirements check results were passed
+			for (RequirementCheckResult r: summary.getRequirementCheckResults()){
+				Assert.assertTrue("Requirement, " + r.getName() + ", Should be passed", r.isPassed());
+			}
+			
+			// check for MS B requirements
+			grads.setUser("studentMSB");
+			summary = grads.generateProgressSummary("studentMSB");
+			
+			// check that all requirements check results were passed
+			for (RequirementCheckResult r: summary.getRequirementCheckResults()){
+				Assert.assertTrue("Requirement, " + r.getName() + ", Should be passed", r.isPassed());
+			}
+			
+			// check for MS C requirements
+			grads.setUser("studentMSC");
+			summary = grads.generateProgressSummary("studentMSC");
+			
+			// check that all requirements check results were passed
+			for (RequirementCheckResult r: summary.getRequirementCheckResults()){
+				Assert.assertTrue("Requirement, " + r.getName() + ", Should be passed", r.isPassed());
+			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

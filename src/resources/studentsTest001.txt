@@ -3,7 +3,7 @@
   {
 
     "student": {
-      "id": "student001",
+      "id": "studentPHD",
       "firstName": "Greg",
       "lastName": "Gay"
 
@@ -30,7 +30,7 @@
   
     {
     "student": {
-      "id": "studentMSA000",
+      "id": "studentMSA",
       "firstName": "Greg",
       "lastName": "Gay"
     },
@@ -54,7 +54,7 @@
   
   {
     "student": {
-      "id": "studentMSB000",
+      "id": "studentMSB",
       "firstName": "Greg",
       "lastName": "Gay"
     },
@@ -78,7 +78,7 @@
   
   {
     "student": {
-      "id": "studentMSC000",
+      "id": "studentMSC",
       "firstName": "Greg",
       "lastName": "Gay"
     },

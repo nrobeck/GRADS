@@ -29,7 +29,7 @@
 
     {
         "user": {
-            "id": "student001",
+            "id": "studentPHD",
             "firstName": "Joe",
             "lastName": "Schmoe"
         },
@@ -38,7 +38,7 @@
     },
     {
         "user": {
-            "id": "studentMSA000",
+            "id": "studentMSA",
             "firstName": "Joe",
             "lastName": "Schmoe"
         },
@@ -47,7 +47,7 @@
     },
     {
         "user": {
-            "id": "studentMSB000",
+            "id": "studentMSB",
             "firstName": "Joe",
             "lastName": "Schmoe"
         },
@@ -56,7 +56,7 @@
     },
     {
         "user": {
-            "id": "studentMSC000",
+            "id": "studentMSC",
             "firstName": "Joe",
             "lastName": "Schmoe"
         },
