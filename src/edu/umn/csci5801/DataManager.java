@@ -35,7 +35,7 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 public class DataManager {
-	public static final boolean DEBUG = false;
+    public static final boolean DEBUG = false;
     // PRIVATE VARIABLES
     // instance of gson for json conversion
     private Gson gson;
@@ -485,9 +485,9 @@ public class DataManager {
 
         // print the courses
         if(this.DEBUG){
-	        for (Course course : courses) {
-	            this.printCourse(course);
-	        }
+            for (Course course : courses) {
+                this.printCourse(course);
+            }
         }
         // return the array of courses
         return courses;
@@ -527,10 +527,10 @@ public class DataManager {
             return null;
         }
         if(this.DEBUG){
-	        // print the student records
-	        for (StudentRecord studentRecord : studentRecords) {
-	            this.printStudentRecord(studentRecord);
-	        }
+            // print the student records
+            for (StudentRecord studentRecord : studentRecords) {
+                this.printStudentRecord(studentRecord);
+            }
         }
         this.studentRecords = studentRecords;
         // return the student record array
@@ -569,10 +569,10 @@ public class DataManager {
             return null;
         }
         if(this.DEBUG){
-	        // print the progress summaries
-	        for (ProgressSummary progressSummary : progressSummaries) {
-	            this.printProgressSummary(progressSummary);
-	        }
+            // print the progress summaries
+            for (ProgressSummary progressSummary : progressSummaries) {
+                this.printProgressSummary(progressSummary);
+            }
         }
         this.progressSummaries = progressSummaries;
         // return the array of progress summaries
@@ -617,7 +617,7 @@ public class DataManager {
                     userSchema.getRole(), userSchema.getDepartment());
             users.add(user);
             if(this.DEBUG){
-            	printUser(user);
+                printUser(user);
             }
         }
         this.users = users;
@@ -695,15 +695,15 @@ public class DataManager {
             // move to next record
             studentRecord = i.next();
             try{
-	            String studentRecordId = studentRecord.getStudent().getId();
-	            // check if record is one requested
-	            if (studentRecordId.equals(studentId)) {
-	                // return the requested record
-	                return studentRecord;
-	            }
+                String studentRecordId = studentRecord.getStudent().getId();
+                // check if record is one requested
+                if (studentRecordId.equals(studentId)) {
+                    // return the requested record
+                    return studentRecord;
+                }
             }
             catch(NullPointerException e){
-            	return null;
+                return null;
             }
         }
         // return null if no record is found
@@ -751,17 +751,17 @@ public class DataManager {
         while (i.hasNext()) {
             studentRecord = i.next();
             try{
-	            String studentRecordId = studentRecord.getStudent().getId();
-	            // check if record id is desired student id
-	            if (studentRecordId.equals(studentId)) {
-	                index = i.nextIndex() - 1;
-	                // This record is the one we want to change
-	                break;
-	            }
+                String studentRecordId = studentRecord.getStudent().getId();
+                // check if record id is desired student id
+                if (studentRecordId.equals(studentId)) {
+                    index = i.nextIndex() - 1;
+                    // This record is the one we want to change
+                    break;
+                }
             }
             //If null do nothing
             catch(NullPointerException e){
-            	continue;
+                continue;
             }
         }
         // If the student is there, overwrite

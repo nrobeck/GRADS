@@ -9,7 +9,7 @@
 
     },
 
-	"degreeSought": "PHD",
+  "degreeSought": "PHD",
 
     "advisors": [
 
@@ -27,7 +27,7 @@
     ]
 
   },
-  
+
     {
     "student": {
       "id": "studentMSA000",
@@ -35,7 +35,7 @@
       "lastName": "Gay"
     },
 
-	"degreeSought": "MS_A",
+  "degreeSought": "MS_A",
 
     "advisors": [
       {
@@ -51,7 +51,7 @@
     ]
 
   },
-  
+
   {
     "student": {
       "id": "studentMSB000",
@@ -59,7 +59,7 @@
       "lastName": "Gay"
     },
 
-	"degreeSought": "MS_B",
+  "degreeSought": "MS_B",
 
     "advisors": [
       {
@@ -75,7 +75,7 @@
     ]
 
   },
-  
+
   {
     "student": {
       "id": "studentMSC000",
@@ -83,7 +83,7 @@
       "lastName": "Gay"
     },
 
-	"degreeSought": "MS_C",
+  "degreeSought": "MS_C",
 
     "advisors": [
       {
