@@ -398,6 +398,44 @@
 
     ]
 
+  },
+  
+  {
+
+    "student": {
+
+      "id": "student001",
+
+      "firstName": "Joe",
+
+      "lastName": "Schmoe"
+
+    },
+    
+    "department": "COMPUTER_SCIENCE",
+
+    "degreeSought": "MS_A",
+
+    "advisors": [
+
+      {
+
+        "department": "COMPUTER_SCIENCE",
+
+        "firstName": "Mats",
+
+        "lastName": "Heimdahl"
+
+      }
+
+    ],
+
+    "notes": [
+
+    "note1", "note2", "note3"
+
+    ]
+
   }
 
 ]

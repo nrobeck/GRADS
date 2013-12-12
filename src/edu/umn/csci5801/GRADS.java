@@ -274,8 +274,8 @@ public class GRADS implements GRADSIntf{
         }
         //go here if user is not a GPC
         else {
-            //check if user is generating summary of themself
-            if(currentUser.getID() == userId) {
+            //check if user is generating summary of themselves
+            if(currentUser.getID().equals(userId)) {
                 //check if x500 is valid
                 if(dbManager.getUserByID(userId) != null) {
                     //return student summary with additional input courses

@@ -43,5 +43,15 @@
         },
         "role": "STUDENT",
         "department": "COMPUTER_SCIENCE"
+    },
+    
+    {
+        "user": {
+            "id": "student001",
+            "firstName": "Joe",
+            "lastName": "Schmoe"
+        },
+        "role": "STUDENT",
+        "department": "COMPUTER_SCIENCE"
     }
 ]

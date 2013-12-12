@@ -103,7 +103,7 @@ public class SummaryBuilder {
         }
         
         // determine overall GPA
-        double gpa = 0;
+        Float gpa = (float) 0;
         double totalSum = 0;
         double incourseSum = 0;
         double credits = 0;
@@ -129,7 +129,7 @@ public class SummaryBuilder {
         }
         
         // compare GPA with minimum
-        gpa = totalSum/credits;
+        gpa = (float) (totalSum/credits);
         if (gpa < minGPA){
         	result.setPassed(false);
         	result.addErrorMsg("Overall GPA is bellow the minimum");
@@ -144,7 +144,7 @@ public class SummaryBuilder {
         }
         
         // compare GPA with minimum
-        gpa = incourseSum/credits;
+        gpa = (float) (incourseSum/credits);
         if (gpa < minGPA){
         	result.setPassed(false);
         	result.addErrorMsg("In course  GPA is bellow the minimum");
@@ -158,18 +158,17 @@ public class SummaryBuilder {
         
         // credit requirements
         
-        result = new RequirementCheckResult("TOTAL_CREDITS", false);
+        // Total credits
+        result = new RequirementCheckResult("TOTAL_CREDITS");
         tempCourseList = new ArrayList<CourseTaken>();
         details = new CheckResultDetails();
         double csciCredits = 0;
         double totalCredits = 0;
         
-        // Total credits:
-
         // check each taken course
         for (CourseTaken c: courses){
-        	// avoid thesis courses
-        	if (!(c.getCourse().getId().equals("csci8888") || c.getCourse().getId().equals("csci8777"))){
+        	// avoid thesis courses if on PHD plan
+        	if (!(degree == Degree.PHD) && (c.getCourse().getId().equals("csci8888") || c.getCourse().getId().equals("csci8777"))){
         		// make sure that the course was passed
         		if (passedCourse(c, false)) {
         			// run tests on csci courses
@@ -219,6 +218,9 @@ public class SummaryBuilder {
         // out of department: PHD
       
         if(degree == Degree.PHD){
+            result = new RequirementCheckResult("TOTAL_CREDITS");
+            tempCourseList = new ArrayList<CourseTaken>();
+            details = new CheckResultDetails();
         	double tempCredits = 0;
         	
 	        // check each taken course
@@ -254,10 +256,10 @@ public class SummaryBuilder {
 
         /*----------------------------------------------------------------------------*/
         
-        // Course Credits: BS A 
-        // TODO: Learn what course credits means
+        // Course Credits: MS A 
+        // No thesis courses
         if(degree == Degree.MS_A) {
-        	result = new RequirementCheckResult("COURSE_CREDITS", false);
+        	result = new RequirementCheckResult("COURSE_CREDITS");
             tempCourseList = new ArrayList<CourseTaken>();
             details = new CheckResultDetails();
             csciCredits = 0;
@@ -269,27 +271,26 @@ public class SummaryBuilder {
             	if (!(c.getCourse().getId().equals("csci8888") || c.getCourse().getId().equals("csci8777"))){
             		// make sure that the course was passed
             		if (passedCourse(c, false)) {
-            			// run tests on csci courses
-            			if(c.getCourse().getId().contains("csci")){
-            				// add it only if at graduate level
-            				if(isGraduteLevel(c.getCourse(), "csci")){
-            					tempCourseList.add(c);
-            					csciCredits += Integer.parseInt(c.getCourse().getNumCredits());
-            					courseCredits += Integer.parseInt(c.getCourse().getNumCredits());
-            				}
-            			}
-            			// Any C or higher non-csci course counts for total credits
-            			else {
-            				tempCourseList.add(c);
-            				courseCredits += Integer.parseInt(c.getCourse().getNumCredits());
-            			}
-            		}
-            	}
-            }
+        				// check if course is a csci 5000+ course
+        				if(isGraduteLevel(c.getCourse(), "csci")){
+        					
+        					csciCredits += Integer.parseInt(c.getCourse().getNumCredits());
+        					
+        				}
+        					tempCourseList.add(c);
+        					courseCredits += Integer.parseInt(c.getCourse().getNumCredits());
+        			}
+        			// Any C or higher non-csci course counts for total credits
+        			else {
+        				tempCourseList.add(c);
+        				courseCredits += Integer.parseInt(c.getCourse().getNumCredits());
+        			}
+        		}
+        	}
+            
             
             // check that we have enough credits
             if(courseCredits >= 22){
-            	
             }
             else {
             	result.setPassed(false);
@@ -333,8 +334,10 @@ public class SummaryBuilder {
         result.setDetails(details);
         retVal.add(result);
         
+        /*----------------------------------------------------------------------------*/
+        
         // Thesis_phd credits
-        result = new RequirementCheckResult("THESIS_PHD", false);
+        result = new RequirementCheckResult("THESIS_PHD");
         tempCourseList = new ArrayList<CourseTaken>();
         details = new CheckResultDetails();
         int tempSum = 0;
@@ -351,9 +354,9 @@ public class SummaryBuilder {
         
         // check if enough thesis credits have been taken
         if(tempSum >= 24){
-        	result.setPassed(true);
         }
         else {
+        	result.setPassed(false);
         	result.addErrorMsg("Less than 24 credits have been taken from csci8888, Thesis Credits: Doctorial.");
         }
         
@@ -385,6 +388,8 @@ public class SummaryBuilder {
         	result.addErrorMsg("Less than 10 credits have been taken from csci8888, Thesis Credits: Masters.");
         }
         
+        /*----------------------------------------------------------------------------*/
+        
         // MS B project
         
     	if(degree == Degree.MS_B){
@@ -410,8 +415,10 @@ public class SummaryBuilder {
             retVal.add(result);
     	}
     
+    	/*----------------------------------------------------------------------------*/
+    	
         // phd level courses MS A and B
-    	if(degree != Degree.PHD){
+    	if(degree == Degree.MS_A || degree == Degree.MS_B){
             result = new RequirementCheckResult("PHD_LEVEL_COURSES");
             tempCourseList = new ArrayList<CourseTaken>();
             details = new CheckResultDetails();
@@ -434,8 +441,10 @@ public class SummaryBuilder {
             retVal.add(result);
     	}
     	
+    	/*----------------------------------------------------------------------------*/
+    	
     	// phd level courses MS C
-    	if(degree != Degree.PHD){
+    	if(degree == Degree.MS_C){
             result = new RequirementCheckResult("PHD_LEVEL_COURSES_PLANC");
             tempCourseList = new ArrayList<CourseTaken>();
             details = new CheckResultDetails();
@@ -468,12 +477,13 @@ public class SummaryBuilder {
         details = new CheckResultDetails();
         int breadthCourseTotal;
         
+        // determine which version to use
         if(degree == Degree.PHD) {
-        	result = new RequirementCheckResult("BREADTH_REQUIREMENT_PHD", false);
+        	result = new RequirementCheckResult("BREADTH_REQUIREMENT_PHD");
         	breadthCourseTotal = 5;
         }
         else {
-        	result = new RequirementCheckResult("BREADTH_REQUIREMENT_MS", false);
+        	result = new RequirementCheckResult("BREADTH_REQUIREMENT_MS");
         	breadthCourseTotal = 3;
         }
         
@@ -488,7 +498,7 @@ public class SummaryBuilder {
         
         List<Course> courseList = dbManager.getCourses();
         
-        // get lists of all courses that statisfy breadth requirements
+        // get lists of all courses that satisfy breadth requirements
         for(Course c: courseList){
         	if(c.getCourseArea() != null){
 	        	switch(c.getCourseArea()){
@@ -553,11 +563,20 @@ public class SummaryBuilder {
         if(degree == Degree.PHD) {
         	// TODO: fill this in
         }
-        else {
-        	
-        }
+
+        // check the GPA
+    	gpa = calculateGPA(tempCourseList);
+    	if(gpa >= minGPA){
+    		
+    	}
+    	else {
+    		result.setPassed(false);
+    		result.addErrorMsg("Breadth GPA is below the require minimum: " + minGPA);
+    	}
         
-        // TODO: make sure GPA is done
+        // TODO: make sure GPA is done right
+        details.setGPA(gpa);
+        result.setDetails(details);
         retVal.add(result);
         
         /*------------------------------------------------------------------------------*/
@@ -610,7 +629,7 @@ public class SummaryBuilder {
      * @param courses - the list of courses to derive a GPA from
      * @return the GPA
      */
-    private double calculateGPA(List<CourseTaken> courses) {
+    private float calculateGPA(List<CourseTaken> courses) {
         //initialize parameters
         int credits = 0;
         int sum = 0;
@@ -629,6 +648,11 @@ public class SummaryBuilder {
             }
         }
 
+        // avoid dvi 0 errors
+        if(credits == 0){
+        	return 0;
+        }
+        
         //divide sum of gpa totals by number for credits taken to get gpa and then return it
         return sum/credits;
     }
