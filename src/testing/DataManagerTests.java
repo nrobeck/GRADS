@@ -24,7 +24,6 @@ public class DataManagerTests {
 	public DataManager createDefaultManager(){
 		return new DataManager(courseFile, studentsFile, progressFile, usersFile, plansFile);
 	}
-	
 	@Test
 	public void testCreation() {
 		try{
