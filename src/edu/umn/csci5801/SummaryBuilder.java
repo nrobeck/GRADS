@@ -38,7 +38,7 @@ public class SummaryBuilder {
         this.dbManager = d;
         this.transcriptHandler = t;
     }
-    
+
     /**
      * Creates a graduate progress summary based on the student's transcript and courses to simulate.
      * @param studentID The id of the student
@@ -50,7 +50,7 @@ public class SummaryBuilder {
         ProgressSummary summary = new ProgressSummary();
         //get the student record from transcriptHandler
         StudentRecord record = transcriptHandler.getTranscript(studentID);
-        
+
         //set transcript-related data for the summary
         summary.setStudent(record.getStudent());
         summary.setDepartment(record.getDepartment());
@@ -63,15 +63,15 @@ public class SummaryBuilder {
 
         //get the courses the student has taken from their record
         List<CourseTaken> courses = record.getCoursesTaken();
-        
+
         // check if we are simulating courses
         boolean simulate;
         if(simCourses == null){
-        	simulate = false;
+            simulate = false;
         }
         else{
-        	courses.addAll(simCourses);
-        	simulate = true;
+            courses.addAll(simCourses);
+            simulate = true;
         }
 
         //check the requirements and set results
@@ -145,6 +145,7 @@ public class SummaryBuilder {
         CheckResultDetails details = new CheckResultDetails();
         List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
 
+        //check for colloquium in the courses taken
         for (CourseTaken c: courses){
             if (c.getCourse().getId().equals("csci8970")){
                 if (passedCourse(c, true, simulate)){
@@ -164,6 +165,7 @@ public class SummaryBuilder {
 
         return result;
     }
+
     /**
      * Checks if a student has passed the plan B project
      * @param courses the courses a student has taken
@@ -172,7 +174,7 @@ public class SummaryBuilder {
      * @return a RequirementCheckResult
      */
     private RequirementCheckResult checkPlanBProject(List<CourseTaken> courses, Degree degree, boolean simulate){
-    	RequirementCheckResult result = new RequirementCheckResult("PLAN_B_PROJECT", false);
+        RequirementCheckResult result = new RequirementCheckResult("PLAN_B_PROJECT", false);
 
         CheckResultDetails details = new CheckResultDetails();
         List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
@@ -324,7 +326,7 @@ public class SummaryBuilder {
 
         // create a new result and details for in course gpa
         if(degree == Degree.PHD) {
-        	result = new RequirementCheckResult("IN_PROGRAM_GPA_PHD");
+            result = new RequirementCheckResult("IN_PROGRAM_GPA_PHD");
 
         }
         else {
@@ -357,7 +359,6 @@ public class SummaryBuilder {
      * @param simulate indicates whether there are simulated courses or not
      * @return
      */
-
     private List<RequirementCheckResult> checkCreditRequirements(List<CourseTaken> courses, Degree degree, boolean simulate){
         List<RequirementCheckResult>retVal = new ArrayList<RequirementCheckResult>();
         RequirementCheckResult result = new RequirementCheckResult("TOTAL_CREDITS");
@@ -524,6 +525,7 @@ public class SummaryBuilder {
         List<CourseTaken>tempCourseList = new ArrayList<CourseTaken>();
         CheckResultDetails details = new CheckResultDetails();
 
+        //check PHD thesis
         if (degree == Degree.PHD){
             result = new RequirementCheckResult("THESIS_PHD");
             tempCourseList = new ArrayList<CourseTaken>();
@@ -919,6 +921,12 @@ public class SummaryBuilder {
         return false;
     }
 
+    /**
+     * Check if the course input is a graduate level course.
+     * @param course the course that is a candidate for being graduate level
+     * @param department the department the course is in
+     * @return true if grauduate level, false otherwise
+     */
     private boolean isGraduteLevel(Course course, String department){
         // check that the course Id contains the department string
         if (course.getId().length() > 4 && (department.equals("other") || course.getId().contains(department))){
@@ -939,6 +947,7 @@ public class SummaryBuilder {
     private List<CourseTaken> removeDuplicateCourses(List<CourseTaken> coursesTaken){
         List<CourseTaken> retVal = new ArrayList<CourseTaken>();
 
+        //search list for duplicates
         for(CourseTaken c: coursesTaken){
             boolean addOK = true;
             for(CourseTaken d: retVal){
