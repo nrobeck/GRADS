@@ -884,11 +884,12 @@ public class SummaryBuilder {
 					Milestone.DEFENSE_PASSED };
 			break;
 		case MS_C:
-			planMilestones = new Milestone[] { Milestone.DPF_SUBMITTED,
-					Milestone.DPF_APPROVED, Milestone.TRACKING_FORM_APPROVED,
+			planMilestones = new Milestone[] { 
+					Milestone.DPF_SUBMITTED,
+					Milestone.DPF_APPROVED, 
+					Milestone.TRACKING_FORM_APPROVED,
 					Milestone.TRACKING_FORM_SUBMITTED,
-					Milestone.GRADUATION_PACKET_REQUESTED,
-					Milestone.THESIS_SUBMITTED };
+					Milestone.GRADUATION_PACKET_REQUESTED};
 			break;
 		default:
 			planMilestones = new Milestone[0];
