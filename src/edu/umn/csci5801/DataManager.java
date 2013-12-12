@@ -73,35 +73,7 @@ public class DataManager {
         this.init = false;
         this.debug = false;
     }
-    
-    /**
-     * 
-     * @param debug
-     * @return the current Debug value
-     */
-    public boolean setDebug(boolean debug){
-    	this.debug = debug;
-    	return this.debug;
-    }
-    
-    /**
-     * 
-     * @return  the current student record file name
-     */
-    public String getStudentRecordFileName(){
-    	return this.studentRecordFileName;
-    }
-    
-    /**
-     * 
-     * @param studentRecordFileName
-     * @return the current student record file name
-     */
-    public String setStudentRecordFileName(String studentRecordFileName){
-    	this.studentRecordFileName = studentRecordFileName;
-    	return this.studentRecordFileName;
-    }
-
+   
     /**
      * Constructor of the data manager with 4 database inputs.
      *
@@ -129,6 +101,35 @@ public class DataManager {
         this.progressSummaryFileName = progressSummaryFileName;
         this.userFileName = userFileName;
         this.init = false;
+        this.debug = false;
+    }
+    
+    /**
+     * 
+     * @param debug
+     * @return the current Debug value
+     */
+    public boolean setDebug(boolean debug){
+    	this.debug = debug;
+    	return this.debug;
+    }
+    
+    /**
+     * 
+     * @return  the current student record file name
+     */
+    public String getStudentRecordFileName(){
+    	return this.studentRecordFileName;
+    }
+    
+    /**
+     * 
+     * @param studentRecordFileName
+     * @return the current student record file name
+     */
+    public String setStudentRecordFileName(String studentRecordFileName){
+    	this.studentRecordFileName = studentRecordFileName;
+    	return this.studentRecordFileName;
     }
 
     // Loads courses, records, summaries, users, from files
