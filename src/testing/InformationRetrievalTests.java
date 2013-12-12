@@ -96,43 +96,4 @@ public class InformationRetrievalTests {
         Assert.assertTrue(s.equals(dbManager.getStudentIDList(dbManager.getUserByID("tolas9999").getDepartment())));
     }
 
-    /**
-     * Test successful retrieval of degree requirements
-     * @see x Requirements Document Test 1.4
-     */
-    public void retrieveRequirementsTest() {
-
-    }
-
-    /**
-     * Test successful retrieval of courses for degree
-     * @see x Requirements Document Test 1.5
-     */
-    public void retriveCoursesTest() {
-
-    }
-
-    /**
-     * Test successful retrieval of notes for student record
-     * @see x Requirements Document Test 1.6
-     */
-    public void retrieveNotesTest() {
-
-    }
-
-    /**
-     * Test successful retrieval of milestones
-     * @see x Requirements Document Test 1.7
-     */
-    public void retrieveMilestonesTest() {
-
-    }
-
-    /**
-     * Test data not available messages
-     * @see x Requirements Document Test 1.8
-     */
-    public void dataNotAvailableTest() {
-
-    }
 }
