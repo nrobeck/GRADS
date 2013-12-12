@@ -98,47 +98,47 @@
 		      "semester": "FALL",
 		      "year": 2008
 		    },
-		    "grade": "C"
+		    "grade": "A"
 		  },
-	      
+		  
+		  {
+		
+		    "course": {
+		      "name": "Visualization",
+            	"id": "csci5609",
+            	"numCredits": "3"
+		    },
+		
+		    "term": {
+		      "semester": "FALL",
+		      "year": 2008
+		    },
+		    "grade": "A"
+		  },
         
-        {
-	        "course": {
-	            "name": "Computer Science Colloquium",
-	            "id": "csci8970",
-	            "numCredits": "1"
-	        },
-	        "term": {
-	          "semester": "SPRING",
-	          "year": 2008
-	        },
-	        "grade": "S"
-        },
-        
-
-      {
-
-        "course": {
-          "name": "Programming Languages",
-          "id": "csci5106",
-          "numCredits": "3"
-        },
-        "term": {
-          "semester": "FALL",
-          "year": 2008
-
-        },
-
-        "grade": "C"
-
-      },
-      
       {
 
         "course": {
 
           "name": "Software Engineering I",
           "id": "csci5801",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2009
+        },
+
+        "grade": "A"
+      },
+      
+      {
+
+        "course": {
+
+          "name": "Software Engineering II",
+          "id": "csci5802",
           "numCredits": "3"
         },
 
@@ -201,14 +201,27 @@
       {
 	        "course": {
 	            "name": "Thesis Credit: Doctoral",
-            "id": "csci8888",
-            "numCredits": "24"
+	            "id": "csci8888",
+	            "numCredits": "24"
 	        },
 	        "term": {
 	          "semester": "SPRING",
 	          "year": 2008
 	        },
-	        "grade": "A"
+	        "grade": "S"
+        },
+      
+      	{
+	        "course": {
+	            "name": "Computer Science Colloquium",
+	            "id": "csci8970",
+	            "numCredits": "1"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "S"
         },
       
       	{
@@ -235,8 +248,37 @@
 	          "year": 2008
 	        },
 	        "grade": "A"
-        }
+        },
         
+        {
+		
+		    "course": {
+		      "name": "out_of_department1",
+            	"id": "writ5555",
+            	"numCredits": "3"
+		    },
+		
+		    "term": {
+		      "semester": "FALL",
+		      "year": 2008
+		    },
+		    "grade": "A"
+		  },
+		  
+		   {
+		
+		    "course": {
+		      "name": "out_of_department2",
+            	"id": "writ6666",
+            	"numCredits": "3"
+		    },
+		
+		    "term": {
+		      "semester": "FALL",
+		      "year": 2008
+		    },
+		    "grade": "A"
+		  }
 
     ],
     
@@ -351,6 +393,332 @@
 
     ],
 
+	    "coursesTaken": [
+    	{
+	        "course": {
+		        "name": "Operating Systems",
+		        "id": "csci5103",
+		        "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+        
+        {
+	        "course": {
+	            "name": "Analysis of Numerical Algorithms",
+	            "id": "csci5302",
+	            "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+        
+        {
+	        "course": {
+	            "name": "User Interface Design, Implementation, and Evaluation",
+	            "id": "csci5115",
+	            "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+        {
+	        "course": {
+                "name": "Introduction to Compilers",
+	            "id": "csci5161",
+	            "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+        {
+	        "course": {
+	            "name": "Advanced Computer Architecture",
+	            "id": "csci5204",
+	            "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+
+		  {
+		
+		    "course": {
+		      "name": "Programming Languages",
+		      "id": "csci5106",
+		      "numCredits": "3"
+		    },
+		
+		    "term": {
+		      "semester": "FALL",
+		      "year": 2008
+		    },
+		    "grade": "A"
+		  },
+		  
+		  {
+		
+		    "course": {
+		      "name": "Visualization",
+            	"id": "csci5609",
+            	"numCredits": "3"
+		    },
+		
+		    "term": {
+		      "semester": "FALL",
+		      "year": 2008
+		    },
+		    "grade": "A"
+		  },
+        
+      {
+
+        "course": {
+
+          "name": "Software Engineering I",
+          "id": "csci5801",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2009
+        },
+
+        "grade": "A"
+      },
+      
+      {
+
+        "course": {
+
+          "name": "Software Engineering II",
+          "id": "csci5802",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2009
+        },
+
+        "grade": "A"
+      },
+
+      {
+
+        "course": {
+          "name": "Artificial Intelligence I",
+          "id": "csci5511",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "FALL",
+          "year": 2009
+        },
+
+        "grade": "A"
+
+      },
+      
+      {
+
+        "course": {
+          "name": "Principles of Database Systems",
+          "id": "csci5707",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "FALL",
+          "year": 2009
+        },
+        "grade": "A"
+      },
+
+      {
+
+        "course": {
+          "name": "Artificial Intelligence II",
+          "id": "csci5512",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2010
+        },
+        "grade": "A"
+
+      },
+      
+      {
+	        "course": {
+	            "name": "Thesis Credit: Masters",
+	            "id": "csci8777",
+	            "numCredits": "10"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "S"
+        },
+      
+      	{
+	        "course": {
+	            "name": "Computer Science Colloquium",
+	            "id": "csci8970",
+	            "numCredits": "1"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "S"
+        },
+      
+      	{
+	        "course": {
+	            "name": "Introduction to Research in Computer Science I",
+	            "id": "csci8001",
+	            "numCredits": "1"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+      
+        {
+	        "course": {
+	            "name": "Introduction to Research in Computer Science II",
+	            "id": "csci8002",
+	            "numCredits": "1"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+        
+        {
+		
+		    "course": {
+		      "name": "out_of_department1",
+            	"id": "writ5555",
+            	"numCredits": "3"
+		    },
+		
+		    "term": {
+		      "semester": "FALL",
+		      "year": 2008
+		    },
+		    "grade": "A"
+		  },
+		  
+		   {
+		
+		    "course": {
+		      "name": "out_of_department2",
+            	"id": "writ6666",
+            	"numCredits": "3"
+		    },
+		
+		    "term": {
+		      "semester": "FALL",
+		      "year": 2008
+		    },
+		    "grade": "A"
+		  }
+
+    ],
+    
+    "milestonesSet": [
+        {
+        	"milestone": "PRELIM_COMMITTEE_APPOINTED",
+	        "term": {
+	          "semester": "FALL",
+	          "year": 2014
+	          }
+        },
+        {
+        	"milestone": "DPF_SUBMITTED",
+	        "term": {
+	          "semester": "FALL",
+	          "year": 2014
+	          }
+        },
+        {
+        	"milestone": "DPF_APPROVED",
+	        "term": {
+	          "semester": "FALL",
+	          "year": 2014
+	          }
+        },
+        {
+        	"milestone": "THESIS_COMMITTEE_APPOINTED",
+	        "term": {
+	          "semester": "FALL",
+	          "year": 2014
+	          }
+        },
+        {
+        	"milestone": "PROPOSAL_PASSED",
+	        "term": {
+	          "semester": "FALL",
+	          "year": 2014
+	          }
+        },
+        {
+        	"milestone": "GRADUATION_PACKET_REQUESTED",
+	        "term": {
+	          "semester": "FALL",
+	          "year": 2014
+	          }
+        },
+        {
+        	"milestone": "THESIS_SUBMITTED",
+	        "term": {
+	          "semester": "FALL",
+	          "year": 2014
+	          }
+        },
+        {
+        	"milestone": "THESIS_APPROVED",
+	        "term": {
+	          "semester": "FALL",
+	          "year": 2014
+	          }
+        },
+        {
+        	"milestone": "DEFENSE_PASSED",
+	        "term": {
+	          "semester": "FALL",
+	          "year": 2014
+	          }
+        },
+    ],
+
     "notes": [
     "note1", "note2", "note3"
     ]
@@ -374,6 +742,8 @@
       }
 
     ],
+
+
 
     "notes": [
     "note1", "note2", "note3"

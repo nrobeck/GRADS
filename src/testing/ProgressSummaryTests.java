@@ -106,7 +106,7 @@ public class ProgressSummaryTests {
 				if(!r.isPassed()){
 					System.out.println(r.getErrorMsgs().get(0)); //TODO: remove
 				}
-				Assert.assertTrue("Requirement, " + r.getName() + ", Should be passed", r.isPassed());
+				Assert.assertTrue("PHD Requirement, " + r.getName() + ", Should be passed", r.isPassed());
 			}
 			
 			// check for MS A requirements
@@ -115,7 +115,7 @@ public class ProgressSummaryTests {
 			
 			// check that all requirements check results were passed
 			for (RequirementCheckResult r: summary.getRequirementCheckResults()){
-				Assert.assertTrue("Requirement, " + r.getName() + ", Should be passed", r.isPassed());
+				Assert.assertTrue("MS A Requirement, " + r.getName() + ", Should be passed", r.isPassed());
 			}
 			
 			// check for MS B requirements
@@ -124,7 +124,7 @@ public class ProgressSummaryTests {
 			
 			// check that all requirements check results were passed
 			for (RequirementCheckResult r: summary.getRequirementCheckResults()){
-				Assert.assertTrue("Requirement, " + r.getName() + ", Should be passed", r.isPassed());
+				Assert.assertTrue("MS B Requirement, " + r.getName() + ", Should be passed", r.isPassed());
 			}
 			
 			// check for MS C requirements
@@ -133,7 +133,7 @@ public class ProgressSummaryTests {
 			
 			// check that all requirements check results were passed
 			for (RequirementCheckResult r: summary.getRequirementCheckResults()){
-				Assert.assertTrue("Requirement, " + r.getName() + ", Should be passed", r.isPassed());
+				Assert.assertTrue("MS C Requirement, " + r.getName() + ", Should be passed", r.isPassed());
 			}
 			
 		} catch (Exception e) {
