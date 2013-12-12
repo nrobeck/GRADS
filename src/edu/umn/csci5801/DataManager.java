@@ -9,8 +9,6 @@ import java.util.ListIterator;
 import org.apache.commons.io.FileUtils;
 
 import schema.IdNameSchema;
-import schema.RequirementSchema;
-//import schema.RequirementSchemaDeserializer;
 import schema.UserSchema;
 
 import edu.umn.csci5801.model.CheckResultDetails;
@@ -37,6 +35,7 @@ import com.google.gson.reflect.TypeToken;
  *
  */
 public class DataManager {
+	public static final boolean DEBUG = false;
     // PRIVATE VARIABLES
     // instance of gson for json conversion
     private Gson gson;
@@ -46,14 +45,12 @@ public class DataManager {
     private ArrayList<StudentRecord> studentRecords;
     private ArrayList<ProgressSummary> progressSummaries;
     private ArrayList<User> users;
-    private ArrayList<Plan> plans;
 
     // string storage of database file names
     private String coursesFileName;
     private String studentRecordFileName;
     private String progressSummaryFileName;
     private String userFileName;
-    private String planFileName;
 
     private boolean init;
 
@@ -65,15 +62,12 @@ public class DataManager {
     public DataManager() {
         // initialize local variables
         GsonBuilder gsonBuilder = new GsonBuilder();
-        // gsonBuilder.registerTypeAdapter(RequirementSchema.class, new
-        // RequirementSchemaDeserializer());
         this.gson = gsonBuilder.create();
 
         this.coursesFileName = null;
         this.studentRecordFileName = null;
         this.progressSummaryFileName = null;
         this.userFileName = null;
-        this.planFileName = null;
         this.init = false;
     }
 
@@ -103,40 +97,6 @@ public class DataManager {
         this.studentRecordFileName = studentRecordFileName;
         this.progressSummaryFileName = progressSummaryFileName;
         this.userFileName = userFileName;
-        this.planFileName = null;
-        this.init = false;
-    }
-
-    /**
-     * Constructor of the data manager with 5 database inputs.
-     *
-     * @param coursesFileName
-     *            string representation of the relative path to the courses data
-     * @param studentRecordFileName
-     *            string representation of the relative path to the students
-     *            data
-     * @param progressSummaryFileName
-     *            string representation of the relative path to the progress
-     *            summary data
-     * @param userFileName
-     *            string representation of the relative path to the user data
-     * @param planFileName
-     *            string representation of the relative path to the plan data
-     */
-    public DataManager(String coursesFileName, String studentRecordFileName,
-            String progressSummaryFileName, String userFileName,
-            String planFileName) {
-        // initialize local variables
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        // gsonBuilder.registerTypeAdapter(RequirementSchema.class, new
-        // RequirementSchemaDeserializer());
-        this.gson = gsonBuilder.create();
-
-        this.coursesFileName = coursesFileName;
-        this.studentRecordFileName = studentRecordFileName;
-        this.progressSummaryFileName = progressSummaryFileName;
-        this.userFileName = userFileName;
-        this.planFileName = planFileName;
         this.init = false;
     }
 
@@ -174,12 +134,6 @@ public class DataManager {
         // load the users information from the database
         else {
             users = getUsers();
-        }
-        // check for null plans
-        if (planFileName == null) {
-            plans = null;
-        } else {
-            plans = getPlans();
         }
         // set init to say the data has been initialized
         this.init = true;
@@ -495,18 +449,6 @@ public class DataManager {
         System.out.println("\tDepartment: " + user.getDepartment());
     }
 
-    public void printPlan(Plan plan) {
-        System.out.println("Plan Id: " + plan.getID());
-
-        if (plan.getRequirements() != null) {
-            for (RequirementSchema requirement : plan.getRequirements()) {
-                System.out.println(requirement.toString());
-            }
-        } else {
-            System.out.println("No plan requirements");
-        }
-    }
-
     // Getters from JSON--------------------------
 
     /**
@@ -542,8 +484,10 @@ public class DataManager {
         }
 
         // print the courses
-        for (Course course : courses) {
-            this.printCourse(course);
+        if(this.DEBUG){
+	        for (Course course : courses) {
+	            this.printCourse(course);
+	        }
         }
         // return the array of courses
         return courses;
@@ -582,10 +526,11 @@ public class DataManager {
             e.printStackTrace();
             return null;
         }
-
-        // print the student records
-        for (StudentRecord studentRecord : studentRecords) {
-            this.printStudentRecord(studentRecord);
+        if(this.DEBUG){
+	        // print the student records
+	        for (StudentRecord studentRecord : studentRecords) {
+	            this.printStudentRecord(studentRecord);
+	        }
         }
         this.studentRecords = studentRecords;
         // return the student record array
@@ -623,10 +568,11 @@ public class DataManager {
             e.printStackTrace();
             return null;
         }
-
-        // print the progress summaries
-        for (ProgressSummary progressSummary : progressSummaries) {
-            this.printProgressSummary(progressSummary);
+        if(this.DEBUG){
+	        // print the progress summaries
+	        for (ProgressSummary progressSummary : progressSummaries) {
+	            this.printProgressSummary(progressSummary);
+	        }
         }
         this.progressSummaries = progressSummaries;
         // return the array of progress summaries
@@ -670,47 +616,14 @@ public class DataManager {
             User user = new User(userSchema.getID().getID(),
                     userSchema.getRole(), userSchema.getDepartment());
             users.add(user);
-            printUser(user);
+            if(this.DEBUG){
+            	printUser(user);
+            }
         }
         this.users = users;
         // return the users arraylist
         return users;
 
-    }
-
-    // TODO Implement
-    public ArrayList<Plan> getPlans() {
-        // set the type for the plans
-        Type planCollectionType = new TypeToken<ArrayList<Plan>>() {
-        }.getType(); // https://sites.google.com/site/gson/gson-user-guide#TOC-Collections-Examples
-        ArrayList<ProgressSummary> progressSummaries;
-
-        // Plan file > JSON > Plan Object Array
-        File planFile = new File(planFileName);
-        String planJson = null;
-
-        try {
-            // read in the JSON
-            planJson = FileUtils.readFileToString(planFile);
-        } catch (IOException e) {
-            System.err.println(e);
-        }
-        try {
-            // convert the JSON into objects
-            plans = this.gson.fromJson(planJson, planCollectionType);
-        } catch (JsonParseException e) {
-            System.err.println("Error parsing course JSON!");
-            e.printStackTrace();
-            return null;
-        }
-
-        // print the progress summaries
-        for (Plan plan : plans) {
-            this.printPlan(plan);
-        }
-        this.plans = plans;
-        // return the array of progress summaries
-        return plans;
     }
 
     // Interface Methods--------------------------
@@ -795,17 +708,6 @@ public class DataManager {
         }
         // return null if no record is found
         return null;
-    }
-
-    // TODO What is a plan???
-    public Plan getPlan(Degree degree) {
-        Plan p = new Plan(degree);
-        int index = plans.indexOf(p);
-        if (index < 0) {
-            return null;
-        } else {
-            return plans.get(plans.indexOf(index));
-        }
     }
 
     /**

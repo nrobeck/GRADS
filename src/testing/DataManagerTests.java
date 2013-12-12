@@ -19,11 +19,10 @@ public class DataManagerTests {
         this.studentsFile = "data/students.txt";
         this.progressFile = "data/progress.txt";
         this.usersFile = "data/users.txt";
-        this.plansFile = "data/plans1.txt";
     }
 
     public DataManager createDefaultManager(){
-        return new DataManager(courseFile, studentsFile, progressFile, usersFile, plansFile);
+        return new DataManager(courseFile, studentsFile, progressFile, usersFile);
     }
     @Test
     public void testCreation() {
@@ -73,17 +72,6 @@ public class DataManagerTests {
         try{
             DataManager dataManager = createDefaultManager();
             assertNotNull(dataManager.getUsers());
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            fail("Exception! ");
-        }
-    }
-    @Test
-    public void testGetPlans(){
-        try{
-            DataManager dataManager = createDefaultManager();
-            assertNotNull(dataManager.getPlans());
         }
         catch(Exception e){
             e.printStackTrace();
