@@ -67,31 +67,12 @@ public class TranscriptHandler {
 
 			transcript.setNotes(notes);
 
-			// convert the transcript to JSON
-			JsonObject record = recordToJson(transcript);
-			// TODO: add note to JSON of record
-
-			// TODO: convert JSON back to student record
 		}
 
 		// store the modified transcript
 		dbManager.storeTranscript(studentID, transcript);
 	}
 
-	/**
-	 * Convert the input student record into a JSON object.
-	 * 
-	 * @param record
-	 *            student record to convert to JSON
-	 * @return JSON representation of the student record
-	 */
-	private JsonObject recordToJson(StudentRecord record) {
-		JsonObject retVal = new JsonObject();
-
-		// TODO: populate the JSON object with the record
-
-		return retVal;
-	}
 
 	/**
 	 * Checks the validity of all the values of the input record.
