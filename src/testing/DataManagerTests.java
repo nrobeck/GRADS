@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import edu.umn.csci5801.DataManager;
 import edu.umn.csci5801.model.Department;
+import edu.umn.csci5801.model.Student;
 import edu.umn.csci5801.model.StudentRecord;
 
 import org.junit.Assert;
@@ -203,24 +204,48 @@ public class DataManagerTests {
     @Test
     public void testStoreTranscript(){
         try{
+        	//Check if write transcript is consistent
+        	//Old records
         	DataManager dataManager = createDefaultManager();
         	ArrayList<StudentRecord> originalRecords= dataManager.getStudentRecords();
         	dataManager.setStudentRecordFileName("src/resources/studentsTestTMP.txt");
         	dataManager.writeTranscript();
         	
-        	//Check if it is consistent
+        	//New records
         	DataManager newDataManager = createDefaultManager();
         	newDataManager.setStudentRecordFileName("src/resources/studentsTestTMP.txt");
         	ArrayList<StudentRecord> newRecords= newDataManager.getStudentRecords();
         	
+        	//Compare
         	Assert.assertEquals(originalRecords, newRecords);
         	
+        	//Check adding a new student
+        	DataManager stuDataManager = createDefaultManager();
+        	stuDataManager.setStudentRecordFileName("src/resources/studentsTestTMP.txt");
+        	
+        	StudentRecord stu = new StudentRecord();
+        	stu.setStudent(new Student("Stu", "Student", "stu1337"));
+        	String stuId = stu.getStudent().getId();
+        	stuDataManager.storeTranscript(stuId , stu);
+        	ArrayList<String> hasStu = stuDataManager.getStudentIDList(Department.MATH);
+        	
+        	Assert.assertTrue("Stu is not here!", hasStu.contains(stuId));
+        	
+        	//Modifying a student
+        	stu.setDepartment(Department.MATH);
+        	stuDataManager.storeTranscript(stuId , stu);
+        	ArrayList<String> newStu = stuDataManager.getStudentIDList(Department.MATH);
+        	
+        	Assert.assertTrue("Array lengths not the same, new stu added!",hasStu.size() == newStu.size());
+        	Assert.assertTrue("Stu should be a math student", stuDataManager.getStudentData(stuId).getDepartment() == Department.MATH);
+        	
+        	//Revert state
         	Path tmpPath = Paths.get("src/resources/studentsTestTMP.txt");
         	Files.deleteIfExists(tmpPath);
             
-            //There should be nothing in a null data manager
-            //DataManager nullDataManager = new DataManager();
-            //Assert.assertEquals("Not Empty?", null, nullDataManager.getCoursesData());
+            //A null data manager should not write and not have errors
+            DataManager nullDataManager = new DataManager();
+            Assert.assertTrue("How did this write?", !nullDataManager.storeTranscript("stu1337", stu));
             
             
         }
@@ -229,5 +254,6 @@ public class DataManagerTests {
             fail("Exception! ");
         }
     }
+    
     
 }
