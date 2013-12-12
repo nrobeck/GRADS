@@ -2,6 +2,7 @@ package edu.umn.csci5801;
 
 import java.util.List;
 
+import edu.umn.csci5801.model.Course;
 import edu.umn.csci5801.model.CourseTaken;
 import edu.umn.csci5801.model.Degree;
 import edu.umn.csci5801.model.Professor;
@@ -160,7 +161,7 @@ public class DataValidator {
      * Check the validity of the professors in the record.
      * @return true if valid, false if invalid
      */
-    public boolean professorIsValid() {
+    public boolean professorsAreValid() {
         //get the professors who are advisors
         List<Professor> profAdvisor = record.getAdvisors();
         //get the professors who are on the committee
@@ -204,9 +205,10 @@ public class DataValidator {
      * Check the validity of the courses in the record
      * @return true if valid, false if invalid
      */
-    public boolean courseIsValid() {
+    public boolean coursesAreValid() {
         //set the courses
         List<CourseTaken> courses = record.getCoursesTaken();
+        List<Course> validCourses = dbManager.getCourses();
         //set the return value
         boolean valid = true;
 
@@ -217,10 +219,20 @@ public class DataValidator {
                (c.getTerm() != null)) {
                 valid = true;
             }
-            //invalid course taken ends loop and method
+          //TODO check against list of all courses
+            if(valid) {
+                for(Course test: validCourses) {
+                    if(c.getCourse().equals(test)) {
+                        return true;
+                    }
+                }
+            }
+            //course not valid or doesn't match existing course
             else {
                 return false;
             }
+
+
         }
 
         //no issues found with courses

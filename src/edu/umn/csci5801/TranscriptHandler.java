@@ -116,9 +116,9 @@ public class TranscriptHandler {
 					// check if term is valid
 					if (dataValidator.termIsValid()) {
 						// check if professor is valid
-						if (dataValidator.professorIsValid()) {
+						if (dataValidator.professorsAreValid()) {
 							// check if course is valid
-							if (dataValidator.courseIsValid()) {
+							if (dataValidator.coursesAreValid()) {
 								// if all nested ifs are true, record is
 								// valid->set valid to true
 								valid = true;
