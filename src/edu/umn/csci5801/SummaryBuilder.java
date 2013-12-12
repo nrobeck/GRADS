@@ -41,7 +41,7 @@ public class SummaryBuilder {
         this.dbManager = d;
         this.transcriptHandler = t;
     }
-
+    
     /**
      * Creates a graduate progress summary based on the student's transcript and courses to simulate.
      * @param studentID The id of the student
@@ -53,14 +53,7 @@ public class SummaryBuilder {
         ProgressSummary summary = new ProgressSummary();
         //get the student record from transcriptHandler
         StudentRecord record = transcriptHandler.getTranscript(studentID);
-
-        boolean simulate;
-        if(simCourses == null){
-            simulate = false;
-        }
-        else{
-            simulate = true;
-        }
+        
         //set data for the summary
         summary.setStudent(record.getStudent());
         summary.setDepartment(record.getDepartment());
@@ -70,8 +63,16 @@ public class SummaryBuilder {
         summary.setCommittee(record.getCommittee());
         summary.setNotes(record.getNotes());
 
+        boolean simulate;
         //get the courses the student has taken from their record
         List<CourseTaken> courses = record.getCoursesTaken();
+        if(simCourses == null){
+        	simulate = false;
+        }
+        else{
+        	courses.addAll(simCourses);
+        	simulate = true;
+        }
 
         //check the requirements and set results
         summary.setRequirementCheckResults(checkPlanRequirements(record.getDegreeSought(), courses, record.getMilestonesSet(), simulate));
@@ -163,7 +164,8 @@ public class SummaryBuilder {
      * @return a RequirementCheckResult
      */
     private RequirementCheckResult checkPlanBProject(List<CourseTaken> courses, Degree degree, boolean simulate){
-        RequirementCheckResult result = new RequirementCheckResult("INTRO_TO_RESEARCH");
+    	RequirementCheckResult result = new RequirementCheckResult("PLAN_B_PROJECT", false);
+
         CheckResultDetails details = new CheckResultDetails();
         List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
 
@@ -313,7 +315,8 @@ public class SummaryBuilder {
 
         // create a new result and details for in course gpa
         if(degree == Degree.PHD) {
-            result = new RequirementCheckResult("INCOURSE_GPA_PHD");
+        	result = new RequirementCheckResult("IN_PROGRAM_GPA_PHD");
+
         }
         else {
             result = new RequirementCheckResult("IN_PROGRAM_GPA_MS");
@@ -773,9 +776,9 @@ public class SummaryBuilder {
 
     /**
      * Creates a list of RequirmentCheckResults based on what milestones have been completed
-     * @param milestones
-     * @param degree
-     * @return
+     * @param milestones the milestones that a student has completed
+     * @param degree the degree of the student
+     * @return a degree-specific list of milestone results
      */
     private List<RequirementCheckResult> checkMilestones(List<MilestoneSet> milestones, Degree degree){
         List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>();
@@ -834,7 +837,7 @@ public class SummaryBuilder {
     /**
      * Calculate the GPA of a list of courses taken.
      * @param courses - the list of courses to derive a GPA from
-     * @return the GPA
+     * @return the GPA calculated from the list
      */
     private float calculateGPA(List<CourseTaken> courses) {
         //initialize parameters
@@ -938,8 +941,8 @@ public class SummaryBuilder {
 
     /**
      * Sorts a list of CourseTakens by grade (A, B, C, x/other)
-     * @param courses
-     * @return
+     * @param a list of courses taken
+     * @return the list in sorted order
      */
     private List<CourseTaken> sortByGrade(List<CourseTaken> courses){
         List<CourseTaken> listA = new ArrayList<CourseTaken>();
