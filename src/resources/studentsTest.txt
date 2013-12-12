@@ -399,7 +399,7 @@
     ]
 
   },
-  
+
   {
 
     "student": {
@@ -411,7 +411,7 @@
       "lastName": "Schmoe"
 
     },
-    
+
     "department": "COMPUTER_SCIENCE",
 
     "degreeSought": "PHD",
@@ -437,7 +437,7 @@
     ]
 
   },
-  
+
   {
 
     "student": {
@@ -449,7 +449,7 @@
       "lastName": "Best"
 
     },
-    
+
     "department": "COMPUTER_SCIENCE",
 
     "degreeSought": "MS_A",
@@ -467,17 +467,17 @@
       }
 
     ],
-    
+
     "coursesTaken": [
 
       {
 
         "course": {
 
-	        "name": "Operating Systems",
-	        "id": "csci5103",
-	        "numCredits": "3",
-	        "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
+          "name": "Operating Systems",
+          "id": "csci5103",
+          "numCredits": "3",
+          "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
 
         },
 
@@ -554,7 +554,7 @@
         "grade": "A"
 
       },
-      
+
       {
       "course": {
             "name": "Computer Science Colloquium",
@@ -585,7 +585,7 @@
         "grade": "A"
 
       },
-      
+
       {
       "course": {
             "name": "Computer Science Colloquium",
@@ -600,7 +600,7 @@
 
         "grade": "S"
       },
-      
+
       {
       "course": {
             "name": "Thesis Credit: Masters",
@@ -615,7 +615,7 @@
 
         "grade": "S"
       },
-      
+
       {
       "course": {
             "name": "Introduction to Research in Computer Science I",
@@ -630,7 +630,7 @@
 
         "grade": "A"
       },
-      
+
       {
       "course": {
             "name": "Introduction to Research in Computer Science II",
@@ -647,7 +647,7 @@
       }
 
       ],
-      
+
 
     "notes": [
 

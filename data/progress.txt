@@ -8,8 +8,8 @@
     "program": "COMPUTER_SCIENCE",
     "degreeSought": "PHD",
     "termBegan": {
-	"semester": "SPRING",
-	"year": 2008
+  "semester": "SPRING",
+  "year": 2008
     },
     "advisors": [
 
@@ -29,8 +29,8 @@
             "name":"DEGREE_SOUGHT",
             "passed":true,
             "details": {
-		"other": ["phD"]
-		}
+    "other": ["phD"]
+    }
          },
          {
             "name":"BREADTH_REQUIREMENT_PHD",

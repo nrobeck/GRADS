@@ -18,9 +18,9 @@
                 {"name":"THESIS_APPROVED", "type":"milestone"},
                 {"name":"DEFENSE_PASSED", "type":"milestone"}
             ]
-		}
+    }
     },
-    
+
     {
         "plan": {
             "id":"MS_A",
@@ -43,9 +43,9 @@
                 {"name":"THESIS_APPROVED", "type":"milestone"},
                 {"name":"DEFENSE_PASSED", "type":"milestone"}
             ]
-		}
+    }
     },
-    
+
     {
         "plan": {
             "id":"MS_B",
@@ -66,9 +66,9 @@
                 {"name":"GRADUATION_PACKET_REQUESTED", "type":"milestone"},
                 {"name":"DEFENSE_PASSED", "type":"milestone"}
             ]
-		}
+    }
     },
-    
+
     {
         "plan": {
             "id":"MS_C",
@@ -81,6 +81,6 @@
                 {"name":"TRACKING_FORM_APPROVED", "type":"milestone"},
                 {"name":"GRADUATION_PACKET_REQUESTED", "type":"milestone"}
             ]
-		}
+    }
     }
 ]

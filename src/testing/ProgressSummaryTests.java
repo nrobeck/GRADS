@@ -16,8 +16,8 @@ import org.junit.Rule;
 //tests for requirement 9
 
 public class ProgressSummaryTests {
-	@Test
-	public void temp(){
-		Assert.assertEquals("Test place holder", true, true);
-	}
+    @Test
+    public void temp(){
+        Assert.assertEquals("Test place holder", true, true);
+    }
 }

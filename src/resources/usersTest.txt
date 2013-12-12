@@ -44,7 +44,7 @@
         "role": "STUDENT",
         "department": "COMPUTER_SCIENCE"
     },
-    
+
     {
         "user": {
             "id": "student001",
@@ -54,7 +54,7 @@
         "role": "STUDENT",
         "department": "COMPUTER_SCIENCE"
     },
-    
+
     {
         "user": {
             "id": "bestx001",

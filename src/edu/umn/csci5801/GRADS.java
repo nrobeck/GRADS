@@ -50,7 +50,7 @@ public class GRADS implements GRADSIntf{
         this.coursesFile = coursesFileName;
         this.studentsFile = studentsFileName;
         this.usersFile = usersFileName;
-        
+
         // re-initialize the the sub-modules
         dbManager = new DataManager(coursesFile, studentsFile, null, usersFile);
         transcriptHandler = new TranscriptHandler(dbManager);
