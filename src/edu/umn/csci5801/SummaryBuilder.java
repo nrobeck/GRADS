@@ -38,7 +38,6 @@ public class SummaryBuilder {
         this.dbManager = d;
         this.transcriptHandler = t;
     }
-
     /**
      * Creates a graduate progress summary based on the student's transcript and courses to simulate.
      * @param studentID The id of the student

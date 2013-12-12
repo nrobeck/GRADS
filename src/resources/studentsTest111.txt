@@ -101,18 +101,7 @@
 		    "grade": "C"
 		  },
 	      
-        {
-	        "course": {
-	            "name": "Thesis Credit: Doctoral",
-            "id": "csci8888",
-            "numCredits": "24"
-	        },
-	        "term": {
-	          "semester": "SPRING",
-	          "year": 2008
-	        },
-	        "grade": "A"
-        },
+        
         {
 	        "course": {
 	            "name": "Computer Science Colloquium",
@@ -125,7 +114,104 @@
 	        },
 	        "grade": "S"
         },
-        {
+        
+
+      {
+
+        "course": {
+          "name": "Programming Languages",
+          "id": "csci5106",
+          "numCredits": "3"
+        },
+        "term": {
+          "semester": "FALL",
+          "year": 2008
+
+        },
+
+        "grade": "C"
+
+      },
+      
+      {
+
+        "course": {
+
+          "name": "Software Engineering I",
+          "id": "csci5801",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2009
+        },
+
+        "grade": "A"
+      },
+
+      {
+
+        "course": {
+          "name": "Artificial Intelligence I",
+          "id": "csci5511",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "FALL",
+          "year": 2009
+        },
+
+        "grade": "A"
+
+      },
+      
+      {
+
+        "course": {
+          "name": "Principles of Database Systems",
+          "id": "csci5707",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "FALL",
+          "year": 2009
+        },
+        "grade": "A"
+      },
+
+      {
+
+        "course": {
+          "name": "Artificial Intelligence II",
+          "id": "csci5512",
+          "numCredits": "3"
+        },
+
+        "term": {
+          "semester": "SPRING",
+          "year": 2010
+        },
+        "grade": "A"
+
+      },
+      
+      {
+	        "course": {
+	            "name": "Thesis Credit: Doctoral",
+            "id": "csci8888",
+            "numCredits": "24"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+      
+      	{
 	        "course": {
 	            "name": "Introduction to Research in Computer Science I",
 	            "id": "csci8001",
@@ -137,6 +223,7 @@
 	        },
 	        "grade": "A"
         },
+      
         {
 	        "course": {
 	            "name": "Introduction to Research in Computer Science II",

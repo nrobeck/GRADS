@@ -103,6 +103,9 @@ public class ProgressSummaryTests {
 			
 			// check that all requirements check results were passed
 			for (RequirementCheckResult r: summary.getRequirementCheckResults()){
+				if(!r.isPassed()){
+					System.out.println(r.getErrorMsgs().get(0)); //TODO: remove
+				}
 				Assert.assertTrue("Requirement, " + r.getName() + ", Should be passed", r.isPassed());
 			}
 			
