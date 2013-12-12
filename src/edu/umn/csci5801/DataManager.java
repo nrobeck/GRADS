@@ -10,7 +10,7 @@ import org.apache.commons.io.FileUtils;
 
 import schema.IdNameSchema;
 import schema.RequirementSchema;
-import schema.RequirementSchemaDeserializer;
+//import schema.RequirementSchemaDeserializer;
 import schema.UserSchema;
 
 import edu.umn.csci5801.model.CheckResultDetails;
@@ -65,7 +65,7 @@ public class DataManager {
     public DataManager(){
         //initialize local variables
     	GsonBuilder gsonBuilder = new GsonBuilder();
-    	gsonBuilder.registerTypeAdapter(RequirementSchema.class, new RequirementSchemaDeserializer());
+    	//gsonBuilder.registerTypeAdapter(RequirementSchema.class, new RequirementSchemaDeserializer());
     	this.gson = gsonBuilder.create();
     	
         this.coursesFileName = null;
@@ -86,7 +86,7 @@ public class DataManager {
     public DataManager(String coursesFileName, String studentRecordFileName, String progressSummaryFileName, String userFileName){
         //initialize local variables
     	GsonBuilder gsonBuilder = new GsonBuilder();
-    	gsonBuilder.registerTypeAdapter(RequirementSchema.class, new RequirementSchemaDeserializer());
+    	//gsonBuilder.registerTypeAdapter(RequirementSchema.class, new RequirementSchemaDeserializer());
     	this.gson = gsonBuilder.create();
     	
         this.coursesFileName = coursesFileName;
@@ -108,7 +108,7 @@ public class DataManager {
     public DataManager(String coursesFileName, String studentRecordFileName, String progressSummaryFileName, String userFileName, String planFileName){
         //initialize local variables
     	GsonBuilder gsonBuilder = new GsonBuilder();
-    	gsonBuilder.registerTypeAdapter(RequirementSchema.class, new RequirementSchemaDeserializer());
+    	//gsonBuilder.registerTypeAdapter(RequirementSchema.class, new RequirementSchemaDeserializer());
     	this.gson = gsonBuilder.create();
     	
         this.coursesFileName = coursesFileName;
@@ -741,7 +741,7 @@ public class DataManager {
             //move to next record
             studentRecord = i.next();
             //check if record is one requested
-            if(studentRecord.getStudent().getId() == studentId){
+            if(studentRecord.getStudent().getId().equals(studentId)){
                 //return the requested record
                 return studentRecord;
             }

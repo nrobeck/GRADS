@@ -4,7 +4,6 @@ package edu.umn.csci5801;
 
 import edu.umn.csci5801.model.CheckResultDetails;
 import edu.umn.csci5801.model.Course;
-import edu.umn.csci5801.model.CourseArea;
 import edu.umn.csci5801.model.CourseTaken;
 import edu.umn.csci5801.model.Degree;
 import edu.umn.csci5801.model.Grade;
@@ -17,7 +16,6 @@ import edu.umn.csci5801.model.StudentRecord;
 import java.lang.String;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.soap.Detail;
@@ -33,8 +31,8 @@ import com.google.gson.JsonObject;
  *
  */
 public class SummaryBuilder {
-    DataManager dbManager;
-    TranscriptHandler transcriptHandler;
+    private DataManager dbManager;
+    private TranscriptHandler transcriptHandler;
 
     /**
      * Constructor method for the Summary Builder
@@ -54,8 +52,7 @@ public class SummaryBuilder {
         //initialize data objects
         ProgressSummary summary = new ProgressSummary();
         //get the student record from transcriptHandler
-        StudentRecord record = new StudentRecord();
-        record = transcriptHandler.getTranscript(studentID);
+        StudentRecord record = transcriptHandler.getTranscript(studentID);
         JsonObject plan = new JsonObject();
 
         //set data for the summary
@@ -85,7 +82,7 @@ public class SummaryBuilder {
      */
     private List<RequirementCheckResult> checkPlanRequirements(JsonObject plan, List<CourseTaken> courses, List<MilestoneSet> milestones, Degree degree) {
         //create the needed elements
-        List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>() {};
+        List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>();
         RequirementCheckResult result;
         CheckResultDetails details;
         List<CourseTaken> tempCourseList;
@@ -467,11 +464,16 @@ public class SummaryBuilder {
         /*----------------------------------------------------------------------------*/
         
         // Check For Breadth Courses
+        tempCourseList = new ArrayList<CourseTaken>();
+        details = new CheckResultDetails();
         int breadthCourseTotal;
+        
         if(degree == Degree.PHD) {
+        	result = new RequirementCheckResult("BREADTH_REQUIREMENT_PHD", false);
         	breadthCourseTotal = 5;
         }
         else {
+        	result = new RequirementCheckResult("BREADTH_REQUIREMENT_MS", false);
         	breadthCourseTotal = 3;
         }
         
@@ -488,17 +490,19 @@ public class SummaryBuilder {
         
         // get lists of all courses that statisfy breadth requirements
         for(Course c: courseList){
-        	switch(c.getCourseArea()){
-        	case APPLICATIONS:
-        		appCourseList.add(c.getId());
-        		break;
-        	case ARCHITECTURE_SYSTEMS_SOFTWARE:
-        		archCourseList.add(c.getId());
-        		break;
-        	case THEORY_ALGORITHMS:
-        		theoryCourseList.add(c.getId());
-        		break;
-    		default:
+        	if(c.getCourseArea() != null){
+	        	switch(c.getCourseArea()){
+	        	case APPLICATIONS:
+	        		appCourseList.add(c.getId());
+	        		break;
+	        	case ARCHITECTURE_SYSTEMS_SOFTWARE:
+	        		archCourseList.add(c.getId());
+	        		break;
+	        	case THEORY_ALGORITHMS:
+	        		theoryCourseList.add(c.getId());
+	        		break;
+	    		default:
+	        	}
         	}
         }
         
@@ -519,14 +523,42 @@ public class SummaryBuilder {
         	}
         }
         
-        // the top three courses taken
+        // trim the coursesTaken
+        appCoursesTaken = sortByGrade(removeDuplicateCourses(appCoursesTaken));
+        archCoursesTaken = sortByGrade(removeDuplicateCourses(archCoursesTaken));
+        theoryCoursesTaken = sortByGrade(removeDuplicateCourses(theoryCoursesTaken));
         
-        
+        if(appCoursesTaken.isEmpty()){
+        	result.addErrorMsg("An Application course has not been completed witha C- or better");
+        	result.setPassed(false);
+        }
+        else {
+        	tempCourseList.add(appCoursesTaken.remove(0));
+        }
+        if(archCoursesTaken.isEmpty()){
+        	result.addErrorMsg("An ARCHITECTURE, SYSTEMS, and SOFTWARE course has not been completed witha C- or better");
+        	result.setPassed(false);
+        }
+        else {
+        	tempCourseList.add(archCoursesTaken.remove(0));
+        }
+        if (theoryCoursesTaken.isEmpty()){
+        	result.addErrorMsg("A Theory and Algorithms course has not been completed witha C- or better");
+        	result.setPassed(false);
+        }
+        else {
+        	tempCourseList.add(theoryCoursesTaken.remove(0));
+        }
         // Check that two addition courses have been taken
-        if(degree == Degree.PHD){
+        if(degree == Degree.PHD) {
+        	// TODO: fill this in
+        }
+        else {
         	
         }
         
+        // TODO: make sure GPA is done
+        retVal.add(result);
         
         /*------------------------------------------------------------------------------*/
         
@@ -629,8 +661,8 @@ public class SummaryBuilder {
     
     private boolean isGraduteLevel(Course course, String department){
     	// check that the course Id contains the department string
-    	if (department.equals("other") || course.getId().contains(department)){
-    		int level = Integer.parseInt(course.getId().substring(department.length()-1, department.length()));
+    	if (course.getId().length() > 4 && (department.equals("other") || course.getId().contains(department))){
+    		int level = Integer.parseInt(course.getId().substring(4, 5));
     		if (level >= 5){	// check that the level is 5000+
     			return true;
     		}
@@ -671,6 +703,41 @@ public class SummaryBuilder {
     	}
     	
     	return retVal;
+    }
+    
+    /**
+     * Sorts a list of CourseTakens by grade (A, B, C, x/other)
+     * @param courses
+     * @return
+     */
+    private List<CourseTaken> sortByGrade(List<CourseTaken> courses){
+    	List<CourseTaken> listA = new ArrayList<CourseTaken>();
+    	List<CourseTaken> listB = new ArrayList<CourseTaken>();
+    	List<CourseTaken> listC = new ArrayList<CourseTaken>();
+    	List<CourseTaken> listX = new ArrayList<CourseTaken>();
+    	
+    	for(CourseTaken c: courses){
+    		switch(c.getGrade()){
+    		case A:
+    			listA.add(c);
+    			break;
+    		case B:
+    			listB.add(c);
+    			break;
+    		case C:
+    			listC.add(c);
+    			break;
+    		default:
+    			listX.add(c);
+    		}
+    	}
+    	
+    	// combine all lists and return them
+    	listA.addAll(listB);
+    	listA.addAll(listC);
+    	listA.addAll(listX);
+    	
+    	return listA;
     }
 
     

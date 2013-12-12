@@ -92,7 +92,7 @@ public class User {
             user = (User) o;
         }
         //check if the user id is the same as the object id
-        if(this.getID() == user.getID()){
+        if(this.getID().equals(user.getID())){
             return true;
         }
         else{

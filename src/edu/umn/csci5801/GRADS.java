@@ -46,11 +46,15 @@ public class GRADS implements GRADSIntf{
      * @param coursesFileName filename of the courses database
      * @param usersFileName filename of the users database
      */
-    public GRADS(String studentsFileName, String coursesFileName, String
-usersFileName) {
+    public GRADS(String studentsFileName, String coursesFileName, String usersFileName) {
         this.coursesFile = coursesFileName;
         this.studentsFile = studentsFileName;
         this.usersFile = usersFileName;
+        
+        // re-initialize the the sub-modules
+        dbManager = new DataManager(coursesFile, studentsFile, null, usersFile);
+        transcriptHandler = new TranscriptHandler(dbManager);
+        summaryBuilder = new SummaryBuilder(dbManager, transcriptHandler);
     }
 
     //private variables for the GRADS class
@@ -232,7 +236,7 @@ usersFileName) {
         //go here if user is not GPC
         else {
             //check if user is attempting to generate their own summary
-            if(currentUser.getID() == userId) {
+            if(currentUser.getID().equals(userId)) {
                 //return progress summary if user is calling own summary
                 return summaryBuilder.getStudentSummary(userId);
             }
