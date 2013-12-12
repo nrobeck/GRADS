@@ -19,6 +19,7 @@ import edu.umn.csci5801.SummaryBuilder;
 import edu.umn.csci5801.TranscriptHandler;
 import edu.umn.csci5801.model.Department;
 import edu.umn.csci5801.model.StudentRecord;
+import exceptions.InvalidX500Exception;
 
 //tests for requirement 1
 public class InformationRetrievalTests {
@@ -27,21 +28,45 @@ public class InformationRetrievalTests {
     StudentRecord testRecord = new StudentRecord();
 
 
-    //test 1.1
+    /**
+     * Test successful retrieval of student transcript.
+     * Test 1.1
+     */
     public void retrieveAStudentTranscriptTest() {
         try {
             testGrads.setUser("tolas9999");
         } catch (Exception e) {
-            System.out.println("X500 invalid");
+            System.out.println(((InvalidX500Exception) e).errorMessage());
             e.printStackTrace();
         }
         try {
             testRecord = testGrads.getTranscript("nguy0621");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
+            System.out.println(((InvalidX500Exception) e).errorMessage());
             e.printStackTrace();
         }
         Assert.assertEquals(testRecord.getStudent().getId() , "nguy0621");
+    }
+
+    /**
+     * Test retrieval of record that does not exist.
+     * Test 1.2
+     */
+    public void retrieveNonExistentRecordTest() {
+        String message = "";
+        try {
+            testGrads.setUser("tolas9999");
+        } catch (Exception e) {
+            System.out.println(((InvalidX500Exception) e).errorMessage());
+            e.printStackTrace();
+        }
+        try {
+            testRecord = testGrads.getTranscript("nguy0622");
+        } catch (Exception e) {
+            message = ((InvalidX500Exception) e).errorMessage();
+        }
+        Assert.assertTrue(message == "The user ID nguy0622 is not a valid ID in this system");
+
     }
 
 
