@@ -100,6 +100,7 @@ public class SummaryBuilder {
         List<RequirementCheckResult> retVal = new ArrayList<RequirementCheckResult>() {};
         RequirementCheckResult result;
         CheckResultDetails details;
+        List<CourseTaken> tempCourseList;
         // TODO: determine if I should break these out into individual methods
         // probably should
         
@@ -110,6 +111,7 @@ public class SummaryBuilder {
         	minGPA = 3.45;
         	result = new RequirementCheckResult("OVERALL_GPA_PHD");
         }
+        
         else {
         	minGPA = 3.25;
         	result = new RequirementCheckResult("OVERALL_GPA_MS");
@@ -162,7 +164,60 @@ public class SummaryBuilder {
         
         /*----------------------------------------------------------------------------*/
         
-        // course specific requirements
+        // check for various specific requirements
+        
+        // colloqium
+        result = new RequirementCheckResult("COLLOQUIUM", false);
+        tempCourseList = new ArrayList<CourseTaken>();
+        details = new CheckResultDetails();
+        
+        for (CourseTaken c: courses){
+        	if (c.getCourse().getId().equals("csci8970")){
+        		if (passedCourse(c, true)){
+        			tempCourseList.add(c);
+        			result.setPassed(true);
+        		}
+        	}
+        }
+        if(!result.isPassed()){
+        	result.addErrorMsg("Course csci8970, Computer Science Colloquium, was not taken/passed");
+        }
+        
+        result.setDetails(details);
+        retVal.add(result);
+        
+        // Thesis_phd credits
+        
+        // Thesis_MS_A credits
+        
+        // MS B project
+        
+    	if(degree == Degree.MS_B){
+            result = new RequirementCheckResult("PLAN_B_PROJECT");
+            tempCourseList = new ArrayList<CourseTaken>();
+            details = new CheckResultDetails();
+            
+            for (CourseTaken c: courses){
+            	if (c.getCourse().getId().equals("csci8760")){
+            		if (passedCourse(c, true)){
+            			tempCourseList.add(c);
+            			result.setPassed(true);
+            		}
+            	}
+            }
+            // set the error message
+            if(!result.isPassed()){
+            	result.addErrorMsg("Course csci8760, Plan B Project, has not taken/passed.");
+            }
+            
+            result.setDetails(details);
+            retVal.add(result);
+    	}
+    
+        // phd level course
+        
+        //
+        
         
         /*----------------------------------------------------------------------------*/
         
@@ -176,16 +231,6 @@ public class SummaryBuilder {
         else {
         	breadthCourseTotal = 3;
         }
-        
-        /*
-        String[] temp = new String[]{"csci5302", "csci5304", "csci5421", "csci55421", "csci5525"};
-        temp = new String[]{"csci5103", "csci5104", "csci5105", "csci5106", "csci5161",
-				"csci5204", "csci5211", "csci5221", "csci5231", "csci5451",
-				"csci5461", "csci5708", "csci5801", "csci5802"};
-        temp = new String[]{"csci5115", "csci5125", "csci5271", "csci5471", "csci5481",
-				"csci5511", "csci5512", "csci5521", "csci5523", "csci5551",
-				"csci5561", "csci5607", "csci5608", "csci5"};
-				*/
         
         // lists of all courses, sorted by area
         List<CourseTaken> appCoursesTaken = new ArrayList<CourseTaken>();
@@ -218,7 +263,7 @@ public class SummaryBuilder {
         for(CourseTaken c: courses){
         	// only add courses that have been passed
         	if(passedCourse(c, false)){
-        		// add to appropriate area list
+        		// add to the appropriate area list
         		if(appCourseList.contains(c.getCourse().getId())){
         			appCoursesTaken.add(c);
         		}
@@ -230,6 +275,8 @@ public class SummaryBuilder {
         		}
         	}
         }
+        
+        // the top three courses taken
         
         
         // Check that two addition courses have been taken
