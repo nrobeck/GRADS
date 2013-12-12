@@ -42,12 +42,14 @@ public class DataManager {
     private ArrayList<StudentRecord> studentRecords;
     private ArrayList<ProgressSummary> progressSummaries;
     private ArrayList<User> users;
+    private ArrayList<Plan> plans;
 
     //string storage of database file names
     private String coursesFileName;
     private String studentRecordFileName;
     private String progressSummaryFileName;
     private String userFileName;
+    private String planFileName;
 
     private boolean init;
 
@@ -63,6 +65,7 @@ public class DataManager {
         this.studentRecordFileName = null;
         this.progressSummaryFileName = null;
         this.userFileName = null;
+        this.planFileName = null;
         this.init = false;
     }
 
@@ -80,6 +83,26 @@ public class DataManager {
         this.studentRecordFileName = studentRecordFileName;
         this.progressSummaryFileName = progressSummaryFileName;
         this.userFileName = userFileName;
+        this.planFileName = null;
+        this.init = false;
+    }
+    
+    /**
+     * Constructor of the data manager with 5 database inputs.
+     * @param coursesFileName string representation of the relative path to the courses data
+     * @param studentRecordFileName string representation of the relative path to the students data
+     * @param progressSummaryFileName string representation of the relative path to the progress summary data
+     * @param userFileName string representation of the relative path to the user data
+     * @param planFileName string representation of the relative path to the plan data
+     */
+    public DataManager(String coursesFileName, String studentRecordFileName, String progressSummaryFileName, String userFileName, String planFileName){
+        //initialize local variables
+        this.gson = new Gson();
+        this.coursesFileName = coursesFileName;
+        this.studentRecordFileName = studentRecordFileName;
+        this.progressSummaryFileName = progressSummaryFileName;
+        this.userFileName = userFileName;
+        this.planFileName = planFileName;
         this.init = false;
     }
 
@@ -120,11 +143,18 @@ public class DataManager {
         else{
             users = getUsers();
         }
+        //check for null plans
+        if(planFileName == null){
+        	plans = null;
+        }
+        else{
+        	plans = getPlans();
+        }
         //set init to say the data has been initialized
         this.init = true;
     }
 
-    /**
+	/**
      * Initializes the data manager if it has not been already
      */
     public void checkInit(){
@@ -327,7 +357,10 @@ public class DataManager {
 
     }
 
-    //To print a progress summary
+    /**
+     * Print a progress summary onto the screen.
+     * @param progressSummary the progress summary, to be printed
+     */
     public void printProgressSummary(ProgressSummary progressSummary){
         //print the student name, department, and degree from the progress summary
         System.out.println("Student Name: " + progressSummary.getStudent().getFirstName() + " " + progressSummary.getStudent().getLastName());
@@ -555,6 +588,11 @@ public class DataManager {
 
     }
 
+    //TODO Implement
+    public ArrayList<Plan> getPlans() {
+		return null;
+	}
+    
     //Interface Methods--------------------------
 
     /**
@@ -656,6 +694,12 @@ public class DataManager {
         }
     }
 
+    /**
+     * Store a student's new record in the transcript file and update the model.
+     * @param studentId the student ID of the student whose record will be updated
+     * @param newRecord the new record for the student with student ID.
+     * @return true if successful, false if unsuccessful
+     */
     public boolean storeTranscript(String studentId, StudentRecord newRecord){
         //create the list iterator
         ListIterator<StudentRecord> i = this.studentRecords.listIterator();
@@ -696,16 +740,5 @@ public class DataManager {
         }
     }
 
-    //TODO This should be moved into testing
-    public static void main(String[] args){
-        String courseFile = "data/courses.txt";
-        String studentsFile = "data/students.txt";
-        String progressFile = "data/progress.txt";
-        String usersFile = "data/users.txt";
-        String plansFile = "data/plans.txt";
-
-        DataManager dataManager = new DataManager(courseFile, studentsFile, progressFile, usersFile);
-        dataManager.init();
-    }
 
 }
