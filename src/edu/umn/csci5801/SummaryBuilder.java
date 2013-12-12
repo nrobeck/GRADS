@@ -180,15 +180,64 @@ public class SummaryBuilder {
         	}
         }
         if(!result.isPassed()){
-        	result.addErrorMsg("Course csci8970, Computer Science Colloquium, was not taken/passed");
+        	result.addErrorMsg("Course csci8970, Computer Science Colloquium, was not taken/passed.");
         }
         
+        details.setCourses(tempCourseList);
         result.setDetails(details);
         retVal.add(result);
         
         // Thesis_phd credits
+        result = new RequirementCheckResult("THESIS_PHD", false);
+        tempCourseList = new ArrayList<CourseTaken>();
+        details = new CheckResultDetails();
+        int tempSum = 0;
+        
+        // look for the required course
+        for (CourseTaken c: courses){
+        	if (c.getCourse().getId().equals("csci8888")){
+        		if (passedCourse(c, true)){
+        			tempCourseList.add(c);
+        			tempSum += Integer.getInteger(c.getCourse().getNumCredits());	// add number of credits to total
+        		}
+        	}
+        }
+        
+        // check if enough thesis credits have been taken
+        if(tempSum >= 24){
+        	result.setPassed(true);
+        }
+        else {
+        	result.addErrorMsg("Less than 24 credits have been taken from csci8888, Thesis Credits: Doctorial.");
+        }
+        
+        details.setCourses(tempCourseList);
+        result.setDetails(details);
+        retVal.add(result);
         
         // Thesis_MS_A credits
+        result = new RequirementCheckResult("THESIS_MS", false);
+        tempCourseList = new ArrayList<CourseTaken>();
+        details = new CheckResultDetails();
+        tempSum = 0;
+        
+        // look for the required course
+        for (CourseTaken c: courses){
+        	if (c.getCourse().getId().equals("csci8777")){
+        		if (passedCourse(c, true)){
+        			tempCourseList.add(c);
+        			tempSum += Integer.getInteger(c.getCourse().getNumCredits());	// add number of credits to total
+        		}
+        	}
+        }
+        
+        // check if enough thesis credits have been taken
+        if(tempSum >= 10){
+        	result.setPassed(true);
+        }
+        else {
+        	result.addErrorMsg("Less than 10 credits have been taken from csci8888, Thesis Credits: Masters.");
+        }
         
         // MS B project
         
@@ -210,6 +259,7 @@ public class SummaryBuilder {
             	result.addErrorMsg("Course csci8760, Plan B Project, has not taken/passed.");
             }
             
+            details.setCourses(tempCourseList);
             result.setDetails(details);
             retVal.add(result);
     	}
