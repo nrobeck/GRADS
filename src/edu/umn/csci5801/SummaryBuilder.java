@@ -14,13 +14,8 @@ import edu.umn.csci5801.model.RequirementCheckResult;
 import edu.umn.csci5801.model.StudentRecord;
 
 import java.lang.String;
-import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.soap.Detail;
-
-import com.google.gson.JsonObject;
 
 /** TODO: copyright */
 
@@ -36,6 +31,8 @@ public class SummaryBuilder {
 
     /**
      * Constructor method for the Summary Builder
+     * @param d - a pointer to a DataManager object
+     * @param t - a pointer to a TranscriptHandler object
      */
     public SummaryBuilder(DataManager d, TranscriptHandler t) {
         this.dbManager = d;
@@ -54,7 +51,7 @@ public class SummaryBuilder {
         //get the student record from transcriptHandler
         StudentRecord record = transcriptHandler.getTranscript(studentID);
         
-        //set data for the summary
+        //set transcript-related data for the summary
         summary.setStudent(record.getStudent());
         summary.setDepartment(record.getDepartment());
         summary.setDegreeSought(record.getDegreeSought());
@@ -63,9 +60,12 @@ public class SummaryBuilder {
         summary.setCommittee(record.getCommittee());
         summary.setNotes(record.getNotes());
 
-        boolean simulate;
+
         //get the courses the student has taken from their record
         List<CourseTaken> courses = record.getCoursesTaken();
+        
+        // check if we are simulating courses
+        boolean simulate;
         if(simCourses == null){
         	simulate = false;
         }
@@ -133,6 +133,13 @@ public class SummaryBuilder {
         return retVal;
     }
 
+    /**
+     * Checks if a student has passed the COLLOQUIUM
+     * @param courses the courses a student has taken
+     * @param degree the degree of the student
+     * @param simulate indicates whether there are simulated courses or not
+     * @return
+     */
     private RequirementCheckResult checkColloquium(List<CourseTaken> courses, Degree degree, boolean simulate) {
         RequirementCheckResult result = new RequirementCheckResult("COLLOQUIUM", false);
         CheckResultDetails details = new CheckResultDetails();
@@ -159,8 +166,9 @@ public class SummaryBuilder {
     }
     /**
      * Checks if a student has passed the plan B project
-     * @param courses
-     * @param degree
+     * @param courses the courses a student has taken
+     * @param degree the degree of the student
+     * @param simulate indicates whether there are simulated courses or not
      * @return a RequirementCheckResult
      */
     private RequirementCheckResult checkPlanBProject(List<CourseTaken> courses, Degree degree, boolean simulate){
@@ -197,8 +205,9 @@ public class SummaryBuilder {
 
     /**
      * check that a PHD student has taken csci8001 and csci8002
-     * @param courses
-     * @param degree
+     * @param courses the courses a student has taken
+     * @param degree the degree of the student
+     * @param simulate indicates whether there are simulated courses or not
      * @return
      */
     private RequirementCheckResult checkResearchIntro(List<CourseTaken> courses, Degree degree, boolean simulate){
@@ -249,9 +258,9 @@ public class SummaryBuilder {
     }
 
     /**
-     *
-     * @param courses
-     * @param degree
+     * checks gpa requirements
+     * @param courses the courses a student has taken
+     * @param degree the degree of the student
      * @return
      */
     private List<RequirementCheckResult> checkGPARequirementCheckResults(List<CourseTaken> courses, Degree degree){
@@ -343,8 +352,9 @@ public class SummaryBuilder {
 
     /**
      * Checks requirements related to credits
-     * @param courses
-     * @param degree
+     * @param courses the courses a student has taken
+     * @param degree the degree of the student
+     * @param simulate indicates whether there are simulated courses or not
      * @return
      */
 
@@ -504,8 +514,9 @@ public class SummaryBuilder {
 
     /**
      * Check that a PHD or MSA student has taken enough thesis credits
-     * @param courses
-     * @param degree - the degree of the student
+     * @param courses the courses a student has taken
+     * @param degree the degree of the student
+     * @param simulate indicates whether there are simulated courses or not
      * @return
      */
     private RequirementCheckResult checkThesisRequirements(List<CourseTaken> courses, Degree degree, boolean simulate){
@@ -582,8 +593,9 @@ public class SummaryBuilder {
 
     /**
      * Check that MS students have passed PHD courses
-     * @param courses
-     * @param degree
+     * @param courses the courses a student has taken
+     * @param degree the degree of the student
+     * @param simulate indicates whether there are simulated courses or not
      * @return
      */
     private RequirementCheckResult checkPHDLevelCsciCourses(List<CourseTaken> courses, Degree degree, boolean simulate){
@@ -642,8 +654,9 @@ public class SummaryBuilder {
 
     /**
      * check the breadth requirement
-     * @param courses
-     * @param degree
+     * @param courses the courses a student has taken
+     * @param degree the degree of the student
+     * @param simulate indicates whether there are simulated courses or not
      * @return
      */
     private RequirementCheckResult checkBreadthRequirements(List<CourseTaken> courses, Degree degree, boolean simulate){
