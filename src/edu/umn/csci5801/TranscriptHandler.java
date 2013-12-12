@@ -126,12 +126,14 @@ public class TranscriptHandler {
 		if (record == null) {
 			return null;
 		}
-		// make sure that all values are not null
+		// make sure that all list varibales are not null
 		if (record.getAdvisors() == null) {
 			record.setAdvisors(new ArrayList<Professor>());
 		}
 
-		// TODO: make sure all other things are not null
+		if (record.getCommittee() == null) {
+			record.setAdvisors(new ArrayList<Professor>());
+		}
 
 		// make sure the courses Taken list is not null
 		if (record.getCoursesTaken() == null) {

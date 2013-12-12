@@ -1,25 +1,7 @@
 [
     {
         "user": {
-            "id": "nguy0621",
-            "firstName": "Luan",
-            "lastName": "Nguyen"
-        },
-        "role": "STUDENT",
-        "department": "COMPUTER_SCIENCE"
-    },
-    {
-        "user": {
-            "id": "gayxx067",
-            "firstName": "Gregory",
-            "lastName": "Gay"
-        },
-        "role": "STUDENT",
-        "department": "COMPUTER_SCIENCE"
-    },
-    {
-        "user": {
-            "id": "tolas9999",
+            "id": "gpc001",
             "firstName": "Georganne",
             "lastName": "Tolaas"
         },
@@ -54,12 +36,29 @@
         "role": "STUDENT",
         "department": "COMPUTER_SCIENCE"
     },
-    
     {
         "user": {
-            "id": "bestx001",
-            "firstName": "Payet",
-            "lastName": "Best"
+            "id": "studentMSA000",
+            "firstName": "Joe",
+            "lastName": "Schmoe"
+        },
+        "role": "STUDENT",
+        "department": "COMPUTER_SCIENCE"
+    },
+    {
+        "user": {
+            "id": "studentMSB000",
+            "firstName": "Joe",
+            "lastName": "Schmoe"
+        },
+        "role": "STUDENT",
+        "department": "COMPUTER_SCIENCE"
+    },
+    {
+        "user": {
+            "id": "studentMSC000",
+            "firstName": "Joe",
+            "lastName": "Schmoe"
         },
         "role": "STUDENT",
         "department": "COMPUTER_SCIENCE"

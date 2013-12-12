@@ -1,0 +1,102 @@
+[
+
+  {
+
+    "student": {
+      "id": "student001",
+      "firstName": "Greg",
+      "lastName": "Gay"
+
+    },
+
+	"degreeSought": "PHD",
+
+    "advisors": [
+
+      {
+        "department": "COMPUTER_SCIENCE",
+        "firstName": "Mats",
+        "lastName": "Heimdahl"
+
+      }
+
+    ],
+
+    "notes": [
+    "note1", "note2", "note3"
+    ]
+
+  },
+  
+    {
+    "student": {
+      "id": "studentMSA000",
+      "firstName": "Greg",
+      "lastName": "Gay"
+    },
+
+	"degreeSought": "MS_A",
+
+    "advisors": [
+      {
+        "department": "COMPUTER_SCIENCE",
+        "firstName": "Mats",
+        "lastName": "Heimdahl"
+      }
+
+    ],
+
+    "notes": [
+    "note1", "note2", "note3"
+    ]
+
+  },
+  
+  {
+    "student": {
+      "id": "studentMSB000",
+      "firstName": "Greg",
+      "lastName": "Gay"
+    },
+
+	"degreeSought": "MS_B",
+
+    "advisors": [
+      {
+        "department": "COMPUTER_SCIENCE",
+        "firstName": "Mats",
+        "lastName": "Heimdahl"
+      }
+
+    ],
+
+    "notes": [
+    "note1", "note2", "note3"
+    ]
+
+  },
+  
+  {
+    "student": {
+      "id": "studentMSC000",
+      "firstName": "Greg",
+      "lastName": "Gay"
+    },
+
+	"degreeSought": "MS_C",
+
+    "advisors": [
+      {
+        "department": "COMPUTER_SCIENCE",
+        "firstName": "Mats",
+        "lastName": "Heimdahl"
+      }
+
+    ],
+
+    "notes": [
+    "note1", "note2", "note3"
+    ]
+
+  }
+]

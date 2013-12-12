@@ -43,6 +43,20 @@ public class SummaryBuilder {
     }
 
     /**
+     * Return the progress summary based solely upon a student's transcript and no simulated courses.
+     * Calls createStudentSummary with null for simulated courses
+     * @see createStudentSummary method used to perform all creation
+     * @param userId user id of the student whose progress summary is to be generated.
+     * @return progress summary for the student.
+     */
+    public ProgressSummary getStudentSummary(String userId) {
+        //create the progress summary
+        ProgressSummary progress = createStudentSummary(userId, null);
+        //return the progress summary
+        return progress;
+    }
+    
+    /**
      * Creates a graduate progress summary based on the student's transcript and courses to simulate.
      * @param studentID The id of the student
      * @param simCourses A list of courses to simulate
@@ -54,13 +68,11 @@ public class SummaryBuilder {
         //get the student record from transcriptHandler
         StudentRecord record = transcriptHandler.getTranscript(studentID);
         
-        boolean simulate;
-        if(simCourses == null){
-        	simulate = false;
+        // TODO: error handling
+        if(record == null){
+        	return null;
         }
-        else{
-        	simulate = true;
-        }
+        
         //set data for the summary
         summary.setStudent(record.getStudent());
         summary.setDepartment(record.getDepartment());
@@ -70,9 +82,17 @@ public class SummaryBuilder {
         summary.setCommittee(record.getCommittee());
         summary.setNotes(record.getNotes());
 
+        boolean simulate;
         //get the courses the student has taken from their record
         List<CourseTaken> courses = record.getCoursesTaken();
-        
+        if(simCourses == null){
+        	simulate = false;
+        }
+        else{
+        	courses.addAll(simCourses);
+        	simulate = true;
+        }
+
         //check the requirements and set results
         summary.setRequirementCheckResults(checkPlanRequirements(record.getDegreeSought(), courses, record.getMilestonesSet(), simulate));
 
@@ -163,7 +183,7 @@ public class SummaryBuilder {
      * @return a RequirementCheckResult
      */
     private RequirementCheckResult checkPlanBProject(List<CourseTaken> courses, Degree degree, boolean simulate){
-    	RequirementCheckResult result = new RequirementCheckResult("INTRO_TO_RESEARCH");
+    	RequirementCheckResult result = new RequirementCheckResult("PLAN_B_PROJECT", false);
         CheckResultDetails details = new CheckResultDetails();
         List<CourseTaken> tempCourseList = new ArrayList<CourseTaken>();
         
@@ -313,7 +333,7 @@ public class SummaryBuilder {
         
         // create a new result and details for in course gpa
         if(degree == Degree.PHD) {
-        	result = new RequirementCheckResult("INCOURSE_GPA_PHD");
+        	result = new RequirementCheckResult("IN_PROGRAM_GPA_PHD");
         }
         else {
         	result = new RequirementCheckResult("IN_PROGRAM_GPA_MS");
@@ -973,18 +993,6 @@ public class SummaryBuilder {
     }
 
     
-    /**
-     * Return the progress summary based solely upon a student's transcript and no simulated courses.
-     * Calls createStudentSummary with null for simulated courses
-     * @see createStudentSummary method used to perform all creation
-     * @param userId user id of the student whose progress summary is to be generated.
-     * @return progress summary for the student.
-     */
-    public ProgressSummary getStudentSummary(String userId) {
-        //create the progress summary
-        ProgressSummary progress = createStudentSummary(userId, null);
-        //return the progress summary
-        return progress;
-    }
+
     
 }
