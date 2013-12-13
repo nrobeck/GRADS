@@ -4,25 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
-import org.junit.After;
 import org.junit.Test;
-import org.junit.AfterClass;
-import org.junit.Assume;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.ComparisonFailure;
-import org.junit.FixMethodOrder;
-import org.junit.Ignore;
-import org.junit.Rule;
-
 import edu.umn.csci5801.GRADS;
 import edu.umn.csci5801.model.Course;
 import edu.umn.csci5801.model.CourseTaken;
 import edu.umn.csci5801.model.Grade;
 import edu.umn.csci5801.model.ProgressSummary;
 import edu.umn.csci5801.model.RequirementCheckResult;
-import edu.umn.csci5801.model.StudentRecord;
 
 //tests for requirement 9
 

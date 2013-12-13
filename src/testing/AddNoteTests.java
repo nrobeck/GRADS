@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import edu.umn.csci5801.GRADS;
-import exceptions.MissingStudentRecordExeception;
 import exceptions.UserNotGPCException;
 import exceptions.InvalidX500Exception;
 

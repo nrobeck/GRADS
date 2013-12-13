@@ -3,10 +3,7 @@ package edu.umn.csci5801;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonObject;
-
 import edu.umn.csci5801.model.CourseTaken;
-import edu.umn.csci5801.model.Department;
 import edu.umn.csci5801.model.MilestoneSet;
 import edu.umn.csci5801.model.Professor;
 import edu.umn.csci5801.model.StudentRecord;

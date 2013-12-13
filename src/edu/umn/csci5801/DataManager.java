@@ -10,24 +10,17 @@ import java.util.ListIterator;
 
 import org.apache.commons.io.FileUtils;
 
-import schema.IdNameSchema;
 import schema.UserSchema;
-
-import edu.umn.csci5801.model.CheckResultDetails;
-import edu.umn.csci5801.model.Course;
-import edu.umn.csci5801.model.CourseTaken;
-import edu.umn.csci5801.model.Degree;
-import edu.umn.csci5801.model.Department;
-import edu.umn.csci5801.model.MilestoneSet;
-import edu.umn.csci5801.model.Professor;
-import edu.umn.csci5801.model.ProgressSummary;
-import edu.umn.csci5801.model.StudentRecord;
-import edu.umn.csci5801.model.RequirementCheckResult;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
+
+import edu.umn.csci5801.model.Course;
+import edu.umn.csci5801.model.Department;
+import edu.umn.csci5801.model.ProgressSummary;
+import edu.umn.csci5801.model.StudentRecord;
 
 /**
  * The DataManager class is used to retrieve and store information contained in
@@ -54,7 +47,7 @@ public class DataManager {
     private String progressSummaryFileName;
     private String userFileName;
 
-    private boolean init;
+    private boolean init; // Whether the manager has been initialized
 
     // END PRIVATE VARIABLES
 
