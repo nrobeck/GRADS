@@ -22,8 +22,17 @@ import edu.umn.csci5801.model.Student;
 import edu.umn.csci5801.model.StudentRecord;
 import edu.umn.csci5801.model.Term;
 
+/**
+ * Unit Tests, Checks whether the hashcode and .equals functions work for each
+ * class
+ * 
+ * @author markholmes
+ * 
+ */
 public class ModelTests {
-
+    /**
+     * Tests hashcode and equals functions for CheckResultDetails
+     */
     @Test
     public void testCheckResultDetails() {
 	DataManager my_dm = new DataManager(null,
@@ -47,6 +56,9 @@ public class ModelTests {
 	int b_hash = B_CheckResultDetails.hashCode();
     }
 
+    /**
+     * Tests hashcode and equals functions for Course
+     */
     @Test
     public void testCourse() {
 	Course A_Course = new Course("Computerology", "101", "3",
@@ -69,6 +81,9 @@ public class ModelTests {
 
     }
 
+    /**
+     * Tests hashcode and equals functions for CourseTaken
+     */
     @Test
     public void testCourseTaken() {
 	Course sample_course = new Course("Computers", "101", "3",
@@ -88,6 +103,9 @@ public class ModelTests {
 	int b_hash = C_CourseTaken.hashCode();
     }
 
+    /**
+     * Tests hashcode and equals functions for MilestoneSet
+     */
     @Test
     public void testMilestoneSet() {
 	MilestoneSet A_MilestoneSet = new MilestoneSet();
@@ -103,6 +121,9 @@ public class ModelTests {
 
     }
 
+    /**
+     * Tests hashcode and equals functions for Person
+     */
     @Test
     public void testPerson() {
 	Person A_Person = new Person();
@@ -121,6 +142,9 @@ public class ModelTests {
 	int d_hash = D_Person.hashCode();
     }
 
+    /**
+     * Tests hashcode and equals functions for Professor
+     */
     @Test
     public void testProfessor() {
 	Professor A_Professor = new Professor("Severus", "Snape");
@@ -135,6 +159,9 @@ public class ModelTests {
 	int a_hash = A_Professor.hashCode();
     }
 
+    /**
+     * Tests constructor functions for RequirementCheckResults as a list
+     */
     @Test
     public void testRequirementCheckResult() {
 
@@ -144,12 +171,18 @@ public class ModelTests {
 		"B", true, new CheckResultDetails());
     }
 
+    /**
+     * Tests hashcode and equals functions for Semester
+     */
     @Test
     public void testSemester() {
 	Assert.assertEquals(null, Semester.FALL.next());
 	Assert.assertEquals(Semester.SUMMER, Semester.SPRING.next());
     }
 
+    /**
+     * Tests hashcode and equals functions for Student
+     */
     @Test
     public void testStudent() {
 	Student A_Student = new Student("Jean", "Valjean", "24601");
@@ -162,6 +195,9 @@ public class ModelTests {
 
     }
 
+    /**
+     * Tests hashcode and equals functions for StudentRecord
+     */
     @Test
     public void testStudentRecord() {
 	DataManager my_dm = new DataManager(null,
@@ -174,6 +210,9 @@ public class ModelTests {
 	int b_hash = B_StudentRecord.hashCode();
     }
 
+    /**
+     * Tests hashcode and equals functions for Term
+     */
     @Test
     public void testTerm() {
 	Term A_Term = new Term();

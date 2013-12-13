@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 import edu.umn.csci5801.DataManager;
 import edu.umn.csci5801.DataValidator;
 import edu.umn.csci5801.TranscriptHandler;
@@ -15,7 +16,12 @@ import edu.umn.csci5801.model.StudentRecord;
 import exceptions.InvalidTranscriptException;
 import exceptions.TranscriptNotPersistedException;
 
-//tests for requirement 7
+/**
+ * tests for requirement 7 Tests the validation of data
+ * 
+ * @author markholmes
+ * 
+ */
 public class DataValidationTests {
     public DataManager createDefaultManager() {
 	return new DataManager("data/courses.txt",
@@ -23,6 +29,9 @@ public class DataValidationTests {
 		"data/users.txt");
     }
 
+    /**
+     * Tests validation of student
+     */
     @Test
     public void testStudentIsValid() {
 	DataManager testManager = createDefaultManager();
@@ -52,6 +61,9 @@ public class DataValidationTests {
 	Assert.assertTrue(testValidator.studentIsValid());
     }
 
+    /**
+     * Tests the validity of the rest of a record
+     */
     @Test
     public void testValidRecord() {
 	DataManager testManager = createDefaultManager();

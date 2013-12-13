@@ -5,7 +5,12 @@ import org.junit.Test;
 
 import edu.umn.csci5801.User;
 
-//Unit Tests for User.equals()
+/**
+ * Unit Test, Tests that the user class constructs itself in an expected manner
+ * 
+ * @author markholmes
+ * 
+ */
 public class UserTests {
 
     @Test

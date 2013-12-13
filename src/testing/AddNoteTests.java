@@ -4,17 +4,19 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import edu.umn.csci5801.GRADS;
-import exceptions.UserNotGPCException;
 import exceptions.InvalidX500Exception;
+import exceptions.UserNotGPCException;
 
-//tests for requirement 5
 /**
- * Tests the addNotes function of GRADS
+ * requirement 5. Tests the addNotes function of GRADS
  */
 public class AddNoteTests {
     GRADS grads = new GRADS("src/resources/studentsTest001.txt",
 	    "src/resources/courses.txt", "src/resources/usersTest.txt");
 
+    /**
+     * Tests that students cannot add notes
+     */
     @Test
     public void refuseStudent() {
 	try {
@@ -37,6 +39,9 @@ public class AddNoteTests {
 	Assert.assertTrue("Students are not allowed to add notes", passed);
     }
 
+    /**
+     * Tests that GPCs can add notes
+     */
     @Test
     public void allowGPC() {
 	try {

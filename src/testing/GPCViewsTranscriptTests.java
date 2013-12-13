@@ -2,15 +2,14 @@ package testing;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 import edu.umn.csci5801.GRADS;
 import edu.umn.csci5801.model.StudentRecord;
 import exceptions.UserNotAllowedException;
 import exceptions.UserNotGPCException;
 
-//tests for requirement 4
-
 /**
- * Tests If a GPC can access a Transcript
+ * Requirement 4. Tests If a GPC can access a Transcript
  * 
  * @author Kyle
  * 

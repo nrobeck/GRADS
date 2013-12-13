@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 import edu.umn.csci5801.GRADS;
 import edu.umn.csci5801.model.Course;
 import edu.umn.csci5801.model.CourseTaken;
@@ -12,9 +13,17 @@ import edu.umn.csci5801.model.Grade;
 import edu.umn.csci5801.model.ProgressSummary;
 import edu.umn.csci5801.model.RequirementCheckResult;
 
-//tests for requirement 9
-
+/**
+ * Progress Summary Tests. Requirements Test for requirement 9
+ * 
+ * @author markholmes
+ * 
+ */
 public class ProgressSummaryTests {
+    /**
+     * Checks that requirements check results are created for all requirement
+     * types
+     */
     @Test
     public void makeAllRequirementsCheck() {
 	GRADS grads = new GRADS("src/resources/studentsTest001.txt",
@@ -109,6 +118,10 @@ public class ProgressSummaryTests {
 	}
     }
 
+    /**
+     * Checks whether requirements have been passed or failed. Makes sure that
+     * all requirements are checked for graduation
+     */
     @Test
     public void checkCompletedSummaries() {
 	GRADS grads = new GRADS("src/resources/studentsTest111.txt",

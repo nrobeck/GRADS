@@ -2,7 +2,12 @@ package testing;
 
 import org.junit.Test;
 
-//tests for requirement 10
+/**
+ * Test for requirement 10
+ * 
+ * @author markholmes
+ * 
+ */
 public class GPATests {
 
     @Test

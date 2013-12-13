@@ -2,14 +2,14 @@ package testing;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 import edu.umn.csci5801.GRADS;
 import edu.umn.csci5801.model.StudentRecord;
 import exceptions.InvalidTranscriptException;
 import exceptions.UserNotGPCException;
 
-//tests for requirement 6
 /**
- * Tests the updateTranscript function of Grads
+ * tests for requirement 6 Tests the updateTranscript function of Grads
  */
 public class EditRecordTests {
     GRADS grads = new GRADS("src/resources/studentsTest001.txt",

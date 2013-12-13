@@ -1,17 +1,24 @@
 package testing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import schema.UserSchema;
 import schema.IdNameSchema;
+import schema.UserSchema;
 import edu.umn.csci5801.model.Department;
 
-//Unit tests for Schema constructors
+/**
+ * Unit Tests for schema constructors
+ * 
+ * @author markholmes
+ * 
+ */
 public class SchemaTests {
-    // User Schema tests
+    /**
+     * Tests user schema creation
+     */
     @Test
     public void testUserSchemaCreation() {
 	try {
@@ -24,7 +31,9 @@ public class SchemaTests {
 	}
     }
 
-    // IdNameSchema tests
+    /**
+     * Tests IDNameSchema creation
+     */
     @Test
     public void testIdNameSchemaCreation() {
 	try {

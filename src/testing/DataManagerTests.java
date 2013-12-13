@@ -9,14 +9,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import edu.umn.csci5801.DataManager;
 import edu.umn.csci5801.model.Department;
 import edu.umn.csci5801.model.Student;
 import edu.umn.csci5801.model.StudentRecord;
 
-import org.junit.Assert;
-import org.junit.Test;
-
+/**
+ * Covers requirements 1 and 2 first six tests are unit tests for the various
+ * class members. The next four tests are for requirement 1. The next test is
+ * for requirement 2.
+ * 
+ * @author markholmes
+ * 
+ */
 public class DataManagerTests {
 
     private String courseFile;
@@ -24,6 +32,9 @@ public class DataManagerTests {
     private String progressFile;
     private String usersFile;
 
+    /**
+     * Blank constructor assigning file names
+     */
     public DataManagerTests() {
 	super();
 	this.courseFile = "data/courses.txt";
@@ -32,13 +43,19 @@ public class DataManagerTests {
 	this.usersFile = "data/users.txt";
     }
 
+    /**
+     * Creates a DataManager with the filenames given
+     * 
+     * @return DataManager retrieving from the databases at these filenames
+     */
     public DataManager createDefaultManager() {
 	return new DataManager(courseFile, studentsFile, progressFile,
 		usersFile);
     }
 
-    // The first six tests are unit tests testing the DataManager object and for
-    // code coverage
+    /**
+     * Tests the constructor of DataManager
+     */
     @Test
     public void testCreation() {
 	try {
@@ -49,6 +66,9 @@ public class DataManagerTests {
 	}
     }
 
+    /**
+     * Tests that courses can be retrieved
+     */
     @Test
     public void testGetCourses() {
 	try {
@@ -63,6 +83,9 @@ public class DataManagerTests {
 	}
     }
 
+    /**
+     * Tests that student records can be retrieved
+     */
     @Test
     public void testGetStudentRecords() {
 	try {
@@ -77,6 +100,9 @@ public class DataManagerTests {
 	}
     }
 
+    /**
+     * Tests that progress summaries can be retrieved
+     */
     @Test
     public void testGetProgressSummaries() {
 	try {
@@ -91,6 +117,9 @@ public class DataManagerTests {
 	}
     }
 
+    /**
+     * Tests that users can be retrieved
+     */
     @Test
     public void testGetUsers() {
 	try {
@@ -105,6 +134,9 @@ public class DataManagerTests {
 	}
     }
 
+    /**
+     * Tests database initialization
+     */
     @Test
     public void testInit() {
 	try {
@@ -120,7 +152,9 @@ public class DataManagerTests {
 	}
     }
 
-    // The next four tests test requirement 1 retrieving data from the database
+    /*
+     * Tests the retrieval of a list of student IDs available in a department
+     */
     @Test
     public void testGetStudentIDList() {
 	try {
@@ -139,6 +173,9 @@ public class DataManagerTests {
 	}
     }
 
+    /**
+     * Tests the retrieval of the data in a student record
+     */
     @Test
     public void testGetStudentData() {
 	try {
@@ -161,6 +198,9 @@ public class DataManagerTests {
 	}
     }
 
+    /**
+     * Tests the retrieval of a user object by the user's ID
+     */
     @Test
     public void testGetUserByID() {
 	try {
@@ -187,6 +227,9 @@ public class DataManagerTests {
 	}
     }
 
+    /**
+     * Tests the retrieval of the data for each available course
+     */
     @Test
     public void testGetCoursesData() {
 	try {
@@ -205,7 +248,9 @@ public class DataManagerTests {
 	}
     }
 
-    // This test tests requirement 2 persisting data to the database
+    /**
+     * Tests whether data can be persisted to the database
+     */
     @Test
     public void testStoreTranscript() {
 	try {
