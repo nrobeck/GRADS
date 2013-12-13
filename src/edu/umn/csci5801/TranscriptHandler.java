@@ -28,6 +28,7 @@ public class TranscriptHandler {
      */
     public TranscriptHandler(DataManager dbMan) {
         dbManager = dbMan;
+        dataValidator = new DataValidator(null, dbMan);	//Initial data validator
     }
 
     /**
