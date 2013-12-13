@@ -143,10 +143,10 @@ public class ProgressSummaryTests {
 	}
 	
 	/**
-	 * Find a requirement in a summary
-	 * @param summary
-	 * @param name
-	 * @return
+	 * Find a requirement in a progress summary
+	 * @param summary - a progress summary
+	 * @param name - name of the requirement
+	 * @return the desired requirement by name
 	 */
 	private RequirementCheckResult getRequirement(ProgressSummary summary, String name){
 		List<RequirementCheckResult> list = summary.getRequirementCheckResults();

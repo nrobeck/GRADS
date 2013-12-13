@@ -31,15 +31,16 @@ import exceptions.InvalidX500Exception;
  */
 public class InformationRetrievalTests {
     //variables for testing
-    GRADS testGrads = new GRADS("resources/studentsTest.txt", "resources/courses.txt", "resources/usersTest.txt");
+    GRADS testGrads = new GRADS("src/resources/students.txt", "src/resources/courses.txt", "src/resources/users.txt");
     StudentRecord testRecord = new StudentRecord();
-    DataManager dbManager = new DataManager( "resources/courses.txt", "resources/studentsTest.txt", "resources/progress.txt", "resources/usersTest.txt");
+    DataManager dbManager = new DataManager( "src/resources/courses.txt", "src/resources/studentsTest.txt", "src/resources/progress.txt", "src/resources/usersTest.txt");
 
 
     /**
      * Test successful retrieval of student transcript.
      * @see x Requirements Documnet Test 1.1
      */
+    @Test
     public void retrieveAStudentTranscriptTest() {
         try {
             testGrads.setUser("tolas9999");
@@ -47,6 +48,7 @@ public class InformationRetrievalTests {
             System.out.println(((InvalidX500Exception) e).errorMessage());
             e.printStackTrace();
         }
+        
         try {
             testRecord = testGrads.getTranscript("nguy0621");
         } catch (Exception e) {
@@ -60,6 +62,7 @@ public class InformationRetrievalTests {
      * Test retrieval of record that does not exist.
      * @see x Requirements Document Test 1.2
      */
+    @Test
     public void retrieveNonExistentRecordTest() {
         String message = "";
         try {
@@ -81,6 +84,7 @@ public class InformationRetrievalTests {
      * Test successful retrieval of list of graduate students
      * @see x Tequirements Document Test 1.3
      */
+    @Test
     public void retrieveGradStudentsTest() {
         List<String> s = null;
         try {
@@ -100,6 +104,7 @@ public class InformationRetrievalTests {
      * Test successful retrieval of degree requirements
      * @see x Requirements Document Test 1.4
      */
+    @Test
     public void retrieveRequirementsTest() {
 
     }
@@ -108,6 +113,7 @@ public class InformationRetrievalTests {
      * Test successful retrieval of courses for degree
      * @see x Requirements Document Test 1.5
      */
+    @Test
     public void retriveCoursesTest() {
 
     }
@@ -116,6 +122,7 @@ public class InformationRetrievalTests {
      * Test successful retrieval of notes for student record
      * @see x Requirements Document Test 1.6
      */
+    @Test
     public void retrieveNotesTest() {
 
     }
@@ -124,6 +131,7 @@ public class InformationRetrievalTests {
      * Test successful retrieval of milestones
      * @see x Requirements Document Test 1.7
      */
+    @Test
     public void retrieveMilestonesTest() {
 
     }
@@ -132,6 +140,7 @@ public class InformationRetrievalTests {
      * Test data not available messages
      * @see x Requirements Document Test 1.8
      */
+    @Test
     public void dataNotAvailableTest() {
 
     }
