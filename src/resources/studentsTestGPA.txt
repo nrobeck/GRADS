@@ -1,0 +1,169 @@
+[
+  {
+    "student": {
+      "id": "studentMSA",
+      "firstName": "Greg",
+      "lastName": "Gay"
+    },
+    "degreeSought": "MS_A",
+    "advisors": [
+      {
+        "department": "COMPUTER_SCIENCE",
+        "firstName": "Mats",
+        "lastName": "Heimdahl"
+      }
+    ],
+    "notes": [
+      "note1",
+      "note2",
+      "note3"
+    ],
+    "coursesTaken": [
+    	{
+	        "course": {
+		        "name": "Operating Systems",
+		        "id": "csci5103",
+		        "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+        
+        {
+	        "course": {
+	            "name": "Analysis of Numerical Algorithms",
+	            "id": "csci5302",
+	            "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+        
+        {
+	        "course": {
+	            "name": "User Interface Design, Implementation, and Evaluation",
+	            "id": "csci5115",
+	            "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        }
+       ]
+  },
+  {
+    "student": {
+      "id": "studentMSB",
+      "firstName": "Greg",
+      "lastName": "Gay"
+    },
+    "degreeSought": "MS_B",
+    "advisors": [
+      {
+        "department": "COMPUTER_SCIENCE",
+        "firstName": "Mats",
+        "lastName": "Heimdahl"
+      }
+    ],
+    "notes": [
+      "note1",
+      "note2",
+      "note3"
+    ],
+    "coursesTaken": [
+    	{
+	        "course": {
+		        "name": "Operating Systems",
+		        "id": "csci5103",
+		        "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+        
+        {
+	        "course": {
+	            "name": "Analysis of Numerical Algorithms",
+	            "id": "csci5302",
+	            "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "B"
+        }
+       ]
+  },
+  {
+    "student": {
+      "id": "studentMSC",
+      "firstName": "Greg",
+      "lastName": "Gay"
+    },
+    "degreeSought": "MS_C",
+    "advisors": [
+      {
+        "department": "COMPUTER_SCIENCE",
+        "firstName": "Mats",
+        "lastName": "Heimdahl"
+      }
+    ],
+    "notes": [
+      "note1",
+      "note2",
+      "note3"
+    ],
+    "coursesTaken": [
+    	{
+	        "course": {
+		        "name": "Operating Systems",
+		        "id": "csci5103",
+		        "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "A"
+        },
+        
+        {
+	        "course": {
+	            "name": "Analysis of Numerical Algorithms",
+	            "id": "csci5302",
+	            "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "B"
+        },
+        
+        {
+	        "course": {
+	            "name": "User Interface Design, Implementation, and Evaluation",
+	            "id": "csci5115",
+	            "numCredits": "3"
+	        },
+	        "term": {
+	          "semester": "SPRING",
+	          "year": 2008
+	        },
+	        "grade": "B"
+        }
+       ]
+  }
+]
