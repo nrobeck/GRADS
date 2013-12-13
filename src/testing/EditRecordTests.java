@@ -15,6 +15,7 @@ import org.junit.Rule;
 
 import edu.umn.csci5801.GRADS;
 import edu.umn.csci5801.model.StudentRecord;
+import exceptions.InvalidTranscriptException;
 import exceptions.UserNotGPCException;
 
 
@@ -74,8 +75,11 @@ public class EditRecordTests {
 			record = grads.getTranscript("studentPHD");
 			try {
 				grads.updateTranscript("studentPHD", record);
-			}  catch (Exception e) {
+			}	catch(InvalidTranscriptException i){
+				
+			}	catch (Exception e) {
 				passed = false;
+				e.printStackTrace();
 			}
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block

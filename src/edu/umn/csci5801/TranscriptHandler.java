@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import edu.umn.csci5801.model.CourseTaken;
+import edu.umn.csci5801.model.Department;
 import edu.umn.csci5801.model.MilestoneSet;
 import edu.umn.csci5801.model.Professor;
 import edu.umn.csci5801.model.StudentRecord;
@@ -48,14 +49,15 @@ public class TranscriptHandler {
         // check the input record for validity
         if (validateTranscript(record)) {
             // store the new record if transcript is valid
-        	System.out.println("Stored");
             if(dbManager.storeTranscript(studentID, record)){
             	return;
             }
+            //Some weird persist error
             else{
             	throw new TranscriptNotPersistedException(record);
             }
         }
+        //Transcript not valid
         else{
         	throw new InvalidTranscriptException(record);
         }
@@ -139,6 +141,7 @@ public class TranscriptHandler {
         if (record == null) {
             return null;
         }
+
         // make sure that all values are not null
         if (record.getAdvisors() == null) {
             record.setAdvisors(new ArrayList<Professor>());
