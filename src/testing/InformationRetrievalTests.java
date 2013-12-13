@@ -101,15 +101,6 @@ public class InformationRetrievalTests {
     }
 
     /**
-     * Test successful retrieval of degree requirements
-     * @see x Requirements Document Test 1.4
-     */
-    @Test
-    public void retrieveRequirementsTest() {
-
-    }
-
-    /**
      * Test successful retrieval of courses for degree
      * @see x Requirements Document Test 1.5
      */

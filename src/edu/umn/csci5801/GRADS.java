@@ -100,7 +100,7 @@ public class GRADS implements GRADSIntf{
             //set the current user
             currentUser = dbManager.getUserByID(userId);
             //set the boolean result of whether or not the currentUser is a GPC
-            GPC = (currentUser.getRole() == "GRADUATE_PROGRAM_COORDINATOR");
+            GPC = (currentUser.getRole().equals("GRADUATE_PROGRAM_COORDINATOR"));
         }
         //if the userId is not in the system, go here
         else {
@@ -135,7 +135,12 @@ public class GRADS implements GRADSIntf{
             //check that the X500 is valid
             if(dbManager.getUserByID(userId) != null) {
                 //return student transcript
-                return transcriptHandler.getTranscript(userId);
+            	if(dbManager.getUserByID(userId).getDepartment().equals(currentUser.getDepartment())){
+            		return transcriptHandler.getTranscript(userId);
+            	}
+            	else {
+            		throw new UserNotAllowedException(currentUser.getID());
+            	}
             }
             else {
                 //throw invalid X500 exception
