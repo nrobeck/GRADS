@@ -22,7 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
     InformationRetrievalTests.class,
     MilestonesTests.class,
     ProgressSummaryTests.class,
-    TimestampsTests.class,
+    AddNoteTests.class,
     DataManagerTests.class,
     SchemaTests.class,
     UserTests.class

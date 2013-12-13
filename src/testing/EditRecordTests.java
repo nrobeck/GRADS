@@ -20,9 +20,7 @@ import exceptions.UserNotGPCException;
 
 //tests for requirement 6
 /**
- * 
- * @author Kyle
- *
+ *  Tests the updateTranscript function of Grads
  */
 public class EditRecordTests {
 	GRADS grads = new GRADS("src/resources/studentsTest001.txt", "src/resources/courses.txt", "src/resources/usersTest.txt");
