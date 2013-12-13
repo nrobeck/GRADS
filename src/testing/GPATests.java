@@ -66,9 +66,4 @@ public class GPATests {
 	}
 
     }
-
-    @Test
-    public void noCourseGPA() {
-
-    }
 }
