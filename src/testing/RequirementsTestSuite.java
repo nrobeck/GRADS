@@ -10,17 +10,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-    BestClassesTests.class,
     DataValidationTests.class,
-    DifferentiateCoursesTests.class,
-    DifferentiateUsersTests.class,
     EditRecordTests.class,
     GPATests.class,
     GPCViewsTranscriptTests.class,
-    GraduationReccomendationTests.class,
-    HypotheticalClassesTests.class,
     InformationRetrievalTests.class,
-    MilestonesTests.class,
     ProgressSummaryTests.class,
     AddNoteTests.class,
     DataManagerTests.class,
