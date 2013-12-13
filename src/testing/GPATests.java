@@ -16,8 +16,8 @@ import org.junit.Rule;
 //tests for requirement 10
 public class GPATests {
 
-	@Test
-	public void noCourseGPA(){
+    @Test
+    public void noCourseGPA() {
 
-	}
+    }
 }

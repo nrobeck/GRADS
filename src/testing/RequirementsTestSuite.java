@@ -9,19 +9,11 @@ import org.junit.runners.Suite.SuiteClasses;
 //master test suite
 
 @RunWith(Suite.class)
-@SuiteClasses({
-    DataValidationTests.class,
-    EditRecordTests.class,
-    GPATests.class,
-    GPCViewsTranscriptTests.class,
-    InformationRetrievalTests.class,
-    ProgressSummaryTests.class,
-    AddNoteTests.class,
-    DataManagerTests.class,
-    SchemaTests.class,
-    UserTests.class,
-    ModelTests.class
-})
+@SuiteClasses({ DataValidationTests.class, EditRecordTests.class,
+	GPATests.class, GPCViewsTranscriptTests.class,
+	InformationRetrievalTests.class, ProgressSummaryTests.class,
+	AddNoteTests.class, DataManagerTests.class, SchemaTests.class,
+	UserTests.class, ModelTests.class })
 public class RequirementsTestSuite {
 
 }
