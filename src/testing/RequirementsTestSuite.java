@@ -24,7 +24,9 @@ import org.junit.runners.Suite.SuiteClasses;
     PersistentDataTests.class,
     ProgressSummaryTests.class,
     TimestampsTests.class,
-    DataManagerTests.class
+    DataManagerTests.class,
+    SchemaTests.class,
+    UserTests.class
 })
 public class RequirementsTestSuite {
 

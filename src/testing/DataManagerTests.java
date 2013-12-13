@@ -224,7 +224,6 @@ public class DataManagerTests {
         	
         	//Compare
         	Assert.assertEquals(originalRecords, newRecords);
-        	
         	//Check adding a new student
         	DataManager stuDataManager = createDefaultManager();
         	stuDataManager.setStudentRecordFileName("src/resources/studentsTestTMP.txt");
