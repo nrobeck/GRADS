@@ -10,64 +10,66 @@ public class RequirementCheckResult {
     private CheckResultDetails details;
 
     public void addErrorMsg(String errorMsg) {
-        if (errorMsgs == null) errorMsgs = new ArrayList<String>();
-        errorMsgs.add(errorMsg);
-        setPassed(false);
+	if (errorMsgs == null)
+	    errorMsgs = new ArrayList<String>();
+	errorMsgs.add(errorMsg);
+	setPassed(false);
     }
 
     public RequirementCheckResult(String name) {
-        this.name = name;
-        this.passed = true;
+	this.name = name;
+	this.passed = true;
     }
 
     public RequirementCheckResult(String name, boolean passed) {
-        this.name = name;
-        this.passed = passed;
+	this.name = name;
+	this.passed = passed;
     }
 
     public RequirementCheckResult(String name, boolean passed,
-            List<String> errorMsgs) {
-        this.name = name;
-        this.passed = passed;
-        this.errorMsgs = errorMsgs;
+	    List<String> errorMsgs) {
+	this.name = name;
+	this.passed = passed;
+	this.errorMsgs = errorMsgs;
     }
 
-    public RequirementCheckResult(String name, boolean passed, CheckResultDetails details) {
-        this.name = name;
-        this.passed = passed;
-        this.details = details;
+    public RequirementCheckResult(String name, boolean passed,
+	    CheckResultDetails details) {
+	this.name = name;
+	this.passed = passed;
+	this.details = details;
     }
 
     public String getName() {
-        return name;
+	return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+	this.name = name;
     }
 
     public boolean isPassed() {
-        return passed;
+	return passed;
     }
 
     public void setPassed(boolean passed) {
-        this.passed = passed;
+	this.passed = passed;
     }
 
     public List<String> getErrorMsgs() {
-        return errorMsgs;
+	return errorMsgs;
     }
 
     public void setErrorMsgs(List<String> errorMsgs) {
-        this.errorMsgs = errorMsgs;
+	this.errorMsgs = errorMsgs;
     }
 
     public CheckResultDetails getDetails() {
-        return details;
+	return details;
     }
 
-    public void setDetails(CheckResultDetails details){
-        this.details=details;
+    public void setDetails(CheckResultDetails details) {
+	this.details = details;
     }
 
 }

@@ -14,62 +14,73 @@ public class ProgressSummary {
     private List<RequirementCheckResult> requirementCheckResults = new ArrayList<RequirementCheckResult>();
 
     public Student getStudent() {
-        return student;
+	return student;
     }
 
     public void setStudent(Student student) {
-        this.student = student;
+	this.student = student;
     }
+
     public Department getDepartment() {
-        return department;
+	return department;
     }
+
     public void setDepartment(Department department) {
-        this.department = department;
+	this.department = department;
     }
+
     public Degree getDegreeSought() {
-        return degreeSought;
+	return degreeSought;
     }
+
     public void setDegreeSought(Degree degreeSought) {
-        this.degreeSought = degreeSought;
+	this.degreeSought = degreeSought;
     }
+
     public Term getTermBegan() {
-        return termBegan;
+	return termBegan;
     }
+
     public void setTermBegan(Term termBegan) {
-        this.termBegan = termBegan;
+	this.termBegan = termBegan;
     }
+
     public List<Professor> getAdvisors() {
-        return advisors;
+	return advisors;
     }
+
     public void setAdvisors(List<Professor> advisors) {
-        this.advisors = advisors;
+	this.advisors = advisors;
     }
+
     public List<Professor> getCommittee() {
-        return committee;
+	return committee;
     }
+
     public void setCommittee(List<Professor> committee) {
-        this.committee = committee;
+	this.committee = committee;
     }
-    public List<String> getNotes(){
-        return notes;
+
+    public List<String> getNotes() {
+	return notes;
     }
-    public void setNotes(List<String> notes){
-        this.notes = notes;
+
+    public void setNotes(List<String> notes) {
+	this.notes = notes;
     }
-    public void addRequirementResult(RequirementCheckResult requirementCheckResult) {
-        requirementCheckResults.add(requirementCheckResult);
+
+    public void addRequirementResult(
+	    RequirementCheckResult requirementCheckResult) {
+	requirementCheckResults.add(requirementCheckResult);
     }
 
     public List<RequirementCheckResult> getRequirementCheckResults() {
-        return requirementCheckResults;
+	return requirementCheckResults;
     }
 
     public void setRequirementCheckResults(
-            List<RequirementCheckResult> requirementCheckResults) {
-        this.requirementCheckResults = requirementCheckResults;
+	    List<RequirementCheckResult> requirementCheckResults) {
+	this.requirementCheckResults = requirementCheckResults;
     }
-
-
-
 
 }
