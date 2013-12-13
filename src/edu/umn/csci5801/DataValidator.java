@@ -28,6 +28,15 @@ public class DataValidator {
     public DataValidator() {
 
     }
+    /**
+     * Constructor for the DataValidator with parameters
+     * @param record
+     * @param dbManager
+     */
+    public DataValidator(StudentRecord record, DataManager dbManager){
+    	this.record = record;
+    	this.dbManager = dbManager;
+    }
 
     /**
      * Sets the transcript to be validated by the data validator

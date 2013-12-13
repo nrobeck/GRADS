@@ -15,5 +15,9 @@ import org.junit.Rule;
 
 //tests for requirement 7
 public class DataValidationTests {
-
+	
+	@Test
+	public void test(){
+		
+	}
 }
