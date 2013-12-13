@@ -25,7 +25,8 @@ import org.junit.runners.Suite.SuiteClasses;
     TimestampsTests.class,
     DataManagerTests.class,
     SchemaTests.class,
-    UserTests.class
+    UserTests.class,
+    ModelTests.class
 })
 public class RequirementsTestSuite {
 
