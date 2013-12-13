@@ -9,8 +9,9 @@ import schema.UserSchema;
 import schema.IdNameSchema;
 import edu.umn.csci5801.model.Department;
 
+//Unit tests for Schema constructors
 public class SchemaTests {
-
+	//User Schema tests
 	@Test
 	public void testUserSchemaCreation() {
 		try{
@@ -21,7 +22,7 @@ public class SchemaTests {
 			fail("Exception!");
 		}
 	}
-	
+	//IdNameSchema tests
 	@Test
 	public void testIdNameSchemaCreation() {
 		try{

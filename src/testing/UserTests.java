@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import edu.umn.csci5801.User;
-
+//Unit Tests for User.equals()
 public class UserTests {
 
 	@Test

@@ -21,7 +21,6 @@ import org.junit.runners.Suite.SuiteClasses;
     HypotheticalClassesTests.class,
     InformationRetrievalTests.class,
     MilestonesTests.class,
-    PersistentDataTests.class,
     ProgressSummaryTests.class,
     TimestampsTests.class,
     DataManagerTests.class,
