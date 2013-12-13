@@ -33,7 +33,7 @@ public class InformationRetrievalTests {
     //variables for testing
     GRADS testGrads = new GRADS("src/resources/students.txt", "src/resources/courses.txt", "src/resources/users.txt");
     StudentRecord testRecord = new StudentRecord();
-    DataManager dbManager = new DataManager( "src/resources/courses.txt", "src/resources/studentsTest.txt", "src/resources/progress.txt", "src/resources/usersTest.txt");
+    DataManager dbManager = new DataManager( "src/resources/courses.txt", "src/resources/students.txt", "src/resources/progress.txt", "src/resources/users.txt");
 
 
     /**
@@ -76,7 +76,7 @@ public class InformationRetrievalTests {
         } catch (Exception e) {
             message = ((InvalidX500Exception) e).errorMessage();
         }
-        Assert.assertTrue(message == "The user ID nguy0622 is not a valid ID in this system");
+        Assert.assertTrue(message.equals("The user ID nguy0622 is not a valid ID in this system"));
 
     }
 
@@ -97,7 +97,13 @@ public class InformationRetrievalTests {
         } catch (Exception e) {
             System.out.println(((InvalidX500Exception) e).errorMessage());
         }
-        Assert.assertTrue(s.equals(dbManager.getStudentIDList(dbManager.getUserByID("tolas9999").getDepartment())));
+        
+    	User tolas = dbManager.getUserByID("tolas9999");
+        try{
+        	Assert.assertTrue(s.equals(dbManager.getStudentIDList(tolas.getDepartment())));
+        }catch(NullPointerException e){
+        	e.printStackTrace();
+        }
     }
 
     /**
