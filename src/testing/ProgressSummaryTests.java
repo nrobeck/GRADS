@@ -195,7 +195,26 @@ public class ProgressSummaryTests {
 		List<CourseTaken> list = new ArrayList<CourseTaken>();
 		
 		list.add(new CourseTaken(new Course("Colloquium", "csci8970", "1", null), null, Grade._));
+		list.add(new CourseTaken(new Course("Thesis", "csci8777", "10", null), null, Grade._));
+		list.add(new CourseTaken(new Course("SomeCourse", "csci8363", "3", null), null, Grade._));
 		
+		boolean passed = false;
+		
+		// refuse a student trying to sim another person's summary
+		try {
+			grads.setUser("studentPHD");
+		} catch (Exception e) {
+			Assert.fail("setUser should work");
+		}
+		
+		try {
+			ProgressSummary summary = grads.simulateCourses("studentMSA", list);
+		} catch (Exception e) {
+			passed = true;
+		}
+		Assert.assertTrue("A student should not be allowed to view another student's summary", passed);
+		
+		// simulate courses with a gpc user
 		try {
 			grads.setUser("gpc001");
 		} catch (Exception e) {
@@ -203,16 +222,13 @@ public class ProgressSummaryTests {
 		}
 		
 		try {
-			ProgressSummary summary = grads.simulateCourses("studentPHD", list);
+			ProgressSummary summary = grads.simulateCourses("studentMSA", list);
 			Assert.assertTrue("Simiulate course must successfully allow COLLOQUIUM to pass", getRequirement(summary, "COLLOQUIUM").isPassed());
+			Assert.assertTrue("Simiulate course must successfully allow THESIS_CREDITS to pass", getRequirement(summary, "COLLOQUIUM").isPassed());
+			Assert.assertTrue("Simiulate course must successfully allow PHD_LEVEL_COURSE to pass", getRequirement(summary, "COLLOQUIUM").isPassed());
 		} catch (Exception e) {
 			Assert.fail("");
 		}
-		
-
-		
-		
-		
 	}
 
 	/**
