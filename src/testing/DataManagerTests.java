@@ -125,7 +125,7 @@ public class DataManagerTests {
         }
     }
 
-    //The next four tests test requirement 1 retrieveing data from the database
+    //The next four tests test requirement 1 retrieving data from the database
     @Test
     public void testGetStudentIDList(){
         try{
@@ -206,7 +206,7 @@ public class DataManagerTests {
         }
     }
 
-    //Tests requirement 2 persisting data to the database
+    //This test tests requirement 2 persisting data to the database
     @Test
     public void testStoreTranscript(){
         try{
@@ -224,7 +224,6 @@ public class DataManagerTests {
         	
         	//Compare
         	Assert.assertEquals(originalRecords, newRecords);
-        	
         	//Check adding a new student
         	DataManager stuDataManager = createDefaultManager();
         	stuDataManager.setStudentRecordFileName("src/resources/studentsTestTMP.txt");
