@@ -36,6 +36,8 @@ public class DataManagerTests {
     public DataManager createDefaultManager(){
         return new DataManager(courseFile, studentsFile, progressFile, usersFile);
     }
+
+    //The first six tests are unit tests testing the DataManager object and for code coverage
     @Test
     public void testCreation() {
         try{
@@ -122,7 +124,9 @@ public class DataManagerTests {
             fail("Exception! ");
         }
     }
-      @Test
+
+    //The next four tests test requirement 1 retrieveing data from the database
+    @Test
     public void testGetStudentIDList(){
         try{
             DataManager dataManager = createDefaultManager();
@@ -201,6 +205,8 @@ public class DataManagerTests {
             fail("Exception! ");
         }
     }
+
+    //Tests requirement 2 persisting data to the database
     @Test
     public void testStoreTranscript(){
         try{
