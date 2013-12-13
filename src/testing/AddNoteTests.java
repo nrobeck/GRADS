@@ -14,7 +14,9 @@ import org.junit.Ignore;
 import org.junit.Rule;
 
 import edu.umn.csci5801.GRADS;
+import exceptions.MissingStudentRecordExeception;
 import exceptions.UserNotGPCException;
+import exceptions.InvalidX500Exception;
 
 //tests for requirement 5
 /**
@@ -57,6 +59,18 @@ public class AddNoteTests {
 		
 		boolean passed = false;
 		
+		try {
+			grads.addNote("nobody", "Test Note");
+		} catch (InvalidX500Exception e) {
+			passed = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		Assert.assertTrue("Return a InvalidX500Exception if student record is missing", passed);
+		
+		passed = false;
 		try {
 			grads.addNote("studentPHD", "Test Note");
 			passed = true;
