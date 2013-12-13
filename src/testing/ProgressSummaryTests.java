@@ -1,5 +1,6 @@
 package testing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Assert;
@@ -16,8 +17,12 @@ import org.junit.Ignore;
 import org.junit.Rule;
 
 import edu.umn.csci5801.GRADS;
+import edu.umn.csci5801.model.Course;
+import edu.umn.csci5801.model.CourseTaken;
+import edu.umn.csci5801.model.Grade;
 import edu.umn.csci5801.model.ProgressSummary;
 import edu.umn.csci5801.model.RequirementCheckResult;
+import edu.umn.csci5801.model.StudentRecord;
 
 //tests for requirement 9
 
@@ -178,6 +183,36 @@ public class ProgressSummaryTests {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Run tests on the simulate course function
+	 */
+	@Test
+	public void simulateTest(){
+		GRADS grads = new GRADS("src/resources/studentsTest001.txt",
+				"src/resources/courses.txt", "src/resources/usersTest.txt");
+		List<CourseTaken> list = new ArrayList<CourseTaken>();
+		
+		list.add(new CourseTaken(new Course("Colloquium", "csci8970", "1", null), null, Grade._));
+		
+		try {
+			grads.setUser("gpc001");
+		} catch (Exception e) {
+			Assert.fail("setUser should work");
+		}
+		
+		try {
+			ProgressSummary summary = grads.simulateCourses("studentPHD", list);
+			Assert.assertTrue("Simiulate course must successfully allow COLLOQUIUM to pass", getRequirement(summary, "COLLOQUIUM").isPassed());
+		} catch (Exception e) {
+			Assert.fail("");
+		}
+		
+
+		
+		
+		
 	}
 
 	/**
