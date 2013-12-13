@@ -71,7 +71,6 @@ public class DataManager {
         this.progressSummaryFileName = null;
         this.userFileName = null;
         this.init = false;
-        this.debug = false;
     }
    
     /**
@@ -101,17 +100,6 @@ public class DataManager {
         this.progressSummaryFileName = progressSummaryFileName;
         this.userFileName = userFileName;
         this.init = false;
-        this.debug = false;
-    }
-    
-    /**
-     * 
-     * @param debug
-     * @return the current Debug value
-     */
-    public boolean setDebug(boolean debug){
-    	this.debug = debug;
-    	return this.debug;
     }
     
     /**
@@ -182,305 +170,6 @@ public class DataManager {
         }
     }
 
-    // To print a course
-    /**
-     * Prints the course data out to the screen.
-     *
-     * @param course
-     *            the course object for which you want the data to be printed
-     */
-    public void printCourse(Course course) {
-        // print course name
-        System.out.println("Course: " + course.getName());
-        // print course id
-        System.out.println("\tID: " + course.getId());
-        // print course credits
-        System.out.println("\tCredits: " + course.getNumCredits());
-        // print area of course
-        System.out.println("\tArea: " + course.getCourseArea());
-    }
-
-    /**
-     * Print when the when the course was taken and what grade was received in
-     * addition to course data from printCourse.
-     *
-     * @param courseTaken
-     *            the course for which the data is being requested
-     */
-    public void printCourseTaken(CourseTaken courseTaken) {
-        // get the course object from the courseTaken object, and print the
-        // information for it
-        this.printCourse(courseTaken.getCourse());
-        // print when the course was taken
-        System.out.println("\t\tTerm: " + courseTaken.getTerm().getSemester()
-                + " " + courseTaken.getTerm().getYear());
-        // print what grade the student recieved in the course
-        System.out.println("\t\tGrade: " + courseTaken.getGrade());
-    }
-
-    // To print a student record
-    /**
-     * Print the given student record out to the screen.
-     *
-     * @param studentRecord
-     *            the student record to be printed
-     */
-    public void printStudentRecord(StudentRecord studentRecord) {
-        // print the name of the student
-        System.out.println("Student Name: "
-                + studentRecord.getStudent().getFirstName() + " "
-                + studentRecord.getStudent().getLastName());
-        // print the department the student belongs to
-        System.out.println("\tDepartment: " + studentRecord.getDepartment());
-        // print the degree the student is seeking
-        System.out.println("\tDegree: " + studentRecord.getDegreeSought());
-
-        // Term Began
-        // check if the student has started yet
-        if (studentRecord.getTermBegan() != null) {
-            // print the term the student began at
-            System.out.println("\tTerm Began: "
-                    + studentRecord.getTermBegan().getSemester() + " "
-                    + studentRecord.getTermBegan().getYear());
-        } else {
-            // print that student has not started
-            System.out.println("\tNo Term Began");
-        }
-
-        // Advisors
-        // check that the students advisors are set
-        if (studentRecord.getAdvisors() != null) {
-            // print the students advisors
-            System.out.println("\tAdvisors: ");
-            // loop through the advisors, printing each
-            for (Professor advisor : studentRecord.getAdvisors()) {
-                System.out.println("\t\t" + advisor.getLastName() + ", ");
-            }
-        } else {
-            // print that there are no advisors for this student
-            System.out.println("\tNo Advisors");
-        }
-
-        // Committee
-        // check that the student committee is set
-        if (studentRecord.getCommittee() != null) {
-            // print the committee
-            System.out.println("\tCommittee: ");
-            // loop through committee members, printing each
-            for (Professor member : studentRecord.getCommittee()) {
-                System.out.println("\t\t" + member.getLastName());
-            }
-        } else {
-            // print that there are no committee members
-            System.out.println("\tNo Committee");
-        }
-
-        // Courses Taken
-        // check that the student has taken courses
-        if (studentRecord.getCoursesTaken() != null) {
-            // print the courses taken
-            System.out.println("\tCourses Taken: ");
-            // loop through the course the student has taken, printing each
-            for (CourseTaken courseTaken : studentRecord.getCoursesTaken()) {
-                this.printCourseTaken(courseTaken);
-            }
-        } else {
-            // print that no courses have been taken
-            System.out.println("\tNo Courses Taken");
-        }
-
-        // Print Milestones
-        // check that milestones have been set
-        if (studentRecord.getMilestonesSet() != null) {
-            // print milestones
-            System.out.println("\tMilestones Set: ");
-            // loop through milestones, printing each
-            for (MilestoneSet milestoneSet : studentRecord.getMilestonesSet()) {
-                System.out.println("\t\t" + milestoneSet.getMilestone() + " "
-                        + milestoneSet.getTerm().getYear() + " "
-                        + milestoneSet.getTerm().getSemester());
-            }
-        } else {
-            // print that there are no milestones
-            System.out.println("\tNo Milestones Set");
-        }
-
-        // Notes
-        // check if there are notes to print
-        if (studentRecord.getNotes() != null) {
-            // print the notes
-            System.out.println("\tNotes:");
-            // loop through notes, printing each
-            for (String note : studentRecord.getNotes()) {
-                System.out.println("Note: " + note);
-            }
-        } else {
-            // print that there are no notes
-            System.out.println("\t No Notes");
-        }
-    }
-
-    /**
-     * Print the results from checking the requirements onto the screen.
-     *
-     * @param requirementCheckResult
-     *            the result of checking the requirements, to be printed
-     */
-    public void printRequirementCheckResult(
-            RequirementCheckResult requirementCheckResult) {
-        // print requirement name and whether it was passed or not
-        System.out.println("Requirement Result: ");
-        System.out.println("\tName: " + requirementCheckResult.getName());
-        System.out.println("\tPassed?: " + requirementCheckResult.isPassed());
-
-        // Error Messages
-        if (requirementCheckResult.getErrorMsgs() != null) {
-            System.out.println("\tError Messages: ");
-            // loop through error messages, printing each
-            for (String errorMsg : requirementCheckResult.getErrorMsgs()) {
-                System.out.println("\t\t" + errorMsg);
-            }
-        } else {
-            // print if there were no errors
-            System.out.println("\tNo Error Messages");
-        }
-
-        // Result Details
-        // check that the details were not null
-        if (requirementCheckResult.getDetails() != null) {
-            // print the gpa and courses taken
-            System.out.println("\tDetails:");
-            System.out.println("\t\tGPA: "
-                    + requirementCheckResult.getDetails().getGPA());
-            System.out.println("\t\tCourses Taken:");
-            // loop through courses taken, printing each
-            if (requirementCheckResult.getDetails().getCourses() != null) {
-                for (CourseTaken course : requirementCheckResult.getDetails()
-                        .getCourses()) {
-                    this.printCourseTaken(course);
-                }
-            } else {
-                // print that no courses were taken
-                System.out.println("No Courses Taken:");
-            }
-            // check for other details to print
-            if (requirementCheckResult.getDetails().getOther() != null) {
-                // print other details
-                System.out.println("\t\tOther:");
-                // loop through other details, printing each
-                for (String other : requirementCheckResult.getDetails()
-                        .getOther()) {
-                    System.out.println("\t\t\tOther Detail: " + other);
-                }
-            } else {
-                // print that there were no other details
-                System.out.println("\t\tNo Other Details");
-            }
-        } else {
-            // print that there were no details
-            System.out.println("\tNo Details");
-        }
-
-    }
-
-    /**
-     * Print a progress summary onto the screen.
-     *
-     * @param progressSummary
-     *            the progress summary, to be printed
-     */
-    public void printProgressSummary(ProgressSummary progressSummary) {
-        // print the student name, department, and degree from the progress
-        // summary
-        System.out.println("Student Name: "
-                + progressSummary.getStudent().getFirstName() + " "
-                + progressSummary.getStudent().getLastName());
-        System.out.println("\tDepartment: " + progressSummary.getDepartment());
-        System.out.println("\tDegree: " + progressSummary.getDegreeSought());
-
-        // Term Began
-        // check if the term began is null
-        if (progressSummary.getTermBegan() != null) {
-            // print the term began
-            System.out.println("\tTerm Began: "
-                    + progressSummary.getTermBegan().getSemester() + " "
-                    + progressSummary.getTermBegan().getYear());
-        } else {
-            // print that there is no term began
-            System.out.println("\tNo Term Began");
-        }
-
-        // Advisors
-        // check for advisors
-        if (progressSummary.getAdvisors() != null) {
-            // print the advisors
-            System.out.println("\tAdvisors: ");
-            // loop through advisors, printing each
-            for (Professor advisor : progressSummary.getAdvisors()) {
-                System.out.println("\t\t" + advisor.getLastName() + ", ");
-            }
-        } else {
-            // print that there were no advisors
-            System.out.println("\tNo Advisors");
-        }
-
-        // Committee
-        // check for committee
-        if (progressSummary.getCommittee() != null) {
-            // print the committee
-            System.out.println("\tCommittee: ");
-            // loop through committee members, printing each
-            for (Professor member : progressSummary.getCommittee()) {
-                System.out.println("\t\t" + member.getLastName());
-            }
-        } else {
-            // print that there is no committee
-            System.out.println("\tNo Committee");
-        }
-
-        // Notes
-        // check for notes
-        if (progressSummary.getNotes() != null) {
-            // print notes
-            System.out.println("\tNotes:");
-            // loop through notes, printing each
-            for (String note : progressSummary.getNotes()) {
-                System.out.println("Note: " + note);
-            }
-        } else {
-            // print that there are no notes
-            System.out.println("\tNo Notes");
-        }
-
-        // check if there are requirements check results
-        if (progressSummary.getRequirementCheckResults() != null) {
-            // print requirements check results
-            System.out.println("\tRequirement Check Results:");
-            // loop through results, printing each
-            for (RequirementCheckResult requirementsResult : progressSummary
-                    .getRequirementCheckResults()) {
-                this.printRequirementCheckResult(requirementsResult);
-            }
-        } else {
-            // print that there are no requirements results
-            System.out.println("\tNo Requirement Results");
-        }
-    }
-
-    /**
-     * Print the input user onto the screen.
-     *
-     * @param user
-     *            the user object from which the data will be printed onto the
-     *            screen.
-     */
-    public void printUser(User user) {
-        // print the user id, role, and department of the given user
-        System.out.println("User Id: " + user.getID());
-        System.out.println("\tRole: " + user.getRole());
-        System.out.println("\tDepartment: " + user.getDepartment());
-    }
-
     // Getters from JSON--------------------------
 
     /**
@@ -518,12 +207,6 @@ public class DataManager {
             return null;
         }
 
-        // print the courses
-        if(this.debug){
-	        for (Course course : courses) {
-	            this.printCourse(course);
-	        }
-        }
         // return the array of courses
         return courses;
     }
@@ -564,12 +247,6 @@ public class DataManager {
             e.printStackTrace();
             return null;
         }
-        if(this.debug){
-	        // print the student records
-	        for (StudentRecord studentRecord : studentRecords) {
-	            this.printStudentRecord(studentRecord);
-	        }
-        }
         this.studentRecords = studentRecords;
         // return the student record array
         return studentRecords;
@@ -608,12 +285,6 @@ public class DataManager {
             System.err.println("Error parsing course JSON!");
             e.printStackTrace();
             return null;
-        }
-        if(this.debug){
-	        // print the progress summaries
-	        for (ProgressSummary progressSummary : progressSummaries) {
-	            this.printProgressSummary(progressSummary);
-	        }
         }
         this.progressSummaries = progressSummaries;
         // return the array of progress summaries
@@ -660,9 +331,6 @@ public class DataManager {
             User user = new User(userSchema.getID().getID(),
                     userSchema.getRole(), userSchema.getDepartment());
             users.add(user);
-            if(this.debug){
-            	printUser(user);
-            }
         }
         this.users = users;
         // return the users arraylist
@@ -841,11 +509,11 @@ public class DataManager {
             // write the record out to the storage file
             if (writeTranscript()) {
                 // print that write was successful
-                System.out.println("Write Success!");
+                // System.out.println("Write Success!");
                 return true;
             } else {
                 // print failure message
-                System.err.println("Write Failed!");
+                // System.err.println("Write Failed!");
                 // reset the model
                 this.studentRecords.set(index, studentRecord);
                 return false;
@@ -858,11 +526,11 @@ public class DataManager {
             // write the record out to the storage file
             if (writeTranscript()) {
                 // print that write was successful
-                System.out.println("Write Success!");
+                // System.out.println("Write Success!");
                 return true;
             } else {
                 // print failure message
-                System.err.println("Write Failed!");
+                // System.err.println("Write Failed!");
                 // reset the model
                 this.studentRecords.remove(newRecord);
                 return false;

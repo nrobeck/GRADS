@@ -52,7 +52,6 @@ public class DataManagerTests {
     public void testGetCourses(){
         try{
             DataManager dataManager = createDefaultManager();
-            dataManager.setDebug(true);
             assertNotNull(dataManager.getCourses());
             
             DataManager nullDataManager = new DataManager();
@@ -67,7 +66,6 @@ public class DataManagerTests {
     public void testGetStudentRecords(){
         try{
             DataManager dataManager = createDefaultManager();
-            dataManager.setDebug(true);
             assertNotNull(dataManager.getStudentRecords());
             
             DataManager nullDataManager = new DataManager();
@@ -82,7 +80,6 @@ public class DataManagerTests {
     public void testGetProgressSummaries(){
         try{
             DataManager dataManager = createDefaultManager();
-            dataManager.setDebug(true);
             assertNotNull(dataManager.getProgressSummaries());
             
             DataManager nullDataManager = new DataManager();
@@ -97,7 +94,6 @@ public class DataManagerTests {
     public void testGetUsers(){
         try{
             DataManager dataManager = createDefaultManager();
-            dataManager.setDebug(true);
             assertNotNull(dataManager.getUsers());
             
             DataManager nullDataManager = new DataManager();
