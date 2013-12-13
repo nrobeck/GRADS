@@ -29,12 +29,16 @@ package edu.umn.csci5801;
  *
  */
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 import edu.umn.csci5801.model.CourseTaken;
 import edu.umn.csci5801.model.ProgressSummary;
 import edu.umn.csci5801.model.StudentRecord;
+import exceptions.InvalidTranscriptException;
 import exceptions.InvalidX500Exception;
+import exceptions.TranscriptNotPersistedException;
 import exceptions.UserNotAllowedException;
 import exceptions.UserNotGPCException;
 
@@ -168,7 +172,7 @@ public class GRADS implements GRADSIntf{
             //check if the X500 is valid
             if(dbManager.getStudentData(userId) != null) {
                 //push the transcript changes
-                transcriptHandler.updateTranscript(userId, transcript);
+            	transcriptHandler.updateTranscript(userId, transcript);
             }
             //run if invalid X500
             else {

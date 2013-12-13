@@ -9,6 +9,8 @@ import edu.umn.csci5801.model.CourseTaken;
 import edu.umn.csci5801.model.MilestoneSet;
 import edu.umn.csci5801.model.Professor;
 import edu.umn.csci5801.model.StudentRecord;
+import exceptions.InvalidTranscriptException;
+import exceptions.TranscriptNotPersistedException;
 
 /**
  * The module of GRADS used to get and store transcripts.
@@ -39,12 +41,23 @@ public class TranscriptHandler {
      *            the id of the student whose record needs updating.
      * @param record
      *            the new record to update the database with
+     * @throws TranscriptNotPersistedException 
+     * @throws InvalidTranscriptException 
      */
-    public void updateTranscript(String studentID, StudentRecord record) {
+    public void updateTranscript(String studentID, StudentRecord record) throws TranscriptNotPersistedException, InvalidTranscriptException {
         // check the input record for validity
         if (validateTranscript(record)) {
             // store the new record if transcript is valid
-            dbManager.storeTranscript(studentID, record);
+        	System.out.println("Stored");
+            if(dbManager.storeTranscript(studentID, record)){
+            	return;
+            }
+            else{
+            	throw new TranscriptNotPersistedException(record);
+            }
+        }
+        else{
+        	throw new InvalidTranscriptException(record);
         }
     }
 

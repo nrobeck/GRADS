@@ -1,660 +1,387 @@
 [
-
   {
-
     "student": {
-
       "id": "nguy0621",
-
       "firstName": "Luan",
-
       "lastName": "Nguyen"
-
     },
-
     "department": "COMPUTER_SCIENCE",
-
     "degreeSought": "PHD",
-
     "termBegan": {
-
       "semester": "SPRING",
-
       "year": 2008
-
     },
-
     "advisors": [
-
       {
-
         "department": "COMPUTER_SCIENCE",
-
         "firstName": "William",
-
         "lastName": "Schuler"
-
       }
-
     ],
-
     "committee": [
-
       {
-
         "department": "COMPUTER_SCIENCE",
-
         "firstName": "Maria",
-
         "lastName": "Gini"
-
       },
-
       {
-
         "department": "COMPUTER_SCIENCE",
-
         "firstName": "Daniel",
-
         "lastName": "Boley"
-
       },
-
       {
-
         "department": "MATH",
-
         "firstName": "Richard",
-
         "lastName": "McGehee"
-
       }
-
     ],
-
     "coursesTaken": [
-
       {
-
         "course": {
-
           "name": "Advanced Algorithms and Data Structures",
-
           "id": "csci5421",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "SPRING",
-
           "year": 2008
-
         },
-
         "grade": "A"
-
       },
-
       {
-
         "course": {
-
           "name": "Machine Learning",
-
           "id": "csci5525",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "SPRING",
-
           "year": 2008
-
         },
-
         "grade": "A"
-
       },
-
       {
-
         "course": {
-
           "name": "Operating System",
-
           "id": "csci5103",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "SUMMER",
-
           "year": 2008
-
         },
-
         "grade": "B"
-
       },
-
       {
-
         "course": {
-
           "name": "Programming Languages",
-
           "id": "csci5106",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "FALL",
-
           "year": 2008
-
         },
-
         "grade": "C"
-
       },
-
       {
-
         "course": {
-
           "name": "Introduction to Distributed Systems",
-
           "id": "csci5105",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "FALL",
-
           "year": 2008
-
         },
-
         "grade": "D"
-
       },
-
       {
-
         "course": {
-
           "name": "Introduction to Compilers",
-
           "id": "csci5161",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "SPRING",
-
           "year": 2009
-
         },
-
         "grade": "F"
-
       },
-
       {
-
         "course": {
-
           "name": "Data Communications and Computer Networks",
-
           "id": "csci5211",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "SPRING",
-
           "year": 2009
-
         },
-
         "grade": "S"
-
       },
-
       {
-
         "course": {
-
           "name": "Software Engineering I",
-
           "id": "csci5801",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "SPRING",
-
           "year": 2009
-
         },
-
         "grade": "N"
-
       },
-
       {
-
         "course": {
-
           "name": "Artificial Intelligence I",
-
           "id": "csci5511",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "FALL",
-
           "year": 2009
-
         },
-
         "grade": "_"
-
       },
-
       {
-
         "course": {
-
           "name": "Principles of Database Systems",
-
           "id": "csci5707",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "FALL",
-
           "year": 2009
-
         },
-
         "grade": "A"
-
       },
-
       {
-
         "course": {
-
           "name": "Artificial Intelligence II",
-
           "id": "csci5512",
-
           "numCredits": "3"
-
         },
-
         "term": {
-
           "semester": "SPRING",
-
           "year": 2010
-
         },
-
         "grade": "A"
-
       }
-
     ],
-
     "milestonesSet": [
-
       {
-
         "milestone": "DEFENSE_PASSED",
-
         "term": {
-
           "semester": "FALL",
-
           "year": 2014
-
         }
-
       }
-
     ],
-
     "notes": [
-
-    "note1", "note2"
-
+      "note1",
+      "note2"
     ]
-
   },
-
   {
-
     "student": {
-
       "id": "gayxx067",
-
       "firstName": "Greg",
-
       "lastName": "Gay"
-
     },
-
     "advisors": [
-
       {
-
         "department": "COMPUTER_SCIENCE",
-
         "firstName": "Mats",
-
         "lastName": "Heimdahl"
-
       }
-
     ],
-
     "notes": [
-
-    "note1", "note2", "note3"
-
+      "note1",
+      "note2",
+      "note3"
     ]
-
   },
-
   {
-
     "student": {
-
       "id": "student001",
-
       "firstName": "Joe",
-
       "lastName": "Schmoe"
-
     },
-
     "department": "COMPUTER_SCIENCE",
-
     "degreeSought": "PHD",
-
     "advisors": [
-
       {
-
         "department": "COMPUTER_SCIENCE",
-
         "firstName": "Mats",
-
         "lastName": "Heimdahl"
-
       }
-
     ],
-
     "notes": [
-
-    "note1", "note2", "note3"
-
+      "note1",
+      "note2",
+      "note3"
     ]
-
   },
-
   {
-
     "student": {
-
       "id": "bestx001",
-
       "firstName": "Payet",
-
       "lastName": "Best"
-
     },
-
     "department": "COMPUTER_SCIENCE",
-
     "degreeSought": "MS_A",
-
     "advisors": [
-
       {
-
         "department": "COMPUTER_SCIENCE",
-
         "firstName": "Mats",
-
         "lastName": "Heimdahl"
-
       }
-
     ],
-
     "coursesTaken": [
-
       {
-
         "course": {
-
           "name": "Operating Systems",
           "id": "csci5103",
           "numCredits": "3",
           "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
-
         },
-
         "term": {
           "semester": "SPRING",
           "year": 2008
         },
-
         "grade": "A"
-
       },
       {
-
         "course": {
-            "name": "System Modeling and Performance Evaluation",
-            "id": "csci5104",
-            "numCredits": "3",
-            "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
+          "name": "System Modeling and Performance Evaluation",
+          "id": "csci5104",
+          "numCredits": "3",
+          "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
         },
-
         "term": {
           "semester": "SPRING",
           "year": 2008
         },
-
         "grade": "A"
-
       },
       {
-      "course": {
-            "name": "Introduction to Distributed Systems",
-            "id": "csci5105",
-            "numCredits": "3",
-            "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
+        "course": {
+          "name": "Introduction to Distributed Systems",
+          "id": "csci5105",
+          "numCredits": "3",
+          "courseArea": "ARCHITECTURE_SYSTEMS_SOFTWARE"
         },
-
         "term": {
           "semester": "SPRING",
           "year": 2008
         },
-
         "grade": "A"
-
       },
       {
-      "course": {
-            "name": "User Interface Design, Implementation, and Evaluation",
-            "id": "csci5115",
-            "numCredits": "3",
-            "courseArea": "APPLICATIONS"
+        "course": {
+          "name": "User Interface Design, Implementation, and Evaluation",
+          "id": "csci5115",
+          "numCredits": "3",
+          "courseArea": "APPLICATIONS"
         },
-
         "term": {
           "semester": "SPRING",
           "year": 2008
         },
-
         "grade": "A"
-
       },
       {
-      "course": {
-            "name": "Computational Aspects of Matrix Theory",
-            "id": "csci5304",
-            "numCredits": "3",
-            "courseArea": "THEORY_ALGORITHMS"
+        "course": {
+          "name": "Computational Aspects of Matrix Theory",
+          "id": "csci5304",
+          "numCredits": "3",
+          "courseArea": "THEORY_ALGORITHMS"
         },
-
         "term": {
           "semester": "SPRING",
           "year": 2008
         },
-
         "grade": "A"
-
       },
-
       {
-      "course": {
-            "name": "Computer Science Colloquium",
-            "id": "csci8970",
-            "numCredits": "1"
+        "course": {
+          "name": "Computer Science Colloquium",
+          "id": "csci8970",
+          "numCredits": "1"
         },
-
         "term": {
           "semester": "SPRING",
           "year": 2008
         },
-
         "grade": "S"
       },
-            {
-      "course": {
-            "name": "Computational Aspects of Matrix Theory",
-            "id": "csci5304",
-            "numCredits": "3",
-            "courseArea": "THEORY_ALGORITHMS"
-        },
-
-        "term": {
-          "semester": "SPRING",
-          "year": 2008
-        },
-
-        "grade": "A"
-
-      },
-
       {
-      "course": {
-            "name": "Computer Science Colloquium",
-            "id": "csci8970",
-            "numCredits": "1"
+        "course": {
+          "name": "Computational Aspects of Matrix Theory",
+          "id": "csci5304",
+          "numCredits": "3",
+          "courseArea": "THEORY_ALGORITHMS"
         },
-
         "term": {
           "semester": "SPRING",
           "year": 2008
         },
-
-        "grade": "S"
-      },
-
-      {
-      "course": {
-            "name": "Thesis Credit: Masters",
-            "id": "csci8777",
-            "numCredits": "10"
-        },
-
-        "term": {
-          "semester": "SPRING",
-          "year": 2008
-        },
-
-        "grade": "S"
-      },
-
-      {
-      "course": {
-            "name": "Introduction to Research in Computer Science I",
-            "id": "csci8001",
-            "numCredits": "1"
-        },
-
-        "term": {
-          "semester": "SPRING",
-          "year": 2008
-        },
-
         "grade": "A"
       },
-
       {
-      "course": {
-            "name": "Introduction to Research in Computer Science II",
-            "id": "csci8002",
-            "numCredits": "2"
+        "course": {
+          "name": "Computer Science Colloquium",
+          "id": "csci8970",
+          "numCredits": "1"
         },
-
         "term": {
           "semester": "SPRING",
           "year": 2008
         },
-
+        "grade": "S"
+      },
+      {
+        "course": {
+          "name": "Thesis Credit: Masters",
+          "id": "csci8777",
+          "numCredits": "10"
+        },
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+        "grade": "S"
+      },
+      {
+        "course": {
+          "name": "Introduction to Research in Computer Science I",
+          "id": "csci8001",
+          "numCredits": "1"
+        },
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
+        "grade": "A"
+      },
+      {
+        "course": {
+          "name": "Introduction to Research in Computer Science II",
+          "id": "csci8002",
+          "numCredits": "2"
+        },
+        "term": {
+          "semester": "SPRING",
+          "year": 2008
+        },
         "grade": "A"
       }
-
-      ],
-
-
+    ],
     "notes": [
-
-    "note1", "note2", "note3"
-
+      "note1",
+      "note2",
+      "note3"
     ]
-
   }
-
 ]

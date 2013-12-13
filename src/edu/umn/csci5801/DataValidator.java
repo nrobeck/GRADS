@@ -54,9 +54,13 @@ public class DataValidator {
     public boolean studentIsValid() {
         //set the student
         Student student = record.getStudent();
+        //If no student
+        if(student == null){
+        	return false;
+        }
         //check if each field in the student object is valid
         //check if student id is null or not in database
-        if(dbManager.getStudentData(student.getId())!= null || student.getId() == null) {
+        if(dbManager.getStudentData(student.getId())== null || student.getId() == null) {
             return false;
         }
         //check if student first name is valid
@@ -84,7 +88,7 @@ public class DataValidator {
         //check whether the department is valid
         for(Department d : Department.values()) {
             //check each department against the department from record
-            if(d.name().equals(department)) {
+            if(d.equals(department)) {
                 //return if department is found
                 return true;
             }
@@ -102,7 +106,7 @@ public class DataValidator {
         //check whether the department is valid
         for(Department d : Department.values()) {
             //check each department against the department from record
-            if(d.name().equals(department)) {
+            if(d.equals(department)) {
                 //return if department is found
                 return true;
             }
@@ -121,7 +125,7 @@ public class DataValidator {
         //check validity of the degrees fields
         for(Degree d : Degree.values()) {
             //check each degree against the degree from record
-            if(d.name().equals(degree)) {
+            if(d.equals(degree)) {
                 //return if degree is found
                 return true;
             }
@@ -143,7 +147,7 @@ public class DataValidator {
         //check the term values
         //check the semester
         for(Semester s : Semester.values()) {
-            if(s.name().equals(term.getSemester())) {
+            if(s.equals(term.getSemester())) {
                 valid = true;
             }
         }
